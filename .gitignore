@@ -1,3 +1,6 @@
 .idea/
 .DS_Store
 *.iml
+nbproject/
+build.xml
+manifest.mf
