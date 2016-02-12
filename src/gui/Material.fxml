@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="228.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MaterialController">
+   <children>
+      <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0" onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+      <TextField fx:id="tfAmount" layoutX="194.0" layoutY="250.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="aantal" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="224.0" />
+      <TextArea fx:id="tfDescription" layoutX="14.0" layoutY="289.0" prefHeight="80.0" prefWidth="200.0" promptText="Omschrijving" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="294.0" />
+      <ComboBox fx:id="tfTargetAudience" layoutX="14.0" layoutY="470.0" prefHeight="25.0" prefWidth="200.0" promptText="Doelgroep" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <TextField fx:id="tfArticleNumber" layoutX="14.0" layoutY="619.0" prefHeight="25.0" prefWidth="200.0" promptText="Artikelnummer" AnchorPane.bottomAnchor="230.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <TextField fx:id="tfPrice" layoutX="14.0" layoutY="256.0" prefHeight="25.0" prefWidth="200.0" promptText="Prijs" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="259.0" />
+      <TextField fx:id="tfLocation" layoutX="14.0" layoutY="383.0" prefHeight="25.0" prefWidth="200.0" promptText="Locatie" AnchorPane.bottomAnchor="195.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <ComboBox fx:id="tfCurricular" layoutX="14.0" layoutY="537.0" prefHeight="25.0" prefWidth="200.0" promptText="Leergebied" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <CheckBox fx:id="cbDocentAvailable" layoutX="14.0" layoutY="442.0" mnemonicParsing="false" text="Docent" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="14.0" />
+      <CheckBox fx:id="cbStudentAvailable" layoutX="84.0" layoutY="522.0" mnemonicParsing="false" text="Student" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="84.0" />
+      <ComboBox fx:id="tfFirm" layoutX="14.0" layoutY="619.0" prefHeight="25.0" prefWidth="200.0" promptText="Firma" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <TextField fx:id="tfName" layoutX="32.0" layoutY="244.0" promptText="Naam" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="74.0" AnchorPane.topAnchor="224.0" />
+      <Label fx:id="LbAvailable" layoutX="14.0" layoutY="419.0" text="Uitleenbaarheid" AnchorPane.bottomAnchor="175.0" AnchorPane.leftAnchor="14.0" />
+      <Button fx:id="btnAdd" layoutX="163.0" layoutY="619.0" mnemonicParsing="false" onAction="#addMaterial" text="Toegoeven" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+   </children>
+</fx:root>
