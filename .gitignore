@@ -1,6 +1,26 @@
+# IntelliJ 
+.idea
 .idea/
-.DS_Store
+.idea/*
 *.iml
-nbproject/
-build.xml
-manifest.mf
+*.ipr
+*.iws
+
+# Netbeans
+nbproject
+.nbproject
+.nbproject/*
+nbproject/*
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+# Visual paradigm
+design/IIM.vpp~*
+
+# OSX
+.DS_Store
