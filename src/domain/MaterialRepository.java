@@ -31,5 +31,12 @@ public class MaterialRepository {
     public Set<MaterialIdentifier> getMaterialIdentifiers() {
         return Collections.unmodifiableSet(materialIdentifiers);
     }
+    
+    public void addMaterial(Material material){
+        materials.add(material);
+    }
+    public void addMaterialIdentifier(MaterialIdentifier materialIdentifier){
+        materialIdentifiers.add(materialIdentifier);
+    }
     //</editor-fold>
 }
