@@ -2,19 +2,31 @@ package domain;
 
 import java.util.Set;
 
+import persistence.*;
+
 public class Domaincontroller {
 
-	private MaterialRepository materials;
+    //<editor-fold desc="Variables" defaultstate="collapsed">
+    private MaterialRepository materials;
+    private PersistenceController persistence;
+    //</editor-fold>
 
-	public Domaincontroller() {
-		this.materials = new MaterialRepository();
-	}
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
+    public Domaincontroller() {
+        this.persistence = new PersistenceController();
+        this.persistence.start();
+        this.materials = new MaterialRepository(this.persistence.getEnforcer());
+    }
+    //</editor-fold>
 
-	public Set<Material> getMaterials() {
-		return materials.getMaterials();
-	}
+    //<editor-fold desc="Getters" defaultstate="collapsed">
+    public Set<Material> getMaterials() {
+        return materials.getMaterials();
+    }
 
-	public Set<MaterialIdentifier> getMaterialIdentifiers() {
-		return materials.getMaterialIdentifiers();
-	}
+    public Set<MaterialIdentifier> getMaterialIdentifiers() {
+        return materials.getMaterialIdentifiers();
+    }
+    //</editor-fold>
+
 }

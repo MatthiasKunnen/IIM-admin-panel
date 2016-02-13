@@ -4,19 +4,41 @@ import exceptions.InvalidEmailException;
 import exceptions.InvalidPriceException;
 import org.apache.commons.validator.routines.EmailValidator;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
 
+@Entity
 public class Material {
 
-    private Set<MaterialIdentifier> items= new HashSet<>();
+    //<editor-fold desc="Variables" defaultstate="collapsed">
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
+    private int id;
+
+    @OneToMany(mappedBy = "info", cascade = CascadeType.ALL)
+    private Set<MaterialIdentifier> items = new HashSet<>();
     private String encoding;
+    @Column(nullable = false)
     private String name;
     private String description;
     private String firm;
     private String firmEmail;
     private BigDecimal price;
     private String articleNr;
+    //</editor-fold>
+
+    //<editor-fold desc="Getters and setters" defaultstate="collapsed">
+    @Id
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getEncoding() {
         return this.encoding;
@@ -68,7 +90,7 @@ public class Material {
     }
 
     public void setPrice(BigDecimal price) throws InvalidPriceException {
-        if (price.compareTo(BigDecimal.ZERO)==-1){
+        if (price.compareTo(BigDecimal.ZERO) == -1) {
             throw new InvalidPriceException("price_less_than_zero");
         }
         this.price = price;
@@ -82,7 +104,9 @@ public class Material {
         this.articleNr = articleNr;
     }
 
+    //</editor-fold>
 
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     /**
      * @param name Name of the material.
@@ -96,25 +120,26 @@ public class Material {
      */
     protected Material() {
     }
+    //</editor-fold>
 
-	/**
-	 * 
-	 * @param identifier The identifier to add.
-	 */
-	public void addIdentifier(MaterialIdentifier identifier) {
+    //<editor-fold desc="Actions" defaultstate="collapsed">
+
+    /**
+     * @param identifier The identifier to add.
+     */
+    public void addIdentifier(MaterialIdentifier identifier) {
         items.add(identifier);
-	}
+    }
 
-	public Set<MaterialIdentifier> getIdentifiers() {
-		return Collections.unmodifiableSet(items);
-	}
+    public Set<MaterialIdentifier> getIdentifiers() {
+        return Collections.unmodifiableSet(items);
+    }
 
-	/**
-	 * 
-	 * @param identifier The identifier to remove.
-	 */
-	public void removeIdentifier(MaterialIdentifier identifier) {
-		items.remove(identifier);
-	}
-
+    /**
+     * @param identifier The identifier to remove.
+     */
+    public void removeIdentifier(MaterialIdentifier identifier) {
+        items.remove(identifier);
+    }
+    //</editor-fold>
 }
