@@ -1,13 +1,21 @@
 package main;
 
-import domain.Domaincontroller;
-
-import java.util.Scanner;
+import domain.DomainController;
+import domain.Material;
+import domain.MaterialIdentifier;
+import domain.Visibility;
 
 public class Main {
     public static void main(String[] args) {
-        new Domaincontroller();
-        Scanner scanner = new Scanner(System.in);
-        scanner.nextLine();
+        DomainController dc = new DomainController();
+        Material material = new Material("lolol");
+        MaterialIdentifier mi = new MaterialIdentifier(material, Visibility.Docent);
+        material.addIdentifier(mi);
+        material.setFirm("die firma toch");
+        material = dc.addMaterial(material);
+        material.setFirm("Een andere firma");
+        dc.update(material);
+        System.out.println(dc.getMaterials());
+        System.out.println(dc.getMaterialIdentifiers());
     }
 }

@@ -4,7 +4,7 @@ import java.util.Set;
 
 import persistence.*;
 
-public class Domaincontroller {
+public class DomainController {
 
      //<editor-fold desc="Variables" defaultstate="collapsed">
     private MaterialRepository materials;
@@ -12,7 +12,7 @@ public class Domaincontroller {
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-    public Domaincontroller() {
+    public DomainController() {
         this.persistence = new PersistenceController();
         this.persistence.start();
         this.materials = new MaterialRepository(this.persistence.getEnforcer());
