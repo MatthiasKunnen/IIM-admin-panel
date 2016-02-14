@@ -6,7 +6,7 @@ import persistence.*;
 
 public class Domaincontroller {
 
-    //<editor-fold desc="Variables" defaultstate="collapsed">
+     //<editor-fold desc="Variables" defaultstate="collapsed">
     private MaterialRepository materials;
     private PersistenceController persistence;
     //</editor-fold>
@@ -26,6 +26,20 @@ public class Domaincontroller {
 
     public Set<MaterialIdentifier> getMaterialIdentifiers() {
         return materials.getMaterialIdentifiers();
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Actions" defaultstate="collapsed">
+    public Material addMaterial(Material material) {
+        return this.materials.addMaterial(material);
+    }
+
+    public void removeMaterial(Material material) {
+        this.materials.removeMaterial(material);
+    }
+
+    public void update(Material material) {
+        this.materials.update(material);
     }
     //</editor-fold>
 
