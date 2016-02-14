@@ -11,6 +11,7 @@ import domain.MaterialIdentifier;
 import domain.Visibility;
 import exceptions.InvalidPriceException;
 import java.io.File;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.text.DecimalFormat;
@@ -21,6 +22,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
@@ -80,7 +82,17 @@ public class MaterialController extends AnchorPane {
         this.theStage = stage;
         this.dc = dc;
         imageEncoding = null;
-        ivPhoto.setImage(new Image(getClass().getResource("/gui.images/picture-add.png").toExternalForm()));
+        
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
+        loader.setRoot(this);
+        loader.setController(this);
+        try {
+            loader.load();
+        } catch (IOException ex) {
+            throw new RuntimeException(ex);
+        }
+        
+        ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
     }
 
     @FXML
@@ -158,6 +170,12 @@ public class MaterialController extends AnchorPane {
         fc.setTitle("Open file");
         File f = fc.showOpenDialog(theStage);
 
+        try {
+            ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
+        } catch (MalformedURLException ex) {
+            
+        }
+        
         imageEncoding = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf('.'), f.getAbsolutePath().length());
 
         try {

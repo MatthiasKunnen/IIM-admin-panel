@@ -4,18 +4,29 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Visibility;
+import gui.MaterialController;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
-public class Main {
-    public static void main(String[] args) {
-        DomainController dc = new DomainController();
-        Material material = new Material("lolol");
-        MaterialIdentifier mi = new MaterialIdentifier(material, Visibility.Docent);
-        material.addIdentifier(mi);
-        material.setFirm("die firma toch");
-        material = dc.addMaterial(material);
-        material.setFirm("Een andere firma");
-        dc.update(material);
-        System.out.println(dc.getMaterials());
-        System.out.println(dc.getMaterialIdentifiers());
+public class Main extends Application {
+    
+    
+     @Override
+    public void start(Stage stage) {
+        DomainController domainController = new DomainController();
+
+        Scene scene = new Scene(new MaterialController(domainController,stage));
+
+        stage.setTitle("Overzicht");
+        stage.setScene(scene);
+
+        
+        stage.show();
+    }
+
+    public static void main(String... args) {
+        Application.launch(Main.class, args);
     }
 }

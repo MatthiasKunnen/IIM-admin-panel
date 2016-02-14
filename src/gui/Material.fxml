@@ -7,7 +7,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="228.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.MaterialController">
+<fx:root id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="228.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
    <children>
       <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0" onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
       <TextField fx:id="tfAmount" layoutX="194.0" layoutY="250.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="aantal" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="224.0" />
