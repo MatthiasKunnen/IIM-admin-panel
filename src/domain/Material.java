@@ -3,10 +3,13 @@ package domain;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPriceException;
 import org.apache.commons.validator.routines.EmailValidator;
+import util.ImmutabilityHelper;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.*;
+
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 @Entity
 public class Material {
@@ -116,6 +119,23 @@ public class Material {
     }
 
     /**
+     * Copy constructor
+     *
+     * @param material The Material to copy the value from
+     */
+    public Material(Material material) {
+        this.id = material.id;
+        this.items = (Set<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(material.items, this);
+        this.encoding = material.encoding;
+        this.name = material.name;
+        this.description = material.description;
+        this.firm = material.firm;
+        this.firmEmail = material.firmEmail;
+        this.price = material.price;
+        this.articleNr = material.articleNr;
+    }
+
+    /**
      * JPA constructor
      */
     protected Material() {
@@ -142,4 +162,20 @@ public class Material {
         items.remove(identifier);
     }
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("name", name)
+                .add("encoding", encoding)
+                .add("firm", firm)
+                .add("firmEmail", firmEmail)
+                .add("price", price)
+                .add("articleNr", articleNr)
+                .add("identifiers", items)
+                .toString();
+    }
 }

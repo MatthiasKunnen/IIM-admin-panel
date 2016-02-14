@@ -1,6 +1,8 @@
 package domain;
 
+import com.google.common.base.MoreObjects;
 import persistence.VisibilityConverter;
+import util.ImmutabilityHelper;
 
 import javax.persistence.*;
 
@@ -71,5 +73,29 @@ public class MaterialIdentifier {
         this.setInfo(info);
         this.setVisibility(visibility);
     }
+
+    public MaterialIdentifier(MaterialIdentifier identifier) {
+        this(identifier, ImmutabilityHelper.copyDefensively(identifier.info));
+    }
+
+    public MaterialIdentifier(MaterialIdentifier identifier, Material info) {
+        this.id = identifier.id;
+        this.info = info;
+        this.place = identifier.place;
+        this.visibility = identifier.visibility;
+    }
     //</editor-fold>
+
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("info", info.getName())
+                .add("place", place)
+                .add("visibility", visibility)
+                .toString();
+
+    }
 }
