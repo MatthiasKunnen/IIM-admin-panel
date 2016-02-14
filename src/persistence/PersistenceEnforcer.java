@@ -1,6 +1,7 @@
 package persistence;
 
 import javax.persistence.EntityManager;
+import java.util.Collection;
 
 public class PersistenceEnforcer {
 
@@ -16,6 +17,7 @@ public class PersistenceEnforcer {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
+    //<editor-fold desc="Persist" defaultstate="collapsed">
 
     /**
      * Persist objects.
@@ -23,12 +25,28 @@ public class PersistenceEnforcer {
      * @param objects The varargs array of objects to persist
      */
     public void persist(Object... objects) {
-        manager.getTransaction().begin();
+        startTransaction();
         for (Object o : objects) {
             manager.persist(o);
         }
-        manager.getTransaction().commit();
+        commitTransaction();
     }
+
+    /**
+     * Persist a collection of objects.
+     *
+     * @param objects The collection of objects to persist
+     */
+    public void persist(Collection objects) {
+        startTransaction();
+        for (Object o : objects) {
+            manager.persist(o);
+        }
+        commitTransaction();
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Remove" defaultstate="collapsed">
 
     /**
      * Remove objects.
@@ -36,10 +54,61 @@ public class PersistenceEnforcer {
      * @param objects The varargs array of objects to remove
      */
     public void remove(Object... objects) {
-        manager.getTransaction().begin();
+        startTransaction();
         for (Object o : objects) {
             manager.remove(o);
         }
+        commitTransaction();
+    }
+
+    /**
+     * Remove a collection of objects.
+     *
+     * @param objects The collection of objects to remove
+     */
+    public void remove(Collection objects) {
+        startTransaction();
+        for (Object o : objects) {
+            manager.remove(o);
+        }
+        commitTransaction();
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Merge" defaultstate="collapsed">
+
+    /**
+     * Merge objects.
+     *
+     * @param objects The varargs array of objects to merge
+     */
+    public void merge(Object... objects) {
+        startTransaction();
+        for (Object o : objects) {
+            manager.merge(o);
+        }
+        commitTransaction();
+    }
+
+    /**
+     * Merge a collection of objects.
+     *
+     * @param objects The collection of objects to merge
+     */
+    public void merge(Collection objects) {
+        startTransaction();
+        for (Object o : objects) {
+            manager.merge(o);
+        }
+        commitTransaction();
+    }
+    //</editor-fold>
+
+    private void startTransaction(){
+        manager.getTransaction().begin();
+    }
+    
+    private void commitTransaction(){
         manager.getTransaction().commit();
     }
     //</editor-fold>
