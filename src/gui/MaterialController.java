@@ -18,13 +18,11 @@ import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -32,7 +30,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -41,10 +41,29 @@ import javafx.stage.Stage;
  *
  * @author Evert
  */
-public class MaterialController extends AnchorPane {
+public class MaterialController extends VBox {
 
+    //<editor-fold desc="FXML Variables" defaultstate="collapsed">
     @FXML
-    private AnchorPane AnchorPane;
+    private Pane pnVisibilityPicker;
+    @FXML
+    private SVGPath svgAdmin;
+    @FXML
+    private SVGPath svgDocent;
+    @FXML
+    private SVGPath svgStudent;
+    @FXML
+    private Button btnCancel;
+    @FXML
+    private Button btnSave;
+    @FXML
+    private Button btnAddIdentifier;
+    @FXML
+    private ComboBox cboFirm;
+    @FXML
+    private ComboBox cboCurricular;
+    @FXML
+    private ComboBox cboTargetAudience;
     @FXML
     private ImageView ivPhoto;
     @FXML
@@ -52,51 +71,54 @@ public class MaterialController extends AnchorPane {
     @FXML
     private TextArea tfDescription;
     @FXML
-    private ComboBox<?> tfTargetAudience;
-    @FXML
     private TextField tfArticleNumber;
     @FXML
     private TextField tfPrice;
     @FXML
     private TextField tfLocation;
     @FXML
-    private ComboBox<?> tfCurricular;
-    @FXML
-    private CheckBox cbDocentAvailable;
-    @FXML
-    private CheckBox cbStudentAvailable;
-    @FXML
-    private ComboBox<?> tfFirm;
-    @FXML
     private TextField tfName;
     @FXML
     private Label LbAvailable;
-    @FXML
-    private Button btnAdd;
+
+    //</editor-fold>
+
+    //<editor-fold desc="Variables" defaultstate="collapsed">
 
     private Stage theStage;
     private DomainController dc;
-    private String imageEncoding;
+    private Material material;
+    private Visibility defaultVisibility;
+    private VisibilityPickerController visibilityPickerController;
+    //</editor-fold>
+
+    //<editor-fold desc="Constructor" defaultstate="collapsed">
 
     public MaterialController(DomainController dc, Stage stage) {
         this.theStage = stage;
         this.dc = dc;
-        imageEncoding = null;
-        
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {
             loader.load();
+            GuiHelper.getKeyEventEventHandlerAssuringDecimalInput(this.tfPrice);
+            GuiHelper.getKeyEventEventHandlerAssuringIntegerInput(this.tfAmount);
+            this.pnVisibilityPicker.getChildren().clear();
+            //this.pnVisibilityPicker.getChildren().add(FXMLLoader.load(getClass().getResource("VisibilityPicker.fxml"))); //TODO implement partial view
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
         
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
     }
+    //</editor-fold>
+
+    //<editor-fold desc="FXML Actions" defaultstate="collapsed">
 
     @FXML
-    private void addMaterial(ActionEvent event) {
+    private void saveMaterial(ActionEvent event) {
         Material m = new Material(tfName.getText());
 
         if (!tfArticleNumber.getText().trim().isEmpty()) {
@@ -107,12 +129,7 @@ public class MaterialController extends AnchorPane {
             m.setDescription(tfDescription.getText());
         }
 
-        if (imageEncoding != null) {
-            m.setEncoding(imageEncoding);
-        }
-
         if (!tfPrice.getText().trim().isEmpty()) {
-            
 
             DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRENCH);
             String pattern = "#,##0.0#";
@@ -137,7 +154,7 @@ public class MaterialController extends AnchorPane {
         //m.setFirm();
         //m.setfirmEmail();
         for (int i = 0; Integer.parseInt(tfAmount.getText()) >= i; i++) {
-            MaterialIdentifier mi = new MaterialIdentifier(m, determinVisibility());
+            MaterialIdentifier mi = new MaterialIdentifier(m, defaultVisibility);
             mi.setId(i);
             mi.setPlace(tfLocation.getText());
             mi.setInfo(m);
@@ -147,18 +164,6 @@ public class MaterialController extends AnchorPane {
 
         dc.addMaterial(m);
 
-    }
-
-    private Visibility determinVisibility() {
-        Visibility v = Visibility.Administrator;
-        if (cbDocentAvailable.isSelected()) {
-            v = Visibility.Docent;
-        }
-        if (cbStudentAvailable.isSelected()) {
-            v = Visibility.Student;
-        }
-
-        return v;
     }
 
     @FXML
@@ -175,8 +180,6 @@ public class MaterialController extends AnchorPane {
         } catch (MalformedURLException ex) {
             
         }
-        
-        imageEncoding = f.getAbsolutePath().substring(f.getAbsolutePath().lastIndexOf('.'), f.getAbsolutePath().length());
 
         try {
             ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
@@ -184,5 +187,5 @@ public class MaterialController extends AnchorPane {
 
         }
     }
-
+    //</editor-fold>
 }
