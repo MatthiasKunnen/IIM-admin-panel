@@ -1,18 +1,14 @@
 package main;
 
 import domain.DomainController;
-import domain.Material;
-import domain.MaterialIdentifier;
-import domain.Visibility;
 import gui.MaterialController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 public class Main extends Application {
-    
-    
+
+
      @Override
     public void start(Stage stage) {
         DomainController domainController = new DomainController();
@@ -22,7 +18,7 @@ public class Main extends Application {
         stage.setTitle("Overzicht");
         stage.setScene(scene);
 
-        
+
         stage.show();
     }
 
