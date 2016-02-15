@@ -1,7 +1,11 @@
 package persistence;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 import java.util.Collection;
+import java.util.List;
 
 public class PersistenceEnforcer {
 
@@ -104,12 +108,19 @@ public class PersistenceEnforcer {
     }
     //</editor-fold>
 
-    private void startTransaction(){
+    public void startTransaction() {
         manager.getTransaction().begin();
     }
-    
-    private void commitTransaction(){
+
+    public void commitTransaction() {
         manager.getTransaction().commit();
+    }
+
+    public <T> List<T> retrieve(Class<T> aClass) {
+        CriteriaBuilder cb = manager.getCriteriaBuilder();
+        CriteriaQuery<T> criteria = cb.createQuery(aClass);
+        TypedQuery<T> query = manager.createQuery(criteria);
+        return query.getResultList();
     }
     //</editor-fold>
 }
