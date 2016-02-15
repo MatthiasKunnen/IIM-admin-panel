@@ -12,15 +12,14 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import java.io.Serializable;
 
 @Entity
-public class Material {
+public class Material implements Serializable{
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private int id;
 
     @OneToMany(mappedBy = "info", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -36,7 +35,6 @@ public class Material {
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
-    @Id
     public int getId() {
         return id;
     }
