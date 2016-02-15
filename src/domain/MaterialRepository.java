@@ -1,6 +1,7 @@
 package domain;
 
 import com.google.common.io.Files;
+import exceptions.AzureException;
 import exceptions.CouldNotUploadFileException;
 import exceptions.MaterialAlreadyExistsException;
 import exceptions.MaterialNotFoundException;
@@ -82,15 +83,16 @@ public class MaterialRepository {
         addMaterialToCollections(toSave);
     }
 
-    public void updatePhoto(Material material, String imagePath) throws CouldNotUploadFileException {
+    public void updatePhoto(Material material, String imagePath) throws AzureException {
         Material original = getMaterialByIdForced(material, "Cannot add photo of a nonexistent material.");
-        String extension = Files.getFileExtension(imagePath);
+        material.setEncoding(Files.getFileExtension(imagePath));
         File upload = new File(imagePath);
 
-        this.azureBlobStorage.upload(upload, "images", String.format("%d.%s", original.getId(), extension));
-        material.setEncoding(extension);
+        if (original.getEncoding() != null)
+            this.azureBlobStorage.remove("images", original.getFileName());
+        this.azureBlobStorage.upload(upload, "images", material.getFileName());
         persistence.startTransaction();
-        original.setEncoding(extension);
+        original.setEncoding(material.getEncoding());
         persistence.commitTransaction();
     }
 
