@@ -7,7 +7,9 @@ import util.ImmutabilityHelper;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -21,7 +23,7 @@ public class Material {
 
     private int id;
 
-    @OneToMany(mappedBy = "info", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "info", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<MaterialIdentifier> items = new HashSet<>();
     private String encoding;
     @Column(nullable = false)
@@ -105,6 +107,10 @@ public class Material {
 
     public void setArticleNr(String articleNr) {
         this.articleNr = articleNr;
+    }
+
+    public String getPhotoUrl() {
+        return this.id == 0 ? "" : String.format("https://iim.blob.core.windows.net/images/%d.%s", this.id, this.encoding);
     }
 
     //</editor-fold>
