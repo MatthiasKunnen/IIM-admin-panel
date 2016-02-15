@@ -108,11 +108,11 @@ public class PersistenceEnforcer {
     }
     //</editor-fold>
 
-    public void startTransaction() {
+    private void startTransaction() {
         manager.getTransaction().begin();
     }
 
-    public void commitTransaction() {
+    private void commitTransaction() {
         manager.getTransaction().commit();
     }
 
