@@ -1,10 +1,17 @@
 package domain;
 
-import java.util.*;
-
+import com.google.common.io.Files;
+import exceptions.CouldNotUploadFileException;
 import exceptions.MaterialAlreadyExistsException;
 import exceptions.MaterialNotFoundException;
-import persistence.*;
+import persistence.AzureBlobStorage;
+import persistence.PersistenceEnforcer;
+
+import java.io.File;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
@@ -16,15 +23,23 @@ public class MaterialRepository {
     private Set<Material> materials;
     private Set<MaterialIdentifier> materialIdentifiers;
     private PersistenceEnforcer persistence;
+    private AzureBlobStorage azureBlobStorage;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public MaterialRepository(PersistenceEnforcer persistence) {
-        this.materials = new HashSet<>();
-        this.materialIdentifiers = new HashSet<>();
         this.persistence = persistence;
+
+        List<Material> initialize = persistence.retrieve(Material.class);
+        this.materials = new HashSet<>(initialize);
+        this.materialIdentifiers = new HashSet<>(initialize
+                .stream()
+                .flatMap(m -> m.getIdentifiers().stream())
+                .collect(Collectors.toSet()));
+        this.azureBlobStorage = new AzureBlobStorage();
     }
+
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
@@ -59,20 +74,35 @@ public class MaterialRepository {
     }
 
     public void update(Material material) {
-        if (material.getId() == 0)
-            throw new MaterialNotFoundException("Cannot update a record that does not appear in the database.", material);
-
+        Material original = getMaterialByIdForced(material, "Cannot update a record that does not appear in the database.");
         Material toSave = copyDefensively(material);
-        Material original = getMaterialById(material.getId());
 
         persistence.merge(toSave);
-
         removeMaterialFromCollections(original);
         addMaterialToCollections(toSave);
     }
 
+    public void updatePhoto(Material material, String imagePath) throws CouldNotUploadFileException {
+        Material original = getMaterialByIdForced(material, "Cannot add photo of a nonexistent material.");
+        String extension = Files.getFileExtension(imagePath);
+        File upload = new File(imagePath);
+
+        this.azureBlobStorage.upload(upload, "images", String.format("%d.%s", original.getId(), extension));
+        material.setEncoding(extension);
+        persistence.startTransaction();
+        original.setEncoding(extension);
+        persistence.commitTransaction();
+    }
+
+    private Material getMaterialByIdForced(Material material, String exceptionMessage) {
+        Material found = getMaterialById(material.getId());
+        if (found == null)
+            throw new MaterialNotFoundException(exceptionMessage, material);
+        return found;
+    }
+
     public Material getMaterialById(int id) {
-        return this.materials
+        return id == 0 ? null : this.materials
                 .stream()
                 .filter(m -> m.getId() == id)
                 .findAny()
