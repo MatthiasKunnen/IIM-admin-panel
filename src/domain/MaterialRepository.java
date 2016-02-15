@@ -2,7 +2,6 @@ package domain;
 
 import com.google.common.io.Files;
 import exceptions.AzureException;
-import exceptions.CouldNotUploadFileException;
 import exceptions.MaterialAlreadyExistsException;
 import exceptions.MaterialNotFoundException;
 import persistence.AzureBlobStorage;
@@ -91,9 +90,8 @@ public class MaterialRepository {
         if (original.getEncoding() != null)
             this.azureBlobStorage.remove("images", original.getFileName());
         this.azureBlobStorage.upload(upload, "images", material.getFileName());
-        persistence.startTransaction();
         original.setEncoding(material.getEncoding());
-        persistence.commitTransaction();
+        update(original);
     }
 
     private Material getMaterialByIdForced(Material material, String exceptionMessage) {
