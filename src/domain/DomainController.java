@@ -1,21 +1,20 @@
 package domain;
 
-import java.util.Set;
+import exceptions.CouldNotUploadFileException;
+import persistence.PersistenceController;
 
-import persistence.*;
+import java.util.Set;
 
 public class DomainController {
 
-     //<editor-fold desc="Variables" defaultstate="collapsed">
+    //<editor-fold desc="Variables" defaultstate="collapsed">
     private MaterialRepository materials;
-    private PersistenceController persistence;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public DomainController() {
-        this.persistence = new PersistenceController();
-        this.persistence.start();
-        this.materials = new MaterialRepository(this.persistence.getEnforcer());
+        PersistenceController.start();
+        this.materials = new MaterialRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 
@@ -41,6 +40,10 @@ public class DomainController {
     public void update(Material material) {
         this.materials.update(material);
     }
-    //</editor-fold>
 
+    public void updatePhoto(Material material, String imagePath) throws CouldNotUploadFileException {
+        this.materials.updatePhoto(material, imagePath);
+    }
+
+    //</editor-fold>
 }
