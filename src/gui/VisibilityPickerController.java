@@ -6,20 +6,19 @@
 package gui;
 
 import domain.Visibility;
-import java.io.IOException;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
+
+import java.io.IOException;
 
 /**
  * FXML Controller class
@@ -29,11 +28,11 @@ import javafx.scene.shape.SVGPath;
 public class VisibilityPickerController extends HBox {
 
     @FXML
-    private SVGPath svgpAdmin;
+    private SVGPath svgAdmin;
     @FXML
-    private SVGPath svgpDocent;
+    private SVGPath svgDocent;
     @FXML
-    private SVGPath svgpStudent;
+    private SVGPath svgStudent;
 
     public ObjectProperty<Visibility> visibility;
     private final Paint SELECTED = Paint.valueOf("#3cd728");
@@ -49,55 +48,48 @@ public class VisibilityPickerController extends HBox {
             throw new RuntimeException(ex);
         }
 
-        createrect(svgpDocent, Visibility.Docent);
-        createrect(svgpStudent, Visibility.Student);
+        createRect(svgDocent, Visibility.Docent);
+        createRect(svgStudent, Visibility.Student);
     }
 
-    private void createrect(SVGPath svgp, Visibility v) {
-        Rectangle rect = new Rectangle(svgp.getLayoutX(), svgp.getLayoutY(), svgp.getBoundsInParent().getWidth(), svgp.getBoundsInParent().getHeight());
+    private void createRect(SVGPath svg, Visibility v) {
+        Rectangle rect = new Rectangle(svg.getLayoutX(), svg.getLayoutY(), svg.getBoundsInParent().getWidth(), svg.getBoundsInParent().getHeight());
         rect.cursorProperty().set(Cursor.HAND);
-        rect.opacityProperty().set(1);
 
-        rect.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent mouseEvent) {
-                switch (v) {
-                    case Student:
-                        svgpStudent.setStroke(SELECTED);
-                    case Docent:
-                        svgpDocent.setStroke(SELECTED);
-                }
+        rect.setOnMouseEntered(mouseEvent -> {
+            switch (v) {
+                case Student:
+                    svgStudent.setStroke(SELECTED);
+                case Docent:
+                    svgDocent.setStroke(SELECTED);
             }
         });
 
-        rect.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                svgpStudent.setStroke(Color.BLACK);
-                svgpDocent.setStroke(Color.BLACK);
-            }
+        rect.setOnMouseExited(event -> {
+            svgStudent.setStroke(Color.BLACK);
+            svgDocent.setStroke(Color.BLACK);
         });
     }
 
     @FXML
     private void adminClicked(MouseEvent event) {
         visibility.setValue(Visibility.Administrator);
-        svgpDocent.setStroke(Color.BLACK);
-        svgpStudent.setStroke(Color.BLACK);
+        svgDocent.setStroke(Color.BLACK);
+        svgStudent.setStroke(Color.BLACK);
     }
 
     @FXML
-    private void docentCliked(MouseEvent event) {
+    private void docentClicked(MouseEvent event) {
         visibility.setValue(Visibility.Docent);
-        svgpDocent.setStroke(SELECTED);
-        svgpStudent.setStroke(Color.BLACK);
+        svgDocent.setStroke(SELECTED);
+        svgStudent.setStroke(Color.BLACK);
     }
 
     @FXML
     private void studentClicked(MouseEvent event) {
         visibility.setValue(Visibility.Student);
-        svgpDocent.setStroke(SELECTED);
-        svgpStudent.setStroke(SELECTED);
+        svgDocent.setStroke(SELECTED);
+        svgStudent.setStroke(SELECTED);
     }
 
     public Visibility getVisibility() {
