@@ -7,11 +7,9 @@ package gui;
 
 import domain.Visibility;
 import javafx.beans.property.ObjectProperty;
-import javafx.beans.value.ChangeListener;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Cursor;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
@@ -27,18 +25,33 @@ import java.io.IOException;
  */
 public class VisibilityPickerController extends HBox {
 
+    //<editor-fold desc="Variables" defaultstate="collapsed">
+
+    @FXML
+    private Rectangle rectAdmin;
+
     @FXML
     private SVGPath svgAdmin;
+
+    @FXML
+    private Rectangle rectDocent;
+
     @FXML
     private SVGPath svgDocent;
+
+    @FXML
+    private Rectangle rectStudent;
+
     @FXML
     private SVGPath svgStudent;
+    //</editor-fold>
 
     public ObjectProperty<Visibility> visibility;
     private final Paint SELECTED = Paint.valueOf("#3cd728");
-
+    private final Visibility DEFAULT = Visibility.Administrator;
     public VisibilityPickerController() {
-
+        this.visibility = new SimpleObjectProperty<>();
+        this.visibility.setValue(DEFAULT);
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VisibilityPicker.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -48,56 +61,38 @@ public class VisibilityPickerController extends HBox {
             throw new RuntimeException(ex);
         }
 
-        createRect(svgDocent, Visibility.Docent);
-        createRect(svgStudent, Visibility.Student);
+        addClickListener(this.rectStudent, Visibility.Student);
+        addClickListener(this.rectDocent, Visibility.Docent);
+        addClickListener(this.rectAdmin, Visibility.Administrator);
+        this.svgAdmin.setFill(SELECTED);
     }
 
-    private void createRect(SVGPath svg, Visibility v) {
-        Rectangle rect = new Rectangle(svg.getLayoutX(), svg.getLayoutY(), svg.getBoundsInParent().getWidth(), svg.getBoundsInParent().getHeight());
-        rect.cursorProperty().set(Cursor.HAND);
-
-        rect.setOnMouseEntered(mouseEvent -> {
-            switch (v) {
-                case Student:
-                    svgStudent.setStroke(SELECTED);
-                case Docent:
-                    svgDocent.setStroke(SELECTED);
-            }
-        });
-
-        rect.setOnMouseExited(event -> {
-            svgStudent.setStroke(Color.BLACK);
-            svgDocent.setStroke(Color.BLACK);
-        });
-    }
-
-    @FXML
-    private void adminClicked(MouseEvent event) {
-        visibility.setValue(Visibility.Administrator);
-        svgDocent.setStroke(Color.BLACK);
-        svgStudent.setStroke(Color.BLACK);
-    }
-
-    @FXML
-    private void docentClicked(MouseEvent event) {
-        visibility.setValue(Visibility.Docent);
-        svgDocent.setStroke(SELECTED);
-        svgStudent.setStroke(Color.BLACK);
-    }
-
-    @FXML
-    private void studentClicked(MouseEvent event) {
-        visibility.setValue(Visibility.Student);
-        svgDocent.setStroke(SELECTED);
-        svgStudent.setStroke(SELECTED);
+    private void addClickListener(Rectangle rect, Visibility visibility){
+        rect.setOnMouseClicked((event -> setVisibility(visibility)));
     }
 
     public Visibility getVisibility() {
         return visibility.get();
     }
 
-    public void addChangeListener(ChangeListener<Visibility> cl) {
-        this.visibility.addListener(cl);
+    public void setVisibility(Visibility visibility) {
+        switch (visibility){
+            case Student:
+                svgStudent.setFill(SELECTED);
+                svgDocent.setFill(SELECTED);
+                break;
+            case Docent:
+                svgStudent.setFill(Color.BLACK);
+                svgDocent.setFill(SELECTED);
+                break;
+            case Administrator:
+                svgStudent.setFill(Color.BLACK);
+                svgDocent.setFill(Color.BLACK);
+        }
+        this.visibility.set(visibility);
     }
 
+    public void bindVisibility(SimpleObjectProperty<Visibility> property){
+        property.bind(this.visibility);
+    }
 }

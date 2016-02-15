@@ -19,6 +19,10 @@ import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Locale;
 
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableObjectValue;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -46,12 +50,6 @@ public class MaterialController extends VBox {
     //<editor-fold desc="FXML Variables" defaultstate="collapsed">
     @FXML
     private Pane pnVisibilityPicker;
-    @FXML
-    private SVGPath svgAdmin;
-    @FXML
-    private SVGPath svgDocent;
-    @FXML
-    private SVGPath svgStudent;
     @FXML
     private Button btnCancel;
     @FXML
@@ -88,8 +86,7 @@ public class MaterialController extends VBox {
     private Stage theStage;
     private DomainController dc;
     private Material material;
-    private Visibility defaultVisibility;
-    private VisibilityPickerController visibilityPickerController;
+    private SimpleObjectProperty<Visibility> defaultVisibility;
     //</editor-fold>
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
@@ -97,6 +94,8 @@ public class MaterialController extends VBox {
     public MaterialController(DomainController dc, Stage stage) {
         this.theStage = stage;
         this.dc = dc;
+        this.defaultVisibility = new SimpleObjectProperty<>();
+
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
@@ -105,8 +104,10 @@ public class MaterialController extends VBox {
             loader.load();
             GuiHelper.getKeyEventEventHandlerAssuringDecimalInput(this.tfPrice);
             GuiHelper.getKeyEventEventHandlerAssuringIntegerInput(this.tfAmount);
+            VisibilityPickerController defaultVisibilityPicker = new VisibilityPickerController();
+            defaultVisibilityPicker.bindVisibility(defaultVisibility);
             this.pnVisibilityPicker.getChildren().clear();
-            //this.pnVisibilityPicker.getChildren().add(FXMLLoader.load(getClass().getResource("VisibilityPicker.fxml"))); //TODO implement partial view
+            this.pnVisibilityPicker.getChildren().add(defaultVisibilityPicker);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -119,14 +120,12 @@ public class MaterialController extends VBox {
 
     @FXML
     private void saveMaterial(ActionEvent event) {
-        Material m = new Material(tfName.getText());
-
         if (!tfArticleNumber.getText().trim().isEmpty()) {
-            m.setArticleNr(tfArticleNumber.getText());
+            material.setArticleNr(tfArticleNumber.getText());
         }
 
         if (!tfDescription.getText().trim().isEmpty()) {
-            m.setDescription(tfDescription.getText());
+            material.setDescription(tfDescription.getText());
         }
 
         if (!tfPrice.getText().trim().isEmpty()) {
@@ -145,7 +144,7 @@ public class MaterialController extends VBox {
             }
             
             try {
-                m.setPrice(bigDecimal);
+                material.setPrice(bigDecimal);
             } catch (InvalidPriceException ex) {
                 
             }
@@ -154,15 +153,15 @@ public class MaterialController extends VBox {
         //m.setFirm();
         //m.setfirmEmail();
         for (int i = 0; Integer.parseInt(tfAmount.getText()) >= i; i++) {
-            MaterialIdentifier mi = new MaterialIdentifier(m, defaultVisibility);
+            MaterialIdentifier mi = new MaterialIdentifier(material, defaultVisibility.getValue());
             mi.setId(i);
             mi.setPlace(tfLocation.getText());
-            mi.setInfo(m);
+            mi.setInfo(material);
 
-            m.addIdentifier(mi);
+            material.addIdentifier(mi);
         }
 
-        dc.addMaterial(m);
+        material = dc.addMaterial(material);
 
     }
 
