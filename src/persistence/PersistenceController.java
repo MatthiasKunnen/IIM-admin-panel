@@ -4,29 +4,33 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
-public class PersistenceController {
+public final class PersistenceController {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-    private PersistenceEnforcer enforcer;
-    private EntityManager manager;
-    private EntityManagerFactory factory;
-    private final String PU_NAME = "IIM_test";
+    private static PersistenceEnforcer enforcer;
+    private static EntityManager manager;
+    private static EntityManagerFactory factory;
+    private static final String PU_NAME = "IIM_test";
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    public void start() {
+    public static void start() {
         factory = Persistence.createEntityManagerFactory(PU_NAME);
         manager = factory.createEntityManager();
         enforcer = new PersistenceEnforcer(manager);
     }
 
-    public void stop() {
+    public static void stop() {
         manager.close();
         factory.close();
     }
 
-    public PersistenceEnforcer getEnforcer() {
+    public static PersistenceEnforcer getEnforcer() {
         return enforcer;
     }
     //</editor-fold>
+
+    private PersistenceController() {
+
+    }
 }
