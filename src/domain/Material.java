@@ -12,10 +12,11 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+
 import java.io.Serializable;
 
 @Entity
-public class Material implements Serializable{
+public class Material implements Serializable {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     @Id
@@ -107,10 +108,13 @@ public class Material implements Serializable{
         this.articleNr = articleNr;
     }
 
-    public String getPhotoUrl() {
-        return this.id == 0 ? "" : String.format("https://iim.blob.core.windows.net/images/%d.%s", this.id, this.encoding);
+    public String getFileName() {
+        return this.id == 0 || this.encoding == null ? null : String.format("%d.%s", this.id, this.encoding);
     }
 
+    public String getPhotoUrl() {
+        return this.id == 0 ? "" : "https://iim.blob.core.windows.net/images/" + getFileName();
+    }
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
