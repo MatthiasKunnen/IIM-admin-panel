@@ -1,5 +1,6 @@
 package domain;
 
+import exceptions.AzureException;
 import exceptions.CouldNotUploadFileException;
 import persistence.PersistenceController;
 
@@ -41,7 +42,7 @@ public class DomainController {
         this.materials.update(material);
     }
 
-    public void updatePhoto(Material material, String imagePath) throws CouldNotUploadFileException {
+    public void updatePhoto(Material material, String imagePath) throws AzureException {
         this.materials.updatePhoto(material, imagePath);
     }
 

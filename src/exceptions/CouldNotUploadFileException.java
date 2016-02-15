@@ -1,6 +1,6 @@
 package exceptions;
 
-public class CouldNotUploadFileException extends Exception {
+public class CouldNotUploadFileException extends AzureException {
     public CouldNotUploadFileException() {
     }
 
@@ -14,9 +14,5 @@ public class CouldNotUploadFileException extends Exception {
 
     public CouldNotUploadFileException(Throwable cause) {
         super(cause);
-    }
-
-    public CouldNotUploadFileException(String message, Throwable cause, boolean enableSuppression, boolean writableStackTrace) {
-        super(message, cause, enableSuppression, writableStackTrace);
     }
 }
