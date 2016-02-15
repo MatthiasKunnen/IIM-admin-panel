@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.paint.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
@@ -7,21 +10,102 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="658.0" prefWidth="228.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" >
+<fx:root type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0" onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
-      <TextField fx:id="tfAmount" layoutX="194.0" layoutY="250.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="50.0" promptText="aantal" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="224.0" />
-      <TextArea fx:id="tfDescription" layoutX="14.0" layoutY="289.0" prefHeight="80.0" prefWidth="200.0" promptText="Omschrijving" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="294.0" />
-      <ComboBox fx:id="tfTargetAudience" layoutX="14.0" layoutY="470.0" prefHeight="25.0" prefWidth="200.0" promptText="Doelgroep" AnchorPane.bottomAnchor="119.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <TextField fx:id="tfArticleNumber" layoutX="14.0" layoutY="619.0" prefHeight="25.0" prefWidth="200.0" promptText="Artikelnummer" AnchorPane.bottomAnchor="230.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <TextField fx:id="tfPrice" layoutX="14.0" layoutY="256.0" prefHeight="25.0" prefWidth="200.0" promptText="Prijs" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="259.0" />
-      <TextField fx:id="tfLocation" layoutX="14.0" layoutY="383.0" prefHeight="25.0" prefWidth="200.0" promptText="Locatie" AnchorPane.bottomAnchor="195.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <ComboBox fx:id="tfCurricular" layoutX="14.0" layoutY="537.0" prefHeight="25.0" prefWidth="200.0" promptText="Leergebied" AnchorPane.bottomAnchor="84.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <CheckBox fx:id="cbDocentAvailable" layoutX="14.0" layoutY="442.0" mnemonicParsing="false" text="Docent" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="14.0" />
-      <CheckBox fx:id="cbStudentAvailable" layoutX="84.0" layoutY="522.0" mnemonicParsing="false" text="Student" AnchorPane.bottomAnchor="154.0" AnchorPane.leftAnchor="84.0" />
-      <ComboBox fx:id="tfFirm" layoutX="14.0" layoutY="619.0" prefHeight="25.0" prefWidth="200.0" promptText="Firma" AnchorPane.bottomAnchor="49.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" />
-      <TextField fx:id="tfName" layoutX="32.0" layoutY="244.0" promptText="Naam" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="74.0" AnchorPane.topAnchor="224.0" />
-      <Label fx:id="LbAvailable" layoutX="14.0" layoutY="419.0" text="Uitleenbaarheid" AnchorPane.bottomAnchor="175.0" AnchorPane.leftAnchor="14.0" />
-      <Button fx:id="btnAdd" layoutX="163.0" layoutY="619.0" mnemonicParsing="false" onAction="#addMaterial" text="Toegoeven" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="14.0" />
+      <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="615.0">
+         <children>
+            <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0" onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0" promptText="Omschrijving" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0" />
+            <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+               <children>
+                  <TextField fx:id="tfName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Naam" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+            </HBox>
+            <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="189.0">
+               <children>
+                  <ComboBox fx:id="tfTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="tfCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" promptText="Leergebied" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+                  <ComboBox fx:id="tfFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Firma" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </ComboBox>
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <TableView layoutX="25.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
+              <columns>
+                <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="#" />
+                <TableColumn fx:id="tcLocation" prefWidth="75.0" text="Plaats" />
+                  <TableColumn fx:id="tcAvailable" prefWidth="116.0" text="Beschikbaarheid" />
+                  <TableColumn fx:id="tcActions" prefWidth="75.0" text="Acties" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+            <HBox layoutY="-26.0" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0">
+               <children>
+                  <TextField fx:id="tfAmount" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <TextField fx:id="tfLocation" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <SVGPath content="M4 10V17H7V10H4ZM10 10V17H13V10H10ZM2 22H21V19H2V22ZM16 10V17H19V10H16ZM11.5 1L2 6V8H21V6L11.5 1Z" fill="#2500f5" layoutX="25.0" layoutY="25.0" strokeWidth="0.0" HBox.hgrow="NEVER">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </SVGPath>
+                  <SVGPath content="M13.71 12Q13.71 10.58 12.71 9.58T10.29 8.57 7.86 9.58 6.86 12 7.86 14.42 10.29 15.43 12.71 14.42 13.71 12ZM20.57 10.54V13.51Q20.57 13.67 20.46 13.82T20.2 14L17.72 14.37Q17.46 15.09 17.2 15.59 17.67 16.26 18.63 17.44 18.76 17.6 18.76 17.77T18.64 18.08Q18.28 18.58 17.32 19.53T16.06 20.48Q15.9 20.48 15.71 20.36L13.86 18.91Q13.27 19.22 12.64 19.42 12.43 21.24 12.25 21.91 12.16 22.29 11.77 22.29H8.8Q8.61 22.29 8.47 22.17T8.32 21.88L7.94 19.42Q7.29 19.21 6.74 18.92L4.85 20.36Q4.71 20.48 4.51 20.48 4.33 20.48 4.18 20.33 2.49 18.8 1.97 18.08 1.88 17.95 1.88 17.77 1.88 17.61 1.98 17.46 2.18 17.18 2.67 16.57T3.39 15.63Q3.03 14.96 2.84 14.3L0.39 13.94Q0.21 13.92 0.11 13.77T0 13.46V10.49Q0 10.33 0.11 10.18T0.36 10L2.85 9.63Q3.04 9.01 3.38 8.4 2.84 7.63 1.94 6.55 1.81 6.39 1.81 6.23 1.81 6.09 1.93 5.92 2.28 5.44 3.25 4.48T4.51 3.52Q4.69 3.52 4.86 3.66L6.71 5.09Q7.3 4.78 7.93 4.58 8.14 2.76 8.32 2.09 8.41 1.71 8.8 1.71H11.77Q11.96 1.71 12.1 1.83T12.25 2.12L12.63 4.58Q13.29 4.79 13.83 5.08L15.74 3.64Q15.86 3.52 16.06 3.52 16.23 3.52 16.39 3.66 18.12 5.25 18.6 5.93 18.7 6.04 18.7 6.23 18.7 6.39 18.59 6.54 18.39 6.82 17.91 7.43T17.18 8.37Q17.53 9.04 17.73 9.68L20.18 10.06Q20.36 10.08 20.46 10.23T20.57 10.54Z" />
+                  <SVGPath content="M5 13.18V17.18L12 21 19 17.18V13.18L12 17 5 13.18ZM12 3L1 9 12 15 21 10.09V17H23V9L12 3Z" />
+                  <Button fx:id="btnAddId" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="25.0" HBox.hgrow="NEVER" />
+               </children>
+            </HBox>
+         </children>
+      </AnchorPane>
+      <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="200.0">
+         <children>
+            <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel">
+               <HBox.margin>
+                  <Insets bottom="14.0" right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Button fx:id="btnAddMaterial" mnemonicParsing="false" onAction="#addMaterial" text="Toegoeven">
+               <HBox.margin>
+                  <Insets bottom="14.0" left="5.0" right="14.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
    </children>
 </fx:root>
