@@ -9,16 +9,13 @@ import javafx.stage.Stage;
 public class Main extends Application {
 
 
-     @Override
+    @Override
     public void start(Stage stage) {
         DomainController domainController = new DomainController();
-
-        Scene scene = new Scene(new MaterialController(domainController,stage));
+        Scene scene = new Scene(new MaterialController(domainController, stage));
 
         stage.setTitle("Overzicht");
         stage.setScene(scene);
-
-
         stage.show();
     }
 
