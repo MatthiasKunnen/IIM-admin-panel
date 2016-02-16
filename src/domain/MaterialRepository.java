@@ -4,58 +4,60 @@ import com.google.common.io.Files;
 import exceptions.AzureException;
 import exceptions.MaterialAlreadyExistsException;
 import exceptions.MaterialNotFoundException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import persistence.AzureBlobStorage;
 import persistence.PersistenceEnforcer;
 
 import java.io.File;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
 
 public class MaterialRepository {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
-    private Set<Material> materials;
-    private Set<MaterialIdentifier> materialIdentifiers;
+    private List<Material> materials;
+    private List<MaterialIdentifier> materialIdentifiers;
     private PersistenceEnforcer persistence;
     private AzureBlobStorage azureBlobStorage;
+    private ObservableList<Material> materialObservableList;
+    private ObservableList<MaterialIdentifier> materialIdentifierObservableList;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public MaterialRepository(PersistenceEnforcer persistence) {
         this.persistence = persistence;
-
         List<Material> initialize = persistence.retrieve(Material.class);
-        this.materials = new HashSet<>(initialize);
-        this.materialIdentifiers = new HashSet<>(initialize
+        this.materials = new ArrayList<>(initialize);
+        this.materialIdentifiers = new ArrayList<>(initialize
                 .stream()
                 .flatMap(m -> m.getIdentifiers().stream())
                 .collect(Collectors.toSet()));
+        this.materialObservableList = FXCollections.observableList(this.materials);
+        this.materialIdentifierObservableList = FXCollections.observableList(this.materialIdentifiers);
         this.azureBlobStorage = new AzureBlobStorage();
     }
-
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
 
     /**
-     * @return returns a Set of no-reference {@link domain.Material}.
+     * @return returns an ObservableList of no-reference {@link domain.Material}.
      */
-    public Set<Material> getMaterials() {
-        return (Set<Material>) copyCollectionDefensively(this.materials);
+    public ObservableList<Material> getMaterials() {
+        return FXCollections.unmodifiableObservableList(materialObservableList);
     }
 
     /**
-     * @return returns a Set of no-reference {@link domain.MaterialIdentifier}.
+     * @return returns an ObservableList of no-reference {@link domain.MaterialIdentifier}.
      */
-    public Set<MaterialIdentifier> getMaterialIdentifiers() {
-        return (Set<MaterialIdentifier>) copyCollectionDefensively(this.materialIdentifiers);
+    public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
+        return FXCollections.unmodifiableObservableList(materialIdentifierObservableList);
     }
     //</editor-fold>
 
@@ -156,11 +158,15 @@ public class MaterialRepository {
     private void addMaterialToCollections(Material material) {
         this.materials.add(material);
         this.materialIdentifiers.addAll(material.getIdentifiers());
+        this.materialObservableList.add(material);
+        this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
     private void removeMaterialFromCollections(Material material) {
         this.materials.remove(material);
         this.materialIdentifiers.removeAll(material.getIdentifiers());
+        this.materialObservableList.remove(material);
+        this.materialIdentifierObservableList.removeAll(material.getIdentifiers());
     }
     //</editor-fold>
 }
