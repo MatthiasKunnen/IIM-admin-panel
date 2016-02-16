@@ -2,6 +2,7 @@ package domain;
 
 import exceptions.AzureException;
 import exceptions.CouldNotUploadFileException;
+import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 
 import java.util.Set;
@@ -20,11 +21,11 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Getters" defaultstate="collapsed">
-    public Set<Material> getMaterials() {
+    public ObservableList<Material> getMaterials() {
         return materials.getMaterials();
     }
 
-    public Set<MaterialIdentifier> getMaterialIdentifiers() {
+    public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
         return materials.getMaterialIdentifiers();
     }
     //</editor-fold>
@@ -39,6 +40,11 @@ public class DomainController {
         return this.materials.addMaterial(material);
     }
 
+
+    /**
+     * Removes a {@link domain.Material} from the database.
+     * @param material the Material to save.
+     */
     public void removeMaterial(Material material) {
         this.materials.removeMaterial(material);
     }

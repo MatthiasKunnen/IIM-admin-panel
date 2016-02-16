@@ -7,9 +7,7 @@ import util.ImmutabilityHelper;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 
@@ -24,7 +22,7 @@ public class Material implements Serializable {
     private int id;
 
     @OneToMany(mappedBy = "info", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    private Set<MaterialIdentifier> items = new HashSet<>();
+    private List<MaterialIdentifier> items = new ArrayList<>();
     private String encoding;
     @Column(nullable = false, unique = true)
     private String name;
@@ -133,7 +131,7 @@ public class Material implements Serializable {
      */
     public Material(Material material) {
         this.id = material.id;
-        this.items = (Set<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(material.items, this);
+        this.items = (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(material.items, this);
         this.encoding = material.encoding;
         this.name = material.name;
         this.description = material.description;
@@ -159,8 +157,8 @@ public class Material implements Serializable {
         items.add(identifier);
     }
 
-    public Set<MaterialIdentifier> getIdentifiers() {
-        return Collections.unmodifiableSet(items);
+    public List<MaterialIdentifier> getIdentifiers() {
+        return Collections.unmodifiableList(items);
     }
 
     /**
