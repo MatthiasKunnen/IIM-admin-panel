@@ -26,7 +26,7 @@ public class Material implements Serializable {
     @OneToMany(mappedBy = "info", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<MaterialIdentifier> items = new HashSet<>();
     private String encoding;
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String name;
     private String description;
     private String firm;
@@ -170,7 +170,6 @@ public class Material implements Serializable {
         items.remove(identifier);
     }
     //</editor-fold>
-
 
     @Override
     public String toString() {
