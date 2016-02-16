@@ -61,18 +61,14 @@ public class VisibilityPickerController extends HBox {
             throw new RuntimeException(ex);
         }
 
-        addClickListener(this.rectStudent, Visibility.Student);
-        addClickListener(this.rectDocent, Visibility.Docent);
-        addClickListener(this.rectAdmin, Visibility.Administrator);
+        this.rectStudent.setOnMouseClicked((event -> setVisibility(Visibility.Student)));
+        this.rectDocent.setOnMouseClicked((event -> setVisibility(Visibility.Docent)));
+        this.rectAdmin.setOnMouseClicked((event -> setVisibility(Visibility.Administrator)));
         this.svgAdmin.setFill(SELECTED);
     }
 
-    private void addClickListener(Rectangle rect, Visibility visibility){
-        rect.setOnMouseClicked((event -> setVisibility(visibility)));
-    }
-
     public Visibility getVisibility() {
-        return visibility.get();
+        return visibility.getValue();
     }
 
     public void setVisibility(Visibility visibility) {
@@ -92,6 +88,10 @@ public class VisibilityPickerController extends HBox {
         this.visibility.set(visibility);
     }
 
+    /**
+     * Binds a variable to this control's Visibility property.
+     * @param property the property to be bound.
+     */
     public void bindVisibility(SimpleObjectProperty<Visibility> property){
         property.bind(this.visibility);
     }
