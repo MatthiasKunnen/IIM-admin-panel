@@ -130,6 +130,11 @@ public class MaterialController extends VBox {
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
 
         //tvIdentifiers.setItems(dc.getMaterialIdentifiers());
+//        tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
+//           
+//
+//            
+//        });
     }
     //</editor-fold>
 
@@ -215,6 +220,7 @@ public class MaterialController extends VBox {
     //</editor-fold>
     private class ActionCell extends TableCell<MaterialIdentifier, Boolean> {
         private IdentifierOptionsController actionPanel;
+        
         
         
     }
