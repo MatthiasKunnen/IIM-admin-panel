@@ -30,6 +30,11 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
+    /**
+     * Saves a new {@link domain.Material} in the database.
+     * @param material the Material to save.
+     * @return the material with updates database fields.
+     */
     public Material addMaterial(Material material) {
         return this.materials.addMaterial(material);
     }
@@ -38,10 +43,20 @@ public class DomainController {
         this.materials.removeMaterial(material);
     }
 
+    /**
+     * Updates a {@link domain.Material} in the database.
+     * @param material the Material to update.
+     */
     public void update(Material material) {
         this.materials.update(material);
     }
 
+    /**
+     * Updates the photo of a material.
+     * @param material the material.
+     * @param imagePath the path of the image.
+     * @throws AzureException
+     */
     public void updatePhoto(Material material, String imagePath) throws AzureException {
         this.materials.updatePhoto(material, imagePath);
     }

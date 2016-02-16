@@ -44,10 +44,16 @@ public class MaterialRepository {
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
 
+    /**
+     * @return returns a Set of no-reference {@link domain.Material}.
+     */
     public Set<Material> getMaterials() {
         return (Set<Material>) copyCollectionDefensively(this.materials);
     }
 
+    /**
+     * @return returns a Set of no-reference {@link domain.MaterialIdentifier}.
+     */
     public Set<MaterialIdentifier> getMaterialIdentifiers() {
         return (Set<MaterialIdentifier>) copyCollectionDefensively(this.materialIdentifiers);
     }
@@ -55,6 +61,11 @@ public class MaterialRepository {
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
 
+    /**
+     * Saves a new {@link domain.Material} in the database.
+     * @param material the Material to save.
+     * @return the material with updates database fields.
+     */
     public Material addMaterial(Material material) {
         if (getMaterialById(material.getId()) != null)
             throw new MaterialAlreadyExistsException(material);
@@ -64,6 +75,10 @@ public class MaterialRepository {
         return copyDefensively(toPersist);
     }
 
+    /**
+     * Removes a {@link domain.Material} from the database.
+     * @param material the Material to remove.
+     */
     public void removeMaterial(Material material) {
         Material remove = getMaterialById(material.getId());
         if (remove == null)
@@ -73,8 +88,12 @@ public class MaterialRepository {
         removeMaterialFromCollections(remove);
     }
 
+    /**
+     * Updates a {@link domain.Material} in the database.
+     * @param material the Material to update.
+     */
     public void update(Material material) {
-        Material original = getMaterialByIdForced(material, "Cannot update a record that does not appear in the database.");
+        Material original = getMaterialByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
         Material toSave = copyDefensively(material);
 
         persistence.merge(toSave);
@@ -82,8 +101,14 @@ public class MaterialRepository {
         addMaterialToCollections(toSave);
     }
 
+    /**
+     * Set new picture for a {@link domain.Material} And save it in the database.
+     * @param material the material where a new picture will be set.
+     * @param imagePath the path of the image to add.
+     * @throws AzureException
+     */
     public void updatePhoto(Material material, String imagePath) throws AzureException {
-        Material original = getMaterialByIdForced(material, "Cannot add photo of a nonexistent material.");
+        Material original = getMaterialByIdForced(material.getId(), "Cannot add photo of a nonexistent material.");
         material.setEncoding(Files.getFileExtension(imagePath));
         File upload = new File(imagePath);
 
@@ -94,13 +119,24 @@ public class MaterialRepository {
         update(original);
     }
 
-    private Material getMaterialByIdForced(Material material, String exceptionMessage) {
-        Material found = getMaterialById(material.getId());
+    /**
+     * Finds a persisted material by id.
+     * @param id the id of the material to search.
+     * @param exceptionMessage thrown when the material is not found.
+     * @return the Material that has been found.
+     */
+    private Material getMaterialByIdForced(int id, String exceptionMessage) {
+        Material found = getMaterialById(id);
         if (found == null)
-            throw new MaterialNotFoundException(exceptionMessage, material);
+            throw new MaterialNotFoundException(exceptionMessage);
         return found;
     }
 
+    /**
+     * Finds a persisted material by id.
+     * @param id the id to search.
+     * @return the Material if one has been found or Null.
+     */
     public Material getMaterialById(int id) {
         return id == 0 ? null : this.materials
                 .stream()

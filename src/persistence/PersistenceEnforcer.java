@@ -116,6 +116,12 @@ public class PersistenceEnforcer {
         manager.getTransaction().commit();
     }
 
+    /**
+     * Get all entities of type T from the database.
+     * @param aClass the EntityClass to retrieve.
+     * @param <T> the type of the EntityClass.
+     * @return list of type Entity&lt;T&gt;
+     */
     public <T> List<T> retrieve(Class<T> aClass) {
         CriteriaBuilder cb = manager.getCriteriaBuilder();
         CriteriaQuery<T> criteria = cb.createQuery(aClass);

@@ -24,6 +24,13 @@ import java.security.InvalidKeyException;
 public class AzureBlobStorage {
     private static final String storageConnectionString = "DefaultEndpointsProtocol=https;AccountName=iim;AccountKey=ZTIwjaeSYCxEuqyQmhtYzo348wTMd5IkeC2Vwyxl67rXOKay4CfuJE2deGDo0RGSooIwcGXB7G6CJC+AMvu24w==;BlobEndpoint=https://iim.blob.core.windows.net/;TableEndpoint=https://iim.table.core.windows.net/;QueueEndpoint=https://iim.queue.core.windows.net/;FileEndpoint=https://iim.file.core.windows.net/";
 
+    /**
+     * Upload a file to the specified container.
+     * @param sourceFile the file to upload.
+     * @param containerName the name of the container to which the file will be uploaded.
+     * @param blobName the new name of the blob.
+     * @throws AzureException
+     */
     public void upload(File sourceFile, String containerName, String blobName) throws AzureException {
         try {
             CloudBlockBlob blob = getContainer(containerName).getBlockBlobReference(blobName);
@@ -33,6 +40,12 @@ public class AzureBlobStorage {
         }
     }
 
+    /**
+     * Removes a blob from a container.
+     * @param containerName the container in which a deletion will be executed.
+     * @param blobName the blob which will be removed
+     * @throws AzureException
+     */
     public void remove(String containerName, String blobName) throws AzureException {
         try {
             getContainer(containerName).getBlockBlobReference(blobName).deleteIfExists();
@@ -41,6 +54,12 @@ public class AzureBlobStorage {
         }
     }
 
+    /**
+     * Method to get a container by name.
+     * @param containerName the name of the container to retrieve.
+     * @return a container.
+     * @throws AzureException
+     */
     private CloudBlobContainer getContainer(String containerName) throws AzureException {
         try {
             CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
