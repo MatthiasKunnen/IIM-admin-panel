@@ -5,9 +5,10 @@ import persistence.VisibilityConverter;
 import util.ImmutabilityHelper;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class MaterialIdentifier {
+public class MaterialIdentifier implements Serializable {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
@@ -85,7 +86,6 @@ public class MaterialIdentifier {
         this.visibility = identifier.visibility;
     }
     //</editor-fold>
-
 
     @Override
     public String toString() {
