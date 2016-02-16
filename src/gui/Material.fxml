@@ -14,56 +14,42 @@
     <children>
         <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="615.0">
             <children>
-                <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0"
-                           onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0"
-                           AnchorPane.topAnchor="14.0"/>
-                <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0"
-                          promptText="Omschrijving" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0"
-                          AnchorPane.topAnchor="49.0"/>
-                <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0"
-                      AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0" onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+                <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0" promptText="Omschrijving" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0" />
+                <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                     <children>
-                        <TextField fx:id="tfName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                                   promptText="Naam" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Naam" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets right="5.0"/>
+                                <Insets right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308"
-                                   maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer"
-                                   HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
+                                <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity"
-                                   prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
+                        <TextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
                             <HBox.margin>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </HBox.margin>
                         </TextField>
                     </children>
                 </HBox>
-                <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                      prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0"
-                      AnchorPane.topAnchor="189.0">
+                <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="189.0">
                     <children>
-                        <ComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                  prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
+                        <ComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets right="5.0"/>
+                                <Insets right="5.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <ComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                  prefWidth="0.0" promptText="Leergebied" HBox.hgrow="ALWAYS">
+                        <ComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" promptText="Leergebied" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
+                                <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </ComboBox>
-                        <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Firma"
-                                  HBox.hgrow="ALWAYS">
+                        <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Firma" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </HBox.margin>
                         </ComboBox>
                     </children>
@@ -72,37 +58,33 @@
         </AnchorPane>
         <AnchorPane prefHeight="200.0" prefWidth="200.0">
             <children>
-                <TableView layoutX="25.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0"
-                           AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
+                <TableView fx:id="tvIdentifiers" layoutX="25.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
                     <columns>
-                        <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="#"/>
-                        <TableColumn fx:id="tcLocation" prefWidth="75.0" text="Plaats"/>
-                        <TableColumn fx:id="tcAvailable" prefWidth="116.0" text="Beschikbaarheid"/>
-                        <TableColumn fx:id="tcActions" prefWidth="75.0" text="Acties"/>
+                        <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" text="#" />
+                        <TableColumn fx:id="tcLocation" prefWidth="75.0" text="Plaats" />
+                        <TableColumn fx:id="tcAvailable" prefWidth="116.0" text="Beschikbaarheid" />
+                        <TableColumn fx:id="tcActions" prefWidth="75.0" text="Acties" />
                     </columns>
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-                <HBox layoutY="-26.0" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
-                      AnchorPane.topAnchor="10.0">
+                <HBox layoutY="-26.0" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0">
                     <children>
-                        <TextField fx:id="tfAmount" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="100.0"
-                                   HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfAmount" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="75.0" promptText="Aantal" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets right="5.0"/>
+                                <Insets right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfLocation" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfLocation" promptText="Locatie" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
+                                <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <Pane fx:id="pnVisibilityPicker"/>
-                        <Button fx:id="btnAddIdentifier" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false"
-                                prefWidth="25.0" HBox.hgrow="NEVER">
+                        <Pane fx:id="pnVisibilityPicker" />
+                        <Button fx:id="btnAddIdentifier" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#addIdentifier" prefWidth="25.0" HBox.hgrow="NEVER">
                             <HBox.margin>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </HBox.margin>
                         </Button>
                     </children>
@@ -111,14 +93,14 @@
         </AnchorPane>
         <HBox alignment="CENTER_RIGHT" prefHeight="25.0" prefWidth="200.0">
             <children>
-                <Button fx:id="btnCancel" mnemonicParsing="false" text="Cancel">
+                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#cancel" text="Cancel">
                     <HBox.margin>
-                        <Insets bottom="14.0" right="5.0"/>
+                        <Insets bottom="14.0" right="5.0" />
                     </HBox.margin>
                 </Button>
                 <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveMaterial" text="Toevoegen">
                     <HBox.margin>
-                        <Insets bottom="14.0" left="5.0" right="14.0"/>
+                        <Insets bottom="14.0" left="5.0" right="14.0" />
                     </HBox.margin>
                 </Button>
             </children>

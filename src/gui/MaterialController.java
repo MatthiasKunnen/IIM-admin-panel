@@ -9,15 +9,19 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Visibility;
+import exceptions.AzureException;
 import exceptions.InvalidPriceException;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.net.MalformedURLException;
+import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.ParseException;
 import java.util.Locale;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -29,6 +33,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -78,24 +84,31 @@ public class MaterialController extends VBox {
     private TextField tfName;
     @FXML
     private Label LbAvailable;
+    @FXML
+    private TableColumn<?, ?> tcAvailable;
+    @FXML
+    private TableColumn<?, ?> tcActions;
+    @FXML
+    private TableColumn<?, ?> tcLocation;
+    @FXML
+    private TableColumn<?, ?> tcId;
+    @FXML
+    private TableView<MaterialIdentifier> tvIdentifiers;
 
     //</editor-fold>
-
     //<editor-fold desc="Variables" defaultstate="collapsed">
-
     private Stage theStage;
     private DomainController dc;
     private Material material;
     private SimpleObjectProperty<Visibility> defaultVisibility;
+    private Path imagePath;
     //</editor-fold>
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
-
     public MaterialController(DomainController dc, Stage stage) {
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
-
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
@@ -111,13 +124,14 @@ public class MaterialController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        
+
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
+        
+        //tvIdentifiers.setItems(dc.getMaterialIdentifiers());
     }
     //</editor-fold>
 
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
-
     @FXML
     private void saveMaterial(ActionEvent event) {
         if (!tfArticleNumber.getText().trim().isEmpty()) {
@@ -137,31 +151,28 @@ public class MaterialController extends VBox {
 
             // parse the string
             BigDecimal bigDecimal = null;
-            
+
             try {
                 bigDecimal = (BigDecimal) decimalFormat.parse(tfPrice.getText());
             } catch (ParseException ex) {
             }
-            
+
             try {
                 material.setPrice(bigDecimal);
             } catch (InvalidPriceException ex) {
-                
+
             }
         }
 
-        //m.setFirm();
-        //m.setfirmEmail();
-        for (int i = 0; Integer.parseInt(tfAmount.getText()) >= i; i++) {
-            MaterialIdentifier mi = new MaterialIdentifier(material, defaultVisibility.getValue());
-            mi.setId(i);
-            mi.setPlace(tfLocation.getText());
-            mi.setInfo(material);
-
-            material.addIdentifier(mi);
-        }
-
+        //firma
+        //doelgroep
+        //leeftijdscathegorie      
         material = dc.addMaterial(material);
+        try {
+            dc.updatePhoto(material, imagePath.toString());
+        } catch (AzureException ex) {
+            //warning
+        }
 
     }
 
@@ -174,17 +185,30 @@ public class MaterialController extends VBox {
         fc.setTitle("Open file");
         File f = fc.showOpenDialog(theStage);
 
-        try {
-            ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
-        } catch (MalformedURLException ex) {
-            
-        }
+        imagePath = f.toPath();
 
         try {
             ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
         } catch (MalformedURLException ex) {
+
+        }
+
+    }
+
+    @FXML
+    void addIdentifier(ActionEvent event) {
+        for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
+            MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
+            id.setPlace(tfLocation.getText());
+            material.addIdentifier(id);
 
         }
     }
+
+    @FXML
+    void cancel(ActionEvent event) {
+        theStage.close();
+    }
+
     //</editor-fold>
 }
