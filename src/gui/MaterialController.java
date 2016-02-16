@@ -33,6 +33,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -45,6 +46,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
 /**
  * FXML Controller class
@@ -126,7 +128,7 @@ public class MaterialController extends VBox {
         }
 
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
-        
+
         //tvIdentifiers.setItems(dc.getMaterialIdentifiers());
     }
     //</editor-fold>
@@ -211,4 +213,10 @@ public class MaterialController extends VBox {
     }
 
     //</editor-fold>
+    private class ActionCell extends TableCell<MaterialIdentifier, Boolean> {
+        private IdentifierOptionsController actionPanel;
+        
+        
+    }
+
 }
