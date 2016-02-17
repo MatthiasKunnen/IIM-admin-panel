@@ -111,7 +111,7 @@ public class Material implements Serializable {
     }
 
     public String getPhotoUrl() {
-        return this.id == 0 ? "" : "https://iim.blob.core.windows.net/images/" + getFileName();
+        return this.id == 0 || this.encoding == null ? "" : "https://iim.blob.core.windows.net/images/" + getFileName();
     }
     //</editor-fold>
 
