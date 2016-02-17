@@ -34,6 +34,8 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 
 /**
  * FXML Controller class
@@ -76,7 +78,7 @@ public class MaterialController extends VBox {
     @FXML
     private TableColumn<MaterialIdentifier, Visibility> tcAvailable;
     @FXML
-    private TableColumn<?, ?> tcActions;
+    private TableColumn<MaterialIdentifier, Boolean> tcActions;
     @FXML
     private TableColumn<MaterialIdentifier, String> tcLocation;
     @FXML
@@ -95,7 +97,6 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
-
     public MaterialController(DomainController dc, Stage stage) {
         this(dc, stage, new Material(""));
     }
@@ -160,6 +161,42 @@ public class MaterialController extends VBox {
                 };
             }
         });
+        tcActions.setCellValueFactory(new PropertyValueFactory<>("UNEXISTING"));
+        tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
+
+            @Override
+            public TableCell<MaterialIdentifier, Boolean> call(TableColumn<MaterialIdentifier, Boolean> param) {
+                return new TableCell<MaterialIdentifier, Boolean>() {
+                    private final IdentifierOptionsController ioc = new IdentifierOptionsController();
+
+                    @Override
+                    protected void updateItem(Boolean item, boolean empty) {
+                        super.updateItem(item, empty);                         
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            setGraphic(ioc);
+                            EventHandler filter = new EventHandler<MouseEvent>() {
+                                @Override
+                                public void handle(MouseEvent event) {
+                                    MaterialIdentifier mi = (MaterialIdentifier)getTableRow().getItem();
+                                    identifiers.remove(mi);
+                                    material.removeIdentifier(mi);
+                                    
+                                    //dc.update(material);
+                                }
+
+                            };
+
+                            ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
+                        }
+                        
+                    }
+
+                };
+            }
+        });
 
         tvIdentifiers.setItems(this.identifiers);
 
@@ -215,7 +252,9 @@ public class MaterialController extends VBox {
         fc.setTitle("Open file");
         File f = fc.showOpenDialog(theStage);
 
-        if (f == null) return;
+        if (f == null) {
+            return;
+        }
         try {
             imagePath = f.toPath();
             ivPhoto.setImage(new Image(f.toURI().toURL().toString()));

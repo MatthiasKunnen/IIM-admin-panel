@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Rectangle;
@@ -31,15 +32,25 @@ public class IdentifierOptionsController extends HBox {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("IdentifierOptions.fxml"));
         loader.setRoot(this);
         loader.setController(this);
-                try {
+        try {
             loader.load();
         } catch (IOException ex) {
+            ex.printStackTrace();
         }
     }
 
     @FXML
     private void delete(MouseEvent event) {
 
+    }
+
+    public Node getNodeByName(String name) {
+        switch (name.toLowerCase()) {
+            case "delete" : 
+                return rectDelete;
+        }
+        
+        return null;
     }
 
 }
