@@ -1,7 +1,7 @@
 package exceptions;
 
 /**
- * Thrown if an object using the util.ImmutabilityHelper doesn't have a copy-constructor.
+ * Thrown if an object that has been passed to the util.ImmutabilityHelper doesn't have a copy-constructor.
  * Created by matthias on 2016-02-13.
  */
 public class ClassDoesNotImplementCopyConstructorException extends RuntimeException {
