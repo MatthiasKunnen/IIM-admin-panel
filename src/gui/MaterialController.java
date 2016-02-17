@@ -171,7 +171,7 @@ public class MaterialController extends VBox {
 
                     @Override
                     protected void updateItem(Boolean item, boolean empty) {
-                        super.updateItem(item, empty);                         
+                        super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
                             setText(null);
@@ -180,18 +180,16 @@ public class MaterialController extends VBox {
                             EventHandler filter = new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
-                                    MaterialIdentifier mi = (MaterialIdentifier)getTableRow().getItem();
+                                    MaterialIdentifier mi = (MaterialIdentifier) getTableRow().getItem();
                                     identifiers.remove(mi);
                                     material.removeIdentifier(mi);
-                                    
-                                    //dc.update(material);
                                 }
 
                             };
 
                             ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
                         }
-                        
+
                     }
 
                 };
