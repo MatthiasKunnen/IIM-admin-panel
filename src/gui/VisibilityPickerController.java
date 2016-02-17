@@ -49,10 +49,11 @@ public class VisibilityPickerController extends HBox {
     public ObjectProperty<Visibility> visibility;
     private final Paint SELECTED = Paint.valueOf("#3cd728");
     private final Visibility DEFAULT = Visibility.Administrator;
-    
+
     public VisibilityPickerController() {
         this.visibility = new SimpleObjectProperty<>();
         this.visibility.setValue(DEFAULT);
+        this.visibility.addListener((observable, oldValue, newValue) -> setVisibility(newValue));
         FXMLLoader loader = new FXMLLoader(getClass().getResource("VisibilityPicker.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -73,7 +74,7 @@ public class VisibilityPickerController extends HBox {
     }
 
     public void setVisibility(Visibility visibility) {
-        switch (visibility){
+        switch (visibility) {
             case Student:
                 svgStudent.setFill(SELECTED);
                 svgDocent.setFill(SELECTED);
@@ -91,9 +92,18 @@ public class VisibilityPickerController extends HBox {
 
     /**
      * Binds a variable to this control's Visibility property.
+     *
      * @param property the property to be bound.
      */
-    public void bindVisibility(SimpleObjectProperty<Visibility> property){
+    public void bindVisibility(SimpleObjectProperty<Visibility> property) {
         property.bind(this.visibility);
+    }
+
+    public void unBindVisibility(SimpleObjectProperty<Visibility> property) {
+        this.visibility.unbindBidirectional(property);
+    }
+
+    public void bindBiDirectional(SimpleObjectProperty<Visibility> property) {
+        this.visibility.bindBidirectional(property);
     }
 }
