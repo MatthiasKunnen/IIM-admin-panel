@@ -49,6 +49,7 @@ public class VisibilityPickerController extends HBox {
     public ObjectProperty<Visibility> visibility;
     private final Paint SELECTED = Paint.valueOf("#3cd728");
     private final Visibility DEFAULT = Visibility.Administrator;
+    
     public VisibilityPickerController() {
         this.visibility = new SimpleObjectProperty<>();
         this.visibility.setValue(DEFAULT);
