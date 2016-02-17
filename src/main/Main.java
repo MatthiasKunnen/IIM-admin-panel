@@ -13,7 +13,8 @@ public class Main extends Application {
     public void start(Stage stage) {
         DomainController domainController = new DomainController();
         Scene scene = new Scene(new MaterialController(domainController, stage));
-
+        stage.setMinWidth(620);
+        stage.setMinHeight(463);
         stage.setTitle("Overzicht");
         stage.setScene(scene);
         stage.show();
