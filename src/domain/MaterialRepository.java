@@ -91,11 +91,19 @@ public class MaterialRepository {
     }
 
     /**
+     * TODO, compare before merge! Update only necessary changes
      * Updates a {@link domain.Material} in the database.
      * @param material the Material to update.
      */
     public void update(Material material) {
         Material original = getMaterialByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
+        for (MaterialIdentifier mi : material.getIdentifiers()){
+            if (mi.getId() == 0){
+                persistence.persist(mi);
+            }else{
+                persistence.merge(mi);
+            }
+        }
         Material toSave = copyDefensively(material);
 
         persistence.merge(toSave);
