@@ -98,11 +98,11 @@ public class MaterialController extends VBox {
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
     public MaterialController(DomainController dc, Stage stage) {
-        this(dc, stage, new Material(""));
+        this(dc, stage, null);
     }
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
-        this.material = material;
+
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
@@ -121,6 +121,20 @@ public class MaterialController extends VBox {
             this.pnVisibilityPicker.getChildren().add(defaultVisibilityPicker);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
+        }
+
+        if (material != null) {
+            this.material = material;
+            tfName.setText(material.getName());
+            tfPrice.setText(material.getPrice().toString());
+            tfDescription.setText(material.getDescription());
+            tfArticleNumber.setText(material.getArticleNr());
+            if (!material.getPhotoUrl().isEmpty()) {
+                ivPhoto.setImage(new Image(material.getPhotoUrl()));
+            }
+
+        } else {
+            this.material = new Material("");
         }
 
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
@@ -171,7 +185,7 @@ public class MaterialController extends VBox {
 
                     @Override
                     protected void updateItem(Boolean item, boolean empty) {
-                        super.updateItem(item, empty);                         
+                        super.updateItem(item, empty);
                         if (empty) {
                             setGraphic(null);
                             setText(null);
@@ -180,18 +194,16 @@ public class MaterialController extends VBox {
                             EventHandler filter = new EventHandler<MouseEvent>() {
                                 @Override
                                 public void handle(MouseEvent event) {
-                                    MaterialIdentifier mi = (MaterialIdentifier)getTableRow().getItem();
+                                    MaterialIdentifier mi = (MaterialIdentifier) getTableRow().getItem();
                                     identifiers.remove(mi);
                                     material.removeIdentifier(mi);
-                                    
-                                    //dc.update(material);
                                 }
 
                             };
 
                             ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
                         }
-                        
+
                     }
 
                 };
