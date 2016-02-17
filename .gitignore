@@ -25,3 +25,6 @@ design/IIM.vpp~*
 
 # OSX
 .DS_Store
+
+# Windows
+Thumbs.db
