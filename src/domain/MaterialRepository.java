@@ -91,7 +91,6 @@ public class MaterialRepository {
     }
 
     /**
-     * TODO, compare before merge! Update only necessary changes
      * Updates a {@link domain.Material} in the database.
      * @param material the Material to update.
      */
@@ -104,6 +103,11 @@ public class MaterialRepository {
                 persistence.merge(mi);
             }
         }
+
+        List<MaterialIdentifier> remove = new ArrayList<>(original.getIdentifiers());
+        remove.removeAll(material.getIdentifiers());
+        remove.forEach(materialIdentifier -> persistence.remove(materialIdentifier));
+
         Material toSave = copyDefensively(material);
 
         persistence.merge(toSave);
@@ -166,15 +170,11 @@ public class MaterialRepository {
     private void addMaterialToCollections(Material material) {
         this.materials.add(material);
         this.materialIdentifiers.addAll(material.getIdentifiers());
-        this.materialObservableList.add(material);
-        this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
     private void removeMaterialFromCollections(Material material) {
         this.materials.remove(material);
         this.materialIdentifiers.removeAll(material.getIdentifiers());
-        this.materialObservableList.remove(material);
-        this.materialIdentifierObservableList.removeAll(material.getIdentifiers());
     }
     //</editor-fold>
 }
