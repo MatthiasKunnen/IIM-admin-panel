@@ -11,42 +11,29 @@ import domain.MaterialIdentifier;
 import domain.Visibility;
 import exceptions.AzureException;
 import exceptions.InvalidPriceException;
-import java.io.File;
-import java.io.IOException;
-import java.math.BigDecimal;
-import java.net.MalformedURLException;
-import java.nio.file.Path;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.text.ParseException;
-import java.util.Locale;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableObjectValue;
-import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.shape.SVGPath;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+
+import java.io.File;
+import java.io.IOException;
+import java.math.BigDecimal;
+import java.net.MalformedURLException;
+import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
 
 /**
  * FXML Controller class
@@ -87,13 +74,13 @@ public class MaterialController extends VBox {
     @FXML
     private Label LbAvailable;
     @FXML
-    private TableColumn<?, ?> tcAvailable;
+    private TableColumn<MaterialIdentifier, Visibility> tcAvailable;
     @FXML
     private TableColumn<?, ?> tcActions;
     @FXML
-    private TableColumn<?, ?> tcLocation;
+    private TableColumn<MaterialIdentifier, String> tcLocation;
     @FXML
-    private TableColumn<?, ?> tcId;
+    private TableColumn<MaterialIdentifier, Integer> tcId;
     @FXML
     private TableView<MaterialIdentifier> tvIdentifiers;
 
@@ -103,14 +90,22 @@ public class MaterialController extends VBox {
     private DomainController dc;
     private Material material;
     private SimpleObjectProperty<Visibility> defaultVisibility;
+    private ObservableList<MaterialIdentifier> identifiers;
     private Path imagePath;
     //</editor-fold>
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
+
     public MaterialController(DomainController dc, Stage stage) {
+        this(dc, stage, new Material(""));
+    }
+
+    public MaterialController(DomainController dc, Stage stage, Material material) {
+        this.material = material;
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
+        this.identifiers = FXCollections.observableArrayList();
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
@@ -129,54 +124,84 @@ public class MaterialController extends VBox {
 
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
 
-        //tvIdentifiers.setItems(dc.getMaterialIdentifiers());
-//        tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
-//           
-//
-//            
-//        });
+        this.identifiers.addAll(material.getIdentifiers());
+        tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
+        tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
+        tcAvailable.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Visibility>, TableCell<MaterialIdentifier, Visibility>>() {
+            @Override
+            public TableCell<MaterialIdentifier, Visibility> call(TableColumn<MaterialIdentifier, Visibility> param) {
+                return new TableCell<MaterialIdentifier, Visibility>() {
+                    private final VisibilityPickerController vpc = new VisibilityPickerController();
+                    private SimpleObjectProperty<Visibility> visibilityProperty;
+
+                    @Override
+                    protected void updateItem(Visibility item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            setGraphic(vpc);
+                            if (getTableRow().getItem() != null) {
+                                SimpleObjectProperty<Visibility> sop = ((MaterialIdentifier) getTableRow().getItem()).getVisibilityProperty();
+                                if (this.visibilityProperty == null) {
+                                    this.visibilityProperty = sop;
+                                    this.vpc.bindBiDirectional(sop);
+                                }
+                                if (this.visibilityProperty != sop) {
+                                    this.vpc.unBindVisibility(visibilityProperty);
+                                    this.visibilityProperty = sop;
+                                    this.vpc.bindBiDirectional(sop);
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+        });
+
+        tvIdentifiers.setItems(this.identifiers);
+
     }
     //</editor-fold>
 
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
     @FXML
     private void saveMaterial(ActionEvent event) {
+        if (!tfName.getText().trim().isEmpty()) {
+            material.setName(tfName.getText().trim());
+        }
         if (!tfArticleNumber.getText().trim().isEmpty()) {
-            material.setArticleNr(tfArticleNumber.getText());
+            material.setArticleNr(tfArticleNumber.getText().trim());
         }
 
         if (!tfDescription.getText().trim().isEmpty()) {
-            material.setDescription(tfDescription.getText());
+            material.setDescription(tfDescription.getText().trim());
         }
 
-        if (!tfPrice.getText().trim().isEmpty()) {
-
-            DecimalFormatSymbols symbols = new DecimalFormatSymbols(Locale.FRENCH);
-            String pattern = "#,##0.0#";
-            DecimalFormat decimalFormat = new DecimalFormat(pattern, symbols);
-            decimalFormat.setParseBigDecimal(true);
-
-            // parse the string
-            BigDecimal bigDecimal = null;
-
+        if (!tfPrice.getText().isEmpty()) {
             try {
-                bigDecimal = (BigDecimal) decimalFormat.parse(tfPrice.getText());
-            } catch (ParseException ex) {
-            }
-
-            try {
-                material.setPrice(bigDecimal);
-            } catch (InvalidPriceException ex) {
-
+                BigDecimal price = new BigDecimal(tfPrice.getText().replace(",", "."));
+                material.setPrice(price);
+            } catch (NumberFormatException | InvalidPriceException e) {
+                return;
             }
         }
-
         //firma
         //doelgroep
-        //leeftijdscathegorie      
-        material = dc.addMaterial(material);
+        //leeftijdscathegorie
+        if (dc.doesMaterialExist(material)) {
+            dc.update(material);
+        } else {
+            material = dc.addMaterial(material);
+        }
+        this.identifiers.clear();
+        this.identifiers.addAll(material.getIdentifiers());
         try {
-            dc.updatePhoto(material, imagePath.toString());
+            if (imagePath != null) {
+                dc.updatePhoto(material, imagePath.toString());
+            }
         } catch (AzureException ex) {
             //warning
         }
@@ -186,20 +211,17 @@ public class MaterialController extends VBox {
     @FXML
     private void selectImage(MouseEvent event) {
         FileChooser fc = new FileChooser();
-        fc.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Image Files",
-                        "*.png"));
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.bmp", "*.gif", "*.webp", "*.tiff", "*.tif"));
         fc.setTitle("Open file");
         File f = fc.showOpenDialog(theStage);
 
-        imagePath = f.toPath();
-
+        if (f == null) return;
         try {
+            imagePath = f.toPath();
             ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
-        } catch (MalformedURLException ex) {
+        } catch (InvalidPathException | MalformedURLException ex) {
 
         }
-
     }
 
     @FXML
@@ -208,7 +230,7 @@ public class MaterialController extends VBox {
             MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
             id.setPlace(tfLocation.getText());
             material.addIdentifier(id);
-
+            identifiers.add(id);
         }
     }
 
@@ -216,13 +238,5 @@ public class MaterialController extends VBox {
     void cancel(ActionEvent event) {
         theStage.close();
     }
-
     //</editor-fold>
-    private class ActionCell extends TableCell<MaterialIdentifier, Boolean> {
-        private IdentifierOptionsController actionPanel;
-        
-        
-        
-    }
-
 }
