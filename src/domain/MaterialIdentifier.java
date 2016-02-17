@@ -41,7 +41,7 @@ public class MaterialIdentifier implements Serializable {
     }
 
     @Transient
-    public SimpleStringProperty getPlaceProperty(){
+    public SimpleStringProperty getPlaceProperty() {
         return this.place;
     }
 
@@ -64,7 +64,7 @@ public class MaterialIdentifier implements Serializable {
     }
 
     @Transient
-    public SimpleObjectProperty<Visibility> getVisibilityProperty(){
+    public SimpleObjectProperty<Visibility> getVisibilityProperty() {
         return this.visibility;
     }
     //</editor-fold>
@@ -109,4 +109,18 @@ public class MaterialIdentifier implements Serializable {
                 .toString();
 
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MaterialIdentifier)) return false;
+        MaterialIdentifier o2 = (MaterialIdentifier) obj;
+        if ((this.getId() == 0 && o2.getId() != 0) || (this.getId() != 0 && o2.getId() == 0)) {
+            return false;
+        }else if(this.getId() == 0 && o2.getId() == 0){
+            return this.getVisibility().equals(o2.getVisibility()) && this.getPlace().equals(o2.getPlace()) && this.getInfo().getId() == o2.getInfo().getId();
+        }
+        return this.getId() == o2.getId();
+    }
+
+
 }

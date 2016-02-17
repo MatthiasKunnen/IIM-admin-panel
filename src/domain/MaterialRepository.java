@@ -37,7 +37,7 @@ public class MaterialRepository {
         this.materialIdentifiers = new ArrayList<>(initialize
                 .stream()
                 .flatMap(m -> m.getIdentifiers().stream())
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toList()));
         this.materialObservableList = FXCollections.observableList(this.materials);
         this.materialIdentifierObservableList = FXCollections.observableList(this.materialIdentifiers);
         this.azureBlobStorage = new AzureBlobStorage();
@@ -168,13 +168,13 @@ public class MaterialRepository {
     }
 
     private void addMaterialToCollections(Material material) {
-        this.materials.add(material);
-        this.materialIdentifiers.addAll(material.getIdentifiers());
+        this.materialObservableList.add(material);
+        this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
     private void removeMaterialFromCollections(Material material) {
-        this.materials.remove(material);
-        this.materialIdentifiers.removeAll(material.getIdentifiers());
+        this.materialObservableList.remove(material);
+        this.materialIdentifierObservableList.removeAll(material.getIdentifiers());
     }
     //</editor-fold>
 }
