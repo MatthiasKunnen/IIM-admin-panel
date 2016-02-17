@@ -119,7 +119,9 @@ public class OverviewController extends AnchorPane {
             public void handle(MouseEvent event) {
                 if(event.getClickCount() >= 2){
                     Stage newStage = new Stage(StageStyle.DECORATED);
-                    MaterialController mc = new MaterialController(dc,newStage,tvMaterials.getSelectionModel().getSelectedItem());
+                    Material theMaterial = tvMaterials.getSelectionModel().getSelectedItem();
+                    MaterialController mc = new MaterialController(dc,newStage,theMaterial);
+                    newStage.setTitle(theMaterial.getName() + " - IMM");
                     openMaterialScreen(mc, newStage);
                 }
             }
@@ -130,6 +132,7 @@ public class OverviewController extends AnchorPane {
     @FXML
     private void addMaterial(MouseEvent event) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        newStage.setTitle("Niew Materiaal - IIM");
         MaterialController mc = new MaterialController(dc, newStage);
 
         openMaterialScreen(mc, newStage);
@@ -139,7 +142,7 @@ public class OverviewController extends AnchorPane {
         
         Scene scene = new Scene(mc);
 
-        newStage.setTitle("Materialen - IIM");
+        
         newStage.setScene(scene);
         newStage.show();
     }
