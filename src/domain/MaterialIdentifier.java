@@ -104,8 +104,8 @@ public class MaterialIdentifier implements Serializable {
                 .omitNullValues()
                 .add("id", id)
                 .add("info", info.getName())
-                .add("place", place)
-                .add("visibility", visibility)
+                .add("place", place.getValue())
+                .add("visibility", visibility.getValue())
                 .toString();
 
     }
