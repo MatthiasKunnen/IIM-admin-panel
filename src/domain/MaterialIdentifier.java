@@ -117,10 +117,8 @@ public class MaterialIdentifier implements Serializable {
         if ((this.getId() == 0 && o2.getId() != 0) || (this.getId() != 0 && o2.getId() == 0)) {
             return false;
         }else if(this.getId() == 0 && o2.getId() == 0){
-            return this.getVisibility().equals(o2.getVisibility()) && this.getPlace().equals(o2.getPlace()) && this.getInfo().getId() == o2.getInfo().getId();
+            return super.equals(obj);
         }
         return this.getId() == o2.getId();
     }
-
-
 }
