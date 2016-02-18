@@ -19,6 +19,8 @@ dist/
 nbdist/
 nbactions.xml
 nb-configuration.xml
+nbbuild.xml
+manifest.mf
 
 # Visual paradigm
 design/IIM.vpp~*
