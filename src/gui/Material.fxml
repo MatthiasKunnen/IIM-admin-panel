@@ -8,11 +8,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Rectangle?>
+<?import org.controlsfx.control.textfield.CustomTextField?>
 
 <fx:root minHeight="463.0" minWidth="615.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65"
          xmlns:fx="http://javafx.com/fxml/1">
@@ -32,12 +36,12 @@
                 <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0"
                       AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                     <children>
-                        <TextField fx:id="tfName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308"
-                                   promptText="Naam" HBox.hgrow="ALWAYS">
+                        <CustomTextField fx:id="tfName" maxHeight="1.7976931348623157E308"
+                                         maxWidth="1.7976931348623157E308" promptText="Naam" HBox.hgrow="ALWAYS">
                             <HBox.margin>
                                 <Insets right="5.0"/>
                             </HBox.margin>
-                        </TextField>
+                        </CustomTextField>
                         <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308"
                                    maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer"
                                    HBox.hgrow="ALWAYS">
@@ -45,12 +49,12 @@
                                 <Insets left="5.0" right="5.0"/>
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity"
-                                   prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
+                        <CustomTextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity"
+                                         prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
                             <HBox.margin>
                                 <Insets left="5.0"/>
                             </HBox.margin>
-                        </TextField>
+                        </CustomTextField>
                     </children>
                 </HBox>
                 <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0"
@@ -105,18 +109,29 @@
                                 <Insets right="5.0"/>
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfLocation" promptText="Locatie" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfLocation" promptText="Locatie" HBox.hgrow="ALWAYS" onAction="#tfLocationAction">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0"/>
                             </HBox.margin>
                         </TextField>
                         <Pane fx:id="pnVisibilityPicker"/>
-                        <Button fx:id="btnAddIdentifier" maxWidth="-Infinity" minWidth="-Infinity"
-                                mnemonicParsing="false" onAction="#addIdentifier" prefWidth="25.0" HBox.hgrow="NEVER">
+                        <StackPane prefWidth="25.0">
                             <HBox.margin>
                                 <Insets left="5.0"/>
                             </HBox.margin>
-                        </Button>
+                            <children>
+                                <ImageView fitHeight="25.0" fitWidth="25.0" HBox.hgrow="NEVER">
+                                    <image>
+                                        <Image url="@images/plus.png"/>
+                                    </image>
+                                </ImageView>
+                                <Rectangle onMouseClicked="#addIdentifier" opacity="0.0" width="25.0" height="25.0">
+                                    <cursor>
+                                        <Cursor fx:constant="HAND" />
+                                    </cursor>
+                                </Rectangle>
+                            </children>
+                        </StackPane>
                     </children>
                 </HBox>
             </children>
