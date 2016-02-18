@@ -138,12 +138,12 @@
         </AnchorPane>
         <HBox alignment="CENTER" prefHeight="25.0" prefWidth="200.0">
             <children>
-                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveMaterial" text="Save">
+                <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveMaterial" text="Opslaan">
                     <HBox.margin>
                         <Insets bottom="14.0" left="5.0" right="14.0"/>
                     </HBox.margin>
                 </Button>
-                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#cancel" text="Discard">
+                <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#cancel" text="Sluiten">
                     <HBox.margin>
                         <Insets bottom="14.0" right="5.0"/>
                     </HBox.margin>
