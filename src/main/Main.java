@@ -1,7 +1,6 @@
 package main;
 
 import domain.DomainController;
-import gui.MaterialController;
 import gui.OverviewController;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -16,7 +15,7 @@ public class Main extends Application {
         Scene scene = new Scene(new OverviewController(domainController));
         stage.setMinWidth(620);
         stage.setMinHeight(463);
-        stage.setTitle("Overzicht");
+        stage.setTitle("Overzicht - IIM");
         stage.setScene(scene);
         stage.show();
     }
