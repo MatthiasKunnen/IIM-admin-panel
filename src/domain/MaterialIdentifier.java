@@ -114,11 +114,6 @@ public class MaterialIdentifier implements Serializable {
     public boolean equals(Object obj) {
         if (!(obj instanceof MaterialIdentifier)) return false;
         MaterialIdentifier o2 = (MaterialIdentifier) obj;
-        if ((this.getId() == 0 && o2.getId() != 0) || (this.getId() != 0 && o2.getId() == 0)) {
-            return false;
-        }else if(this.getId() == 0 && o2.getId() == 0){
-            return super.equals(obj);
-        }
-        return this.getId() == o2.getId();
+        return (this.getId() == 0 && o2.getId() == 0) ? super.equals(obj) : this.getId() == o2.getId();
     }
 }
