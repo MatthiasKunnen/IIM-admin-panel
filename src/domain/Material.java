@@ -161,6 +161,10 @@ public class Material implements Serializable {
         return Collections.unmodifiableList(items);
     }
 
+    public void setIdentifiers(List<MaterialIdentifier> identifiers) {
+        this.items = new ArrayList<>(identifiers);
+    }
+
     /**
      * @param identifier The identifier to remove.
      */
