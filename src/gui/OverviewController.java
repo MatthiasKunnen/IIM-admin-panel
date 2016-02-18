@@ -59,7 +59,6 @@ public class OverviewController extends AnchorPane {
     private DomainController dc;    
 
     public OverviewController(DomainController dc) {
-
         this.dc = dc;
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Overview.fxml"));
