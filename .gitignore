@@ -22,6 +22,7 @@ nb-configuration.xml
 
 # Visual paradigm
 design/IIM.vpp~*
+design/*.bak
 
 # OSX
 .DS_Store
