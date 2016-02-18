@@ -77,39 +77,39 @@ public class OverviewController extends AnchorPane {
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) -> 
                  new SimpleIntegerProperty(param.getValue().getIdentifiers().size()).asObject());
-        tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
-
-            @Override
-            public TableCell<Material, Boolean> call(TableColumn<Material, Boolean> param) {
-                return new TableCell<Material, Boolean>() {
-                    private final IdentifierOptionsController ioc = new IdentifierOptionsController();
-
-                    @Override
-                    protected void updateItem(Boolean item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                            setText(null);
-                        } else {
-                            setGraphic(ioc);
-                            EventHandler filter = new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    Material m = (Material) getTableRow().getItem();
-                                    dc.removeMaterial(m);
-                                    
-                                }
-
-                            };
-
-                            ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
-                        }
-
-                    }
-
-                };
-            }
-        });
+//        tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
+//
+//            @Override
+//            public TableCell<Material, Boolean> call(TableColumn<Material, Boolean> param) {
+//                return new TableCell<Material, Boolean>() {
+//                    private final IdentifierOptionsController ioc = new IdentifierOptionsController();
+//
+//                    @Override
+//                    protected void updateItem(Boolean item, boolean empty) {
+//                        super.updateItem(item, empty);
+//                        if (empty) {
+//                            setGraphic(null);
+//                            setText(null);
+//                        } else {
+//                            setGraphic(ioc);
+//                            EventHandler filter = new EventHandler<MouseEvent>() {
+//                                @Override
+//                                public void handle(MouseEvent event) {
+//                                    Material m = (Material) getTableRow().getItem();
+//                                    dc.removeMaterial(m);
+//                                    
+//                                }
+//
+//                            };
+//
+//                            ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
+//                        }
+//
+//                    }
+//
+//                };
+//            }
+//        });
 
         tvMaterials.setItems(dc.getMaterials());
         
@@ -121,7 +121,7 @@ public class OverviewController extends AnchorPane {
                     Stage newStage = new Stage(StageStyle.DECORATED);
                     Material theMaterial = tvMaterials.getSelectionModel().getSelectedItem();
                     MaterialController mc = new MaterialController(dc,newStage,theMaterial);
-                    newStage.setTitle(theMaterial.getName() + " - IMM");
+                    newStage.setTitle(theMaterial.getName() + " - IIM");
                     openMaterialScreen(mc, newStage);
                 }
             }
@@ -132,7 +132,7 @@ public class OverviewController extends AnchorPane {
     @FXML
     private void addMaterial(MouseEvent event) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle("Niew Materiaal - IIM");
+        newStage.setTitle("Nieuw Materiaal - IIM");
         MaterialController mc = new MaterialController(dc, newStage);
 
         openMaterialScreen(mc, newStage);
@@ -142,7 +142,8 @@ public class OverviewController extends AnchorPane {
         
         Scene scene = new Scene(mc);
 
-        
+        newStage.setMinWidth(620);
+        newStage.setMinHeight(463);
         newStage.setScene(scene);
         newStage.show();
     }

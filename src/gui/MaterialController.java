@@ -36,6 +36,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 import javafx.event.Event;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
 
 /**
  * FXML Controller class
@@ -139,7 +140,7 @@ public class MaterialController extends VBox {
 
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
 
-        this.identifiers.addAll(material.getIdentifiers());
+        this.identifiers.addAll(this.material.getIdentifiers());
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
@@ -175,6 +176,7 @@ public class MaterialController extends VBox {
                 };
             }
         });
+        
         tcActions.setCellValueFactory(new PropertyValueFactory<>("UNEXISTING"));
         tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
 
@@ -220,7 +222,7 @@ public class MaterialController extends VBox {
     private void saveMaterial(ActionEvent event) {
         if (!tfName.getText().trim().isEmpty()) {
             material.setName(tfName.getText().trim());
-        }
+        } 
         if (!tfArticleNumber.getText().trim().isEmpty()) {
             material.setArticleNr(tfArticleNumber.getText().trim());
         }
@@ -234,6 +236,12 @@ public class MaterialController extends VBox {
                 BigDecimal price = new BigDecimal(tfPrice.getText().replace(",", "."));
                 material.setPrice(price);
             } catch (NumberFormatException | InvalidPriceException e) {
+                Alert alert = new Alert(AlertType.WARNING);
+                alert.setTitle("Opgepast");
+                alert.setHeaderText("U heeft geen naam opgegeven");
+                alert.setContentText("U dient een naam in te vullen voor elk nieuw materiaal");
+
+                alert.showAndWait();
                 return;
             }
         }
