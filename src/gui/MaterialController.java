@@ -9,8 +9,10 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Visibility;
+
 import exceptions.AzureException;
 import exceptions.InvalidPriceException;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +24,17 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.event.EventHandler;
+import javafx.scene.control.Alert.AlertType;
+
+import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,9 +42,7 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.scene.control.Alert.AlertType;
+
 
 /**
  * FXML Controller class
@@ -69,11 +75,11 @@ public class MaterialController extends VBox {
     @FXML
     private TextField tfArticleNumber;
     @FXML
-    private TextField tfPrice;
+    private CustomTextField tfPrice;
     @FXML
     private TextField tfLocation;
     @FXML
-    private TextField tfName;
+    private CustomTextField tfName;
     @FXML
     private Label LbAvailable;
     @FXML
@@ -99,21 +105,22 @@ public class MaterialController extends VBox {
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
     public MaterialController(DomainController dc, Stage stage) {
-        this(dc, stage, null);
+        this(dc, stage, new Material(""));
     }
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
-
+        this.identifiers = FXCollections.observableArrayList();
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
-        this.identifiers = FXCollections.observableArrayList();
+        setMaterial(material);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
         loader.setController(this);
         try {
             loader.load();
+            this.getStylesheets().add("/gui/style/form.css");
             GuiHelper.getKeyEventEventHandlerAssuringDecimalInput(this.tfPrice);
             GuiHelper.getKeyEventEventHandlerAssuringIntegerInput(this.tfAmount);
             VisibilityPickerController defaultVisibilityPicker = new VisibilityPickerController();
@@ -124,23 +131,8 @@ public class MaterialController extends VBox {
             throw new RuntimeException(ex);
         }
 
-        if (material != null) {
-            this.material = material;
-            tfName.setText(material.getName());
-            tfPrice.setText(material.getPrice().toString());
-            tfDescription.setText(material.getDescription());
-            tfArticleNumber.setText(material.getArticleNr());
-            if (!material.getPhotoUrl().isEmpty()) {
-                ivPhoto.setImage(new Image(material.getPhotoUrl()));
-            }
-
-        } else {
-            this.material = new Material("");
-        }
-
         ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
 
-        this.identifiers.addAll(this.material.getIdentifiers());
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
@@ -176,8 +168,7 @@ public class MaterialController extends VBox {
                 };
             }
         });
-        
-        tcActions.setCellValueFactory(new PropertyValueFactory<>("UNEXISTING"));
+        tcActions.setCellValueFactory(new PropertyValueFactory<>("NONEXISTENT"));
         tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
 
             @Override
@@ -198,22 +189,16 @@ public class MaterialController extends VBox {
                                 public void handle(MouseEvent event) {
                                     MaterialIdentifier mi = (MaterialIdentifier) getTableRow().getItem();
                                     identifiers.remove(mi);
-                                    material.removeIdentifier(mi);
                                 }
-
                             };
-
                             ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
                         }
-
                     }
-
                 };
             }
         });
 
         tvIdentifiers.setItems(this.identifiers);
-
     }
     //</editor-fold>
 
@@ -222,7 +207,15 @@ public class MaterialController extends VBox {
     private void saveMaterial(ActionEvent event) {
         if (!tfName.getText().trim().isEmpty()) {
             material.setName(tfName.getText().trim());
-        } 
+            hideError(tfName);
+            if (!dc.doesMaterialExist(material) && dc.doesMaterialNameAlreadyExist(material.getName())){
+                showError(tfName, "Materiaal is al in gebruik!");
+                return;
+            }
+        }else{
+            showError(tfName, "Naam moet ingevuld zijn!");
+            return;
+        }
         if (!tfArticleNumber.getText().trim().isEmpty()) {
             material.setArticleNr(tfArticleNumber.getText().trim());
         }
@@ -236,18 +229,14 @@ public class MaterialController extends VBox {
                 BigDecimal price = new BigDecimal(tfPrice.getText().replace(",", "."));
                 material.setPrice(price);
             } catch (NumberFormatException | InvalidPriceException e) {
-                Alert alert = new Alert(AlertType.WARNING);
-                alert.setTitle("Opgepast");
-                alert.setHeaderText("U heeft geen naam opgegeven");
-                alert.setContentText("U dient een naam in te vullen voor elk nieuw materiaal");
-
-                alert.showAndWait();
+                showError(tfPrice, "Prijs heeft geen geldige waarde!");
                 return;
             }
         }
         //firma
         //doelgroep
         //leeftijdscathegorie
+        material.setIdentifiers(this.identifiers);
         if (dc.doesMaterialExist(material)) {
             dc.update(material);
         } else {
@@ -284,18 +273,64 @@ public class MaterialController extends VBox {
     }
 
     @FXML
-    void addIdentifier(ActionEvent event) {
-        for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
-            MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
-            id.setPlace(tfLocation.getText());
-            material.addIdentifier(id);
-            identifiers.add(id);
-        }
+    void addIdentifier(MouseEvent event) {
+        addIdentifier();
+    }
+
+    @FXML
+    void tfLocationAction(ActionEvent event){
+        addIdentifier();
     }
 
     @FXML
     void cancel(ActionEvent event) {
         theStage.close();
     }
+    //</editor-fold>
+
+    //<editor-fold desc="FXML Actions" defaultstate="collapsed">
+    private void setMaterial(Material material){
+        if (!dc.doesMaterialExist(material)) {
+            this.material = new Material("");
+        } else {
+            this.material = material;
+            tfName.setText(material.getName());
+            tfPrice.setText(material.getPrice().toString());
+            tfDescription.setText(material.getDescription());
+            tfArticleNumber.setText(material.getArticleNr());
+            if (!material.getPhotoUrl().isEmpty()) {
+                ivPhoto.setImage(new Image(material.getPhotoUrl()));
+            }
+            this.identifiers.addAll(this.material.getIdentifiers());
+        }
+    }
+
+    private void showError(CustomTextField ctf, String message){
+        ImageView iv = new ImageView(new Image(getClass().getResource("/gui/images/shield-error-icon.png").toExternalForm()));
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(20);
+        ctf.getStyleClass().add("error");
+        ctf.setRight(iv);
+        ctf.setTooltip(new Tooltip(message));
+    }
+
+    private void hideError(CustomTextField ctf){
+        ctf.setRight(new Pane());
+        ctf.setTooltip(null);
+        ctf.getStyleClass().remove("error");
+    }
+
+    private void addIdentifier(){
+        for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
+            MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
+            id.setPlace(tfLocation.getText());
+            material.addIdentifier(id);
+            identifiers.add(id);
+        }
+        this.tfAmount.setText("");
+        this.tfLocation.setText("");
+        this.tfAmount.requestFocus();
+    }
+
     //</editor-fold>
 }
