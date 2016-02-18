@@ -65,6 +65,7 @@ public class MaterialRepository {
 
     /**
      * Saves a new {@link domain.Material} in the database.
+     *
      * @param material the Material to save.
      * @return the material with updates database fields.
      */
@@ -79,6 +80,7 @@ public class MaterialRepository {
 
     /**
      * Removes a {@link domain.Material} from the database.
+     *
      * @param material the Material to remove.
      */
     public void removeMaterial(Material material) {
@@ -92,14 +94,15 @@ public class MaterialRepository {
 
     /**
      * Updates a {@link domain.Material} in the database.
+     *
      * @param material the Material to update.
      */
     public void update(Material material) {
         Material original = getMaterialByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
-        for (MaterialIdentifier mi : material.getIdentifiers()){
-            if (mi.getId() == 0){
+        for (MaterialIdentifier mi : material.getIdentifiers()) {
+            if (mi.getId() == 0) {
                 persistence.persist(mi);
-            }else{
+            } else {
                 persistence.merge(mi);
             }
         }
@@ -117,7 +120,8 @@ public class MaterialRepository {
 
     /**
      * Set new picture for a {@link domain.Material} And save it in the database.
-     * @param material the material where a new picture will be set.
+     *
+     * @param material  the material where a new picture will be set.
      * @param imagePath the path of the image to add.
      * @throws AzureException
      */
@@ -135,7 +139,8 @@ public class MaterialRepository {
 
     /**
      * Finds a persisted material by id.
-     * @param id the id of the material to search.
+     *
+     * @param id               the id of the material to search.
      * @param exceptionMessage thrown when the material is not found.
      * @return the Material that has been found.
      */
@@ -148,6 +153,7 @@ public class MaterialRepository {
 
     /**
      * Finds a persisted material by id.
+     *
      * @param id the id to search.
      * @return the Material if one has been found or Null.
      */
@@ -157,6 +163,15 @@ public class MaterialRepository {
                 .filter(m -> m.getId() == id)
                 .findAny()
                 .orElse(null);
+    }
+
+    /**
+     * Check if a name of a material already exists.
+     * @param name the name to check.
+     * @return true if the name is already in use. False otherwise.
+     */
+    public boolean doesMaterialNameAlreadyExist(String name) {
+        return this.materials.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
     }
 
     //</editor-fold>

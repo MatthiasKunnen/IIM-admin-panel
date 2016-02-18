@@ -69,9 +69,18 @@ public class DomainController {
         this.materials.updatePhoto(material, imagePath);
     }
 
+
     public boolean doesMaterialExist(Material material) {
         return this.materials.getMaterialById(material.getId()) != null;
     }
 
+    /**
+     * Check if a name of a material already exists.
+     * @param name the name to check.
+     * @return true if the name is already in use. False otherwise.
+     */
+    public boolean doesMaterialNameAlreadyExist(String name){
+        return this.materials.doesMaterialNameAlreadyExist(name);
+    }
     //</editor-fold>
 }
