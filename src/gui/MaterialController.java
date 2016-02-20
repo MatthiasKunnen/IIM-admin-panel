@@ -9,31 +9,27 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Visibility;
-
 import exceptions.AzureException;
 import exceptions.InvalidPriceException;
-
+import javafx.application.Platform;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Background;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
-import javafx.event.EventHandler;
-import javafx.scene.control.Alert.AlertType;
-
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.File;
@@ -94,6 +90,7 @@ public class MaterialController extends VBox {
     private TableView<MaterialIdentifier> tvIdentifiers;
 
     //</editor-fold>
+
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private Stage theStage;
     private DomainController dc;
@@ -113,7 +110,6 @@ public class MaterialController extends VBox {
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
-        setMaterial(material);
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
         loader.setRoot(this);
@@ -130,8 +126,7 @@ public class MaterialController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
-        ivPhoto.setImage(new Image(getClass().getResource("/gui/images/picture-add.png").toExternalForm()));
+        setMaterial(material);
 
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
@@ -199,6 +194,8 @@ public class MaterialController extends VBox {
         });
 
         tvIdentifiers.setItems(this.identifiers);
+
+        Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
     //</editor-fold>
 
@@ -208,11 +205,11 @@ public class MaterialController extends VBox {
         if (!tfName.getText().trim().isEmpty()) {
             material.setName(tfName.getText().trim());
             hideError(tfName);
-            if (!dc.doesMaterialExist(material) && dc.doesMaterialNameAlreadyExist(material.getName())){
+            if (!dc.doesMaterialExist(material) && dc.doesMaterialNameAlreadyExist(material.getName())) {
                 showError(tfName, "Materiaal is al in gebruik!");
                 return;
             }
-        }else{
+        } else {
             showError(tfName, "Naam moet ingevuld zijn!");
             return;
         }
@@ -241,6 +238,7 @@ public class MaterialController extends VBox {
             dc.update(material);
         } else {
             material = dc.addMaterial(material);
+            theStage.setTitle(String.format("%s - IIM", material.getName()));
         }
         this.identifiers.clear();
         this.identifiers.addAll(material.getIdentifiers());
@@ -266,7 +264,11 @@ public class MaterialController extends VBox {
         }
         try {
             imagePath = f.toPath();
+            double widthBefore = ivPhoto.getBoundsInParent().getWidth();
             ivPhoto.setImage(new Image(f.toURI().toURL().toString()));
+            double widthDiff = ivPhoto.getBoundsInParent().getWidth() - widthBefore;
+            theStage.setWidth(theStage.getWidth() + widthDiff);
+            Platform.runLater(() -> theStage.setMinWidth(theStage.getMinWidth() + widthDiff));
         } catch (InvalidPathException | MalformedURLException ex) {
 
         }
@@ -278,7 +280,7 @@ public class MaterialController extends VBox {
     }
 
     @FXML
-    void tfLocationAction(ActionEvent event){
+    void tfLocationAction(ActionEvent event) {
         addIdentifier();
     }
 
@@ -289,15 +291,15 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
-    private void setMaterial(Material material){
-        if (!dc.doesMaterialExist(material)) {
+    private void setMaterial(Material material) {
+        if (material == null || !dc.doesMaterialExist(material)) {
             this.material = new Material("");
         } else {
             this.material = material;
-            tfName.setText(material.getName());
-            tfPrice.setText(material.getPrice().toString());
-            tfDescription.setText(material.getDescription());
-            tfArticleNumber.setText(material.getArticleNr());
+            tfName.setText(this.material.getName());
+            tfPrice.setText(this.material.getPrice().toString());
+            tfDescription.setText(this.material.getDescription());
+            tfArticleNumber.setText(this.material.getArticleNr());
             if (!material.getPhotoUrl().isEmpty()) {
                 ivPhoto.setImage(new Image(material.getPhotoUrl()));
             }
@@ -305,7 +307,7 @@ public class MaterialController extends VBox {
         }
     }
 
-    private void showError(CustomTextField ctf, String message){
+    private void showError(CustomTextField ctf, String message) {
         ImageView iv = new ImageView(new Image(getClass().getResource("/gui/images/shield-error-icon.png").toExternalForm()));
         iv.setPreserveRatio(true);
         iv.setFitHeight(20);
@@ -314,13 +316,13 @@ public class MaterialController extends VBox {
         ctf.setTooltip(new Tooltip(message));
     }
 
-    private void hideError(CustomTextField ctf){
+    private void hideError(CustomTextField ctf) {
         ctf.setRight(new Pane());
         ctf.setTooltip(null);
         ctf.getStyleClass().remove("error");
     }
 
-    private void addIdentifier(){
+    private void addIdentifier() {
         for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
             MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
             id.setPlace(tfLocation.getText());

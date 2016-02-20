@@ -21,68 +21,80 @@
 <fx:root minHeight="463.0" minWidth="615.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
-        <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" prefWidth="615.0">
+        <HBox alignment="CENTER_LEFT">
             <children>
-                <ImageView fx:id="ivPhoto" fitHeight="200.0" fitWidth="200.0" layoutX="142.0" layoutY="65.0"
-                           onMouseClicked="#selectImage" pickOnBounds="true" smooth="false" AnchorPane.leftAnchor="14.0"
-                           AnchorPane.topAnchor="14.0">
+                <ImageView fx:id="ivPhoto" fitHeight="200.0" onMouseClicked="#selectImage" pickOnBounds="true"
+                           preserveRatio="true" smooth="false">
                     <cursor>
                         <Cursor fx:constant="HAND"/>
                     </cursor>
+                    <image>
+                        <Image url="@images/placeholder.jpg"/>
+                    </image>
+                    <HBox.margin>
+                        <Insets left="14.0" right="10.0"/>
+                    </HBox.margin>
                 </ImageView>
-                <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0"
-                          promptText="Omschrijving" wrapText="true" AnchorPane.leftAnchor="224.0"
-                          AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0"/>
-                <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="224.0"
-                      AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0"
+                            HBox.hgrow="ALWAYS">
                     <children>
-                        <CustomTextField fx:id="tfName" maxHeight="1.7976931348623157E308"
-                                         maxWidth="1.7976931348623157E308" promptText="Naam" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets right="5.0"/>
-                            </HBox.margin>
-                        </CustomTextField>
-                        <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308"
-                                   maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer"
-                                   HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
-                            </HBox.margin>
-                        </TextField>
-                        <CustomTextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity"
-                                         prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
-                            <HBox.margin>
-                                <Insets left="5.0"/>
-                            </HBox.margin>
-                        </CustomTextField>
+                        <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0"
+                                  promptText="Omschrijving" wrapText="true" AnchorPane.leftAnchor="10.0"
+                                  AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0"/>
+                        <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0"
+                              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                            <children>
+                                <CustomTextField fx:id="tfName" maxHeight="1.7976931348623157E308"
+                                                 maxWidth="1.7976931348623157E308" promptText="Naam"
+                                                 HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets right="5.0"/>
+                                    </HBox.margin>
+                                </CustomTextField>
+                                <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308"
+                                           maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                           promptText="Artikelnummer" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </HBox.margin>
+                                </TextField>
+                                <CustomTextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity"
+                                                 minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0"
+                                                 promptText="Prijs" HBox.hgrow="NEVER">
+                                    <HBox.margin>
+                                        <Insets left="5.0"/>
+                                    </HBox.margin>
+                                </CustomTextField>
+                            </children>
+                        </HBox>
+                        <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                              prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0"
+                              AnchorPane.topAnchor="189.0">
+                            <children>
+                                <ComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                          prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets right="5.0"/>
+                                    </HBox.margin>
+                                </ComboBox>
+                                <ComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                          prefWidth="0.0" promptText="Leergebied" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="5.0" right="5.0"/>
+                                    </HBox.margin>
+                                </ComboBox>
+                                <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                          promptText="Firma" HBox.hgrow="ALWAYS">
+                                    <HBox.margin>
+                                        <Insets left="5.0"/>
+                                    </HBox.margin>
+                                </ComboBox>
+                            </children>
+                        </HBox>
                     </children>
-                </HBox>
-                <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                      prefWidth="200.0" AnchorPane.leftAnchor="224.0" AnchorPane.rightAnchor="14.0"
-                      AnchorPane.topAnchor="189.0">
-                    <children>
-                        <ComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                  prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets right="5.0"/>
-                            </HBox.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                  prefWidth="0.0" promptText="Leergebied" HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
-                            </HBox.margin>
-                        </ComboBox>
-                        <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Firma"
-                                  HBox.hgrow="ALWAYS">
-                            <HBox.margin>
-                                <Insets left="5.0"/>
-                            </HBox.margin>
-                        </ComboBox>
-                    </children>
-                </HBox>
+                </AnchorPane>
             </children>
-        </AnchorPane>
+        </HBox>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <children>
                 <TableView fx:id="tvIdentifiers" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
@@ -109,7 +121,8 @@
                                 <Insets right="5.0"/>
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfLocation" promptText="Locatie" HBox.hgrow="ALWAYS" onAction="#tfLocationAction">
+                        <TextField fx:id="tfLocation" onAction="#tfLocationAction" promptText="Locatie"
+                                   HBox.hgrow="ALWAYS">
                             <HBox.margin>
                                 <Insets left="5.0" right="5.0"/>
                             </HBox.margin>
@@ -125,9 +138,9 @@
                                         <Image url="@images/plus.png"/>
                                     </image>
                                 </ImageView>
-                                <Rectangle onMouseClicked="#addIdentifier" opacity="0.0" width="25.0" height="25.0">
+                                <Rectangle height="25.0" onMouseClicked="#addIdentifier" opacity="0.0" width="25.0">
                                     <cursor>
-                                        <Cursor fx:constant="HAND" />
+                                        <Cursor fx:constant="HAND"/>
                                     </cursor>
                                 </Rectangle>
                             </children>
