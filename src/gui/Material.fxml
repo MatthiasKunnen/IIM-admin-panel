@@ -29,7 +29,7 @@
                         <Cursor fx:constant="HAND"/>
                     </cursor>
                     <image>
-                        <Image url="@images/placeholder.jpg"/>
+                        <Image url="@images/placeholder.png"/>
                     </image>
                     <HBox.margin>
                         <Insets left="14.0" right="10.0"/>
