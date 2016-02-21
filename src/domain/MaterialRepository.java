@@ -9,11 +9,13 @@ import javafx.collections.ObservableList;
 import persistence.AzureBlobStorage;
 import persistence.PersistenceEnforcer;
 
+import javax.persistence.ManyToOne;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
 
 public class MaterialRepository {
@@ -38,8 +40,8 @@ public class MaterialRepository {
                 .stream()
                 .flatMap(m -> m.getIdentifiers().stream())
                 .collect(Collectors.toList()));
-        this.materialObservableList = FXCollections.observableList(this.materials);
-        this.materialIdentifierObservableList = FXCollections.observableList(this.materialIdentifiers);
+        this.materialObservableList = FXCollections.observableList((List<Material>) copyCollectionDefensively(this.materials));
+        this.materialIdentifierObservableList = FXCollections.observableList((List<MaterialIdentifier>) copyCollectionDefensively(this.materialIdentifiers));
         this.azureBlobStorage = new AzureBlobStorage();
     }
     //</editor-fold>
@@ -183,11 +185,15 @@ public class MaterialRepository {
     }
 
     private void addMaterialToCollections(Material material) {
+        this.materials.add(material);
+        this.materialIdentifiers.addAll(material.getIdentifiers());
         this.materialObservableList.add(material);
         this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
     private void removeMaterialFromCollections(Material material) {
+        this.materials.remove(material);
+        this.materialIdentifiers.removeAll(material.getIdentifiers());
         this.materialObservableList.remove(material);
         this.materialIdentifierObservableList.removeAll(material.getIdentifiers());
     }
