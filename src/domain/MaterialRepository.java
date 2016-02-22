@@ -9,9 +9,9 @@ import javafx.collections.ObservableList;
 import persistence.AzureBlobStorage;
 import persistence.PersistenceEnforcer;
 
-import javax.persistence.ManyToOne;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -76,7 +76,7 @@ public class MaterialRepository {
             throw new MaterialAlreadyExistsException(material);
         Material toPersist = copyDefensively(material);
         persistMaterial(toPersist);
-        addMaterialToCollections(toPersist);
+        addMaterialSynced(toPersist);
         return copyDefensively(toPersist);
     }
 
@@ -91,7 +91,7 @@ public class MaterialRepository {
             throw new MaterialNotFoundException(material);
         persistence.remove(remove);
         persistence.remove(remove.getIdentifiers());
-        removeMaterialFromCollections(remove);
+        removeMaterialSynced(remove);
     }
 
     /**
@@ -116,8 +116,8 @@ public class MaterialRepository {
         Material toSave = copyDefensively(material);
 
         persistence.merge(toSave);
-        removeMaterialFromCollections(original);
-        addMaterialToCollections(toSave);
+        removeMaterialSynced(original);
+        addMaterialSynced(toSave);
     }
 
     /**
@@ -169,11 +169,22 @@ public class MaterialRepository {
 
     /**
      * Check if a name of a material already exists.
+     *
      * @param name the name to check.
      * @return true if the name is already in use. False otherwise.
      */
     public boolean doesMaterialNameAlreadyExist(String name) {
         return this.materials.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
+    }
+
+    /**
+     * Returns a material with a matching name.
+     *
+     * @param name the material name to search for.
+     * @return a material with a matching name or null if no material has been found.
+     */
+    public Material getMaterialByName(String name) {
+        return copyDefensively(this.materials.stream().filter(m -> m.getName().equals(name)).findAny().orElse(null));
     }
 
     //</editor-fold>
@@ -184,18 +195,42 @@ public class MaterialRepository {
         persistence.persist(material.getIdentifiers());
     }
 
-    private void addMaterialToCollections(Material material) {
+    private void addMaterialSynced(Material material) {
+        addMaterialLocally(material);
+        addMaterialToObservers(copyDefensively(material));
+    }
+
+    private void removeMaterialSynced(Material material) {
+        removeMaterialLocally(material);
+        removeMaterialFromObservers(material);
+    }
+
+    private void addMaterialLocally(Material material) {
         this.materials.add(material);
         this.materialIdentifiers.addAll(material.getIdentifiers());
+    }
+
+    private void addMaterialToObservers(Material material) {
         this.materialObservableList.add(material);
         this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
-    private void removeMaterialFromCollections(Material material) {
-        this.materials.remove(material);
-        this.materialIdentifiers.removeAll(material.getIdentifiers());
-        this.materialObservableList.remove(material);
-        this.materialIdentifierObservableList.removeAll(material.getIdentifiers());
+    private void removeMaterialLocally(Material material) {
+        removeById(this.materials, material.getId());
+        removeById(this.materialIdentifiers, material.getIdentifiers().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
+    }
+
+    private void removeMaterialFromObservers(Material material) {
+        removeById(this.materialObservableList, material.getId());
+        removeById(this.materialIdentifierObservableList, material.getIdentifiers().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
+    }
+
+    private void removeById(Collection<? extends IEntity> collection, int id) {
+        collection.removeIf(e -> e.getId() == id);
+    }
+
+    private void removeById(Collection<? extends IEntity> collection, Collection<Integer> ids) {
+        collection.removeIf(e -> ids.contains(e.getId()));
     }
     //</editor-fold>
 }
