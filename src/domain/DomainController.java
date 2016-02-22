@@ -82,5 +82,9 @@ public class DomainController {
     public boolean doesMaterialNameAlreadyExist(String name){
         return this.materials.doesMaterialNameAlreadyExist(name);
     }
+
+    public Material getMaterialByName(String name){
+        return this.materials.getMaterialByName(name);
+    }
     //</editor-fold>
 }
