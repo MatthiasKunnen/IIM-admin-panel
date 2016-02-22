@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 @Entity
 @Access(value = AccessType.PROPERTY)
-public class MaterialIdentifier implements Serializable {
+public class MaterialIdentifier implements Serializable, IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 

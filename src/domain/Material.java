@@ -14,7 +14,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import java.io.Serializable;
 
 @Entity
-public class Material implements Serializable {
+public class Material implements Serializable, IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     @Id
