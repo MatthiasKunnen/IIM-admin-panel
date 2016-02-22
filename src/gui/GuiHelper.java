@@ -14,6 +14,9 @@ public class GuiHelper {
                 if (input.getText().contains(DECIMAL_SEPARATOR)) {
                     event.consume();
                 }
+            }else if(!input.getText().contains(DECIMAL_SEPARATOR) && event.getCharacter().equals(".")){
+                input.insertText(input.getCaretPosition(), DECIMAL_SEPARATOR);
+                event.consume();
             } else if (!numberOnlyPattern.matcher(event.getCharacter()).matches()) {
                 event.consume();
             }
