@@ -49,6 +49,8 @@ public final class ImmutabilityHelper {
      * @throws ClassDoesNotImplementCopyConstructorException if the object's class does not have a copy-constructor.
      */
     public static <E> E copyDefensively(E object, Object... varArgs) {
+        if (object == null)
+            return null;
         try {
             if (varArgs.length == 0) {
                 @SuppressWarnings("unchecked")
