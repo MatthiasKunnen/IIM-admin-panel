@@ -19,7 +19,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -38,6 +37,8 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
+
+import static gui.GuiHelper.createMethodBuilder;
 
 
 /**
@@ -202,10 +203,13 @@ public class MaterialController extends VBox {
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
     @FXML
     private void saveMaterial(ActionEvent event) {
-        if (!tfName.getText().trim().isEmpty()) {
-            material.setName(tfName.getText().trim());
+
+        String name = (String) createMethodBuilder(tfName).addMethods("getText", "trim").run();
+        if (name != null) {
+            material.setName(name);
             hideError(tfName);
-            if (!dc.doesMaterialExist(material) && dc.doesMaterialNameAlreadyExist(material.getName())) {
+            Material matchingMaterial = dc.getMaterialByName(name);
+            if (matchingMaterial != null && matchingMaterial.getId()!=material.getId()) {
                 showError(tfName, "Materiaal is al in gebruik!");
                 return;
             }
@@ -213,23 +217,20 @@ public class MaterialController extends VBox {
             showError(tfName, "Naam moet ingevuld zijn!");
             return;
         }
-        if (!tfArticleNumber.getText().trim().isEmpty()) {
-            material.setArticleNr(tfArticleNumber.getText().trim());
+
+        setMaterialProperty(tfArticleNumber, "setArticleNr");
+        setMaterialProperty(tfDescription, "setDescription");
+
+        try {
+            material.setPrice(new BigDecimal(
+                    ((String) createMethodBuilder(tfPrice)
+                            .addMethods("getText")
+                            .setDefaultValue("")
+                            .run()
+                    ).replace(',', '.')));
+        } catch (NumberFormatException | InvalidPriceException ignored) {
         }
 
-        if (!tfDescription.getText().trim().isEmpty()) {
-            material.setDescription(tfDescription.getText().trim());
-        }
-
-        if (!tfPrice.getText().isEmpty()) {
-            try {
-                BigDecimal price = new BigDecimal(tfPrice.getText().replace(",", "."));
-                material.setPrice(price);
-            } catch (NumberFormatException | InvalidPriceException e) {
-                showError(tfPrice, "Prijs heeft geen geldige waarde!");
-                return;
-            }
-        }
         //firma
         //doelgroep
         //leeftijdscathegorie
@@ -269,8 +270,7 @@ public class MaterialController extends VBox {
             double widthDiff = ivPhoto.getBoundsInParent().getWidth() - widthBefore;
             theStage.setWidth(theStage.getWidth() + widthDiff);
             Platform.runLater(() -> theStage.setMinWidth(theStage.getMinWidth() + widthDiff));
-        } catch (InvalidPathException | MalformedURLException ex) {
-
+        } catch (InvalidPathException | MalformedURLException ignored) {
         }
     }
 
@@ -290,18 +290,25 @@ public class MaterialController extends VBox {
     }
     //</editor-fold>
 
-    //<editor-fold desc="FXML Actions" defaultstate="collapsed">
+    //<editor-fold desc="Actions" defaultstate="collapsed">
+    private void setMaterialProperty(TextInputControl input, String setter){
+        createMethodBuilder(input)
+                .addMethods("getText", "trim")
+                .setTarget(material, setter)
+                .run();
+    }
     private void setMaterial(Material material) {
         if (material == null || !dc.doesMaterialExist(material)) {
             this.material = new Material("");
         } else {
             this.material = material;
-            tfName.setText(this.material.getName());
-            tfPrice.setText(this.material.getPrice().toString());
+            this.tfName.setText(material.getName());
+            createMethodBuilder(this.material).addMethods("getPrice", "toString").setTarget(this.tfPrice, "setText").run();
             tfDescription.setText(this.material.getDescription());
             tfArticleNumber.setText(this.material.getArticleNr());
-            if (!material.getPhotoUrl().isEmpty()) {
-                ivPhoto.setImage(new Image(material.getPhotoUrl()));
+            String photoUrl = this.material.getPhotoUrl();
+            if (photoUrl != null && !photoUrl.isEmpty()) {
+                ivPhoto.setImage(new Image(photoUrl));
             }
             this.identifiers.addAll(this.material.getIdentifiers());
         }
@@ -333,6 +340,5 @@ public class MaterialController extends VBox {
         this.tfLocation.setText("");
         this.tfAmount.requestFocus();
     }
-
     //</editor-fold>
 }
