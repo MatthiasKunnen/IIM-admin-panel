@@ -35,7 +35,7 @@ public abstract class ReservationException extends IllegalArgumentException {
         this.reservation = r;
     }
 
-    public Reservation getMaterial() {
+    public Reservation getReservation() {
         return reservation;
     }
 }
