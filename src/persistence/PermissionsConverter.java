@@ -2,7 +2,7 @@ package persistence;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
-import domain.User;
+import domain.Administrator;
 
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
@@ -12,19 +12,21 @@ import javax.persistence.Converter;
  * @author Matthias Kunnen
  */
 @Converter(autoApply = true)
-public class PermissionsConverter implements AttributeConverter<User.Permission, Integer> {
-    private static BiMap<User.Permission, Integer> converter = ImmutableBiMap.of(
-            User.Permission.Material, 0,
-            User.Permission.User, 1
+public class PermissionsConverter implements AttributeConverter<Administrator.Permission, Integer> {
+    private static BiMap<Administrator.Permission, Integer> converter = ImmutableBiMap.of(
+            Administrator.Permission.MANAGE_MATERIALS, 0,
+            Administrator.Permission.VIEW_RESERVATIONS, 1,
+            Administrator.Permission.MANAGE_RESERVATIONS, 2,
+            Administrator.Permission.MANAGE_USERS, 3
     );
 
     @Override
-    public Integer convertToDatabaseColumn(User.Permission permission) {
+    public Integer convertToDatabaseColumn(Administrator.Permission permission) {
         return converter.get(permission);
     }
 
     @Override
-    public User.Permission convertToEntityAttribute(Integer id) {
+    public Administrator.Permission convertToEntityAttribute(Integer id) {
         return converter.inverse().get(id);
     }
 }
