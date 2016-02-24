@@ -1,6 +1,7 @@
 package persistence;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -114,6 +115,10 @@ public class PersistenceEnforcer {
 
     private void commitTransaction() {
         manager.getTransaction().commit();
+    }
+
+    public Query getNamedQuery(String queryName){
+        return manager.createNamedQuery(queryName);
     }
 
     /**
