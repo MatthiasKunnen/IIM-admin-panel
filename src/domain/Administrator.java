@@ -12,19 +12,19 @@ import java.util.Set;
  */
 @Entity(name = "Administrator")
 @Access(AccessType.PROPERTY)
-public class User {
+public class Administrator {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private int id;
     private String name;
 
     @Access(AccessType.FIELD)
-    @Column(nullable = true)
+    @Column(nullable = false)
     private String hash;
     private Set<Permission> permissions = new HashSet<>();
 
     public enum Permission {
-        Material, User
+        MANAGE_MATERIALS, VIEW_RESERVATIONS, MANAGE_RESERVATIONS, MANAGE_USERS
     }
     //</editor-fold>
 
@@ -89,20 +89,20 @@ public class User {
     /**
      * Protected empty JPA constructor.
      */
-    protected User() {
+    protected Administrator() {
 
     }
 
     /**
      * Public copy-constructor.
      *
-     * @param user the user to copy.
+     * @param administrator the administrator to copy.
      */
-    public User(User user) {
-        this.setId(user.id);
-        this.hash = user.hash;
-        this.setName(user.name);
-        this.permissions = new HashSet<>(user.getPermissions());
+    public Administrator(Administrator administrator) {
+        this.setId(administrator.id);
+        this.hash = administrator.hash;
+        this.setName(administrator.name);
+        this.permissions = new HashSet<>(administrator.getPermissions());
     }
     //</editor-fold>
 }
