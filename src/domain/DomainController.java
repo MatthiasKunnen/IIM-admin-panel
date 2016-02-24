@@ -1,33 +1,38 @@
 package domain;
 
 import exceptions.AzureException;
+import exceptions.LoginException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 
 public class DomainController {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-    private MaterialRepository materials;
+    private MaterialRepository materialRepository;
+    private AdministratorRepository administratorRepository;
+    private Administrator activeAdministrator;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public DomainController() {
         PersistenceController.start();
-        this.materials = new MaterialRepository(PersistenceController.getEnforcer());
+        this.administratorRepository = new AdministratorRepository(PersistenceController.getEnforcer());
+        this.materialRepository = new MaterialRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 
     //<editor-fold desc="Getters" defaultstate="collapsed">
     public ObservableList<Material> getMaterials() {
-        return materials.getMaterials();
+        return materialRepository.getMaterials();
     }
 
     public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
-        return materials.getMaterialIdentifiers();
+        return materialRepository.getMaterialIdentifiers();
     }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
+    //<editor-fold desc="Material" defaultstate="collapsed">
 
     /**
      * Saves a new {@link domain.Material} in the database.
@@ -36,7 +41,7 @@ public class DomainController {
      * @return the material with updates database fields.
      */
     public Material addMaterial(Material material) {
-        return this.materials.addMaterial(material);
+        return this.materialRepository.addMaterial(material);
     }
 
 
@@ -46,7 +51,7 @@ public class DomainController {
      * @param material the Material to save.
      */
     public void removeMaterial(Material material) {
-        this.materials.removeMaterial(material);
+        this.materialRepository.removeMaterial(material);
     }
 
     /**
@@ -55,7 +60,7 @@ public class DomainController {
      * @param material the Material to update.
      */
     public void update(Material material) {
-        this.materials.update(material);
+        this.materialRepository.update(material);
     }
 
     /**
@@ -66,25 +71,42 @@ public class DomainController {
      * @throws AzureException
      */
     public void updatePhoto(Material material, String imagePath) throws AzureException {
-        this.materials.updatePhoto(material, imagePath);
+        this.materialRepository.updatePhoto(material, imagePath);
     }
 
 
     public boolean doesMaterialExist(Material material) {
-        return this.materials.getMaterialById(material.getId()) != null;
+        return this.materialRepository.getMaterialById(material.getId()) != null;
     }
 
     /**
      * Check if a name of a material already exists.
+     *
      * @param name the name to check.
      * @return true if the name is already in use. False otherwise.
      */
-    public boolean doesMaterialNameAlreadyExist(String name){
-        return this.materials.doesMaterialNameAlreadyExist(name);
+    public boolean doesMaterialNameAlreadyExist(String name) {
+        return this.materialRepository.doesMaterialNameAlreadyExist(name);
     }
 
-    public Material getMaterialByName(String name){
-        return this.materials.getMaterialByName(name);
+    public Material getMaterialByName(String name) {
+        return this.materialRepository.getMaterialByName(name);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Local security - login" defaultstate="collapsed">
+
+    public void login(String username, String password) throws LoginException {
+        activeAdministrator = administratorRepository.login(username, password);
+    }
+
+    public Administrator addAdministrator(Administrator administrator){
+        return administratorRepository.addLogin(administrator);
+    }
+
+    public boolean hasPermission(Administrator.Permission permission){
+        return activeAdministrator.hasPermission(permission);
+    }
+    //</editor-fold>
     //</editor-fold>
 }
