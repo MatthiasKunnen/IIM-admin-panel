@@ -7,12 +7,15 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
+
 /**
  * An entity class for System Administrators
  */
 @Entity(name = "Administrator")
 @Access(AccessType.PROPERTY)
-public class Administrator {
+@NamedQuery(name = "User.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
+public class Administrator implements IEntity{
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private int id;
@@ -22,6 +25,7 @@ public class Administrator {
     @Column(nullable = false)
     private String hash;
     private Set<Permission> permissions = new HashSet<>();
+    private boolean isSuspended;
 
     public enum Permission {
         MANAGE_MATERIALS, VIEW_RESERVATIONS, MANAGE_RESERVATIONS, MANAGE_USERS
@@ -35,7 +39,7 @@ public class Administrator {
         return id;
     }
 
-    protected void setId(int id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -58,6 +62,13 @@ public class Administrator {
         this.permissions = permissions;
     }
 
+    public boolean isSuspended() {
+        return isSuspended;
+    }
+
+    public void setSuspended(boolean suspended) {
+        isSuspended = suspended;
+    }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
@@ -82,6 +93,18 @@ public class Administrator {
     public void removePermission(Permission permission) {
         this.permissions.remove(permission);
     }
+
+    @Override
+    public String toString() {
+        return toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("name", name)
+                .add("suspended", isSuspended)
+                .add("Permissions", permissions)
+                .toString();
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
