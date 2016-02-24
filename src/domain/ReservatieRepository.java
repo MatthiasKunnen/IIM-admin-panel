@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceEnforcer;
@@ -52,6 +53,9 @@ public class ReservatieRepository {
             throw new ReservationNotFoundException("This user hasn't any reservations");
          return reservation;
     }
+    public List<Reservation> getConflictedReservations(){
+        return reservationList.stream().filter(r-> r.isConflictFlag()).collect(Collectors.toList());
+    }
 
     public void conflictTracing() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
@@ -60,7 +64,7 @@ public class ReservatieRepository {
 
             for (Reservation r2 : reservations) {
                 if (!r1.equals(r2)) {
-                    if (r1.getOphaalmoment().before(r2.getIndienmoment()) && (r2.getOphaalmoment().before(r1.getIndienmoment()))) {
+                    if (r1.getPickUpDate().before(r2.getBringBackDate()) && (r2.getPickUpDate().before(r1.getBringBackDate()))) {
                         r1.setConflictFlag(true);
                         r2.setConflictFlag(true);
                     }

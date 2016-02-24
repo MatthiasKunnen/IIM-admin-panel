@@ -28,18 +28,18 @@ public class Reservation implements Serializable {
 
     private int userId;
     private List<MaterialIdentifier> materialIdentifiersList;
-    private Date reservationDate;
-    private Date ophaalmoment;
-    private Date indienmoment;
+    private GregorianCalendar reservationDate;
+    private GregorianCalendar pickUpDate;
+    private GregorianCalendar bringBackDate;
     private boolean conflictFlag;
     
-    public Reservation(Long reservationId, int userId, List<MaterialIdentifier> materialIdentifiersList, Date reservationDate, Date ophaalmoment, Date indienmoment, boolean conflictflag){
+    public Reservation(Long reservationId, int userId, List<MaterialIdentifier> materialIdentifiersList, GregorianCalendar reservationDate, GregorianCalendar pickUpDate, GregorianCalendar bringBackDate, boolean conflictflag){
         this.userId=userId;
         this.reservationId=reservationId;
         this.materialIdentifiersList=materialIdentifiersList;
         this.reservationDate=reservationDate;
-        this.ophaalmoment=ophaalmoment;
-        this.indienmoment=indienmoment;
+        this.pickUpDate=pickUpDate;
+        this.bringBackDate=bringBackDate;
         this.conflictFlag=conflictflag;
     }
    
@@ -70,28 +70,28 @@ public class Reservation implements Serializable {
         this.materialIdentifiersList = materialIdentifierList;
     }
 
-    public Date getReservationDatum() {
+    public GregorianCalendar getReservationDate() {
         return reservationDate;
     }
 
-    public void setReservatieDatum(Date reservationDate) {
+    public void setReservatieDate(GregorianCalendar reservationDate) {
         this.reservationDate = reservationDate;
     }
 
-    public Date getOphaalmoment() {
-        return ophaalmoment;
+    public GregorianCalendar getPickUpDate() {
+        return pickUpDate;
     }
 
-    public void setOphaalmoment(Date ophaalmoment) {
-        this.ophaalmoment = ophaalmoment;
+    public void setPickUpDate(GregorianCalendar pickUpDate) {
+        this.pickUpDate = pickUpDate;
     }
 
-    public Date getIndienmoment() {
-        return indienmoment;
+    public GregorianCalendar getBringBackDate() {
+        return bringBackDate;
     }
 
-    public void setIndienmoment(Date indienmoment) {
-        this.indienmoment = indienmoment;
+    public void setBringBackDate(GregorianCalendar bringBackDate) {
+        this.bringBackDate = bringBackDate;
     }
 
     public boolean isConflictFlag() {
@@ -107,8 +107,8 @@ public class Reservation implements Serializable {
      /**
      * De reservatie wordt vroeg tijdig stopgezet
      */
-    public void reservationSuspend(Date vervroegdeEinddatum){
-        this.indienmoment= vervroegdeEinddatum;
+    public void reservationSuspend(GregorianCalendar earlyBringBack){
+        this.bringBackDate= earlyBringBack;
     }
     
     
