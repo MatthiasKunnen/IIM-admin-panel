@@ -38,7 +38,7 @@ import java.net.MalformedURLException;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
-import static gui.GuiHelper.createMethodBuilder;
+import static gui.GuiHelper.*;
 
 
 /**
@@ -297,6 +297,7 @@ public class MaterialController extends VBox {
                 .setTarget(material, setter)
                 .run();
     }
+
     private void setMaterial(Material material) {
         if (material == null || !dc.doesMaterialExist(material)) {
             this.material = new Material("");
@@ -312,21 +313,6 @@ public class MaterialController extends VBox {
             }
             this.identifiers.addAll(this.material.getIdentifiers());
         }
-    }
-
-    private void showError(CustomTextField ctf, String message) {
-        ImageView iv = new ImageView(new Image(getClass().getResource("/gui/images/shield-error-icon.png").toExternalForm()));
-        iv.setPreserveRatio(true);
-        iv.setFitHeight(20);
-        ctf.getStyleClass().add("error");
-        ctf.setRight(iv);
-        ctf.setTooltip(new Tooltip(message));
-    }
-
-    private void hideError(CustomTextField ctf) {
-        ctf.setRight(new Pane());
-        ctf.setTooltip(null);
-        ctf.getStyleClass().remove("error");
     }
 
     private void addIdentifier() {

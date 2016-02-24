@@ -1,15 +1,19 @@
 package gui;
 
+import javafx.scene.Node;
 import javafx.scene.control.TextField;
-import org.mockito.Mockito;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
+import org.controlsfx.control.textfield.CustomPasswordField;
+import org.controlsfx.control.textfield.CustomTextField;
 
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 public class GuiHelper {
@@ -41,6 +45,31 @@ public class GuiHelper {
 
     private GuiHelper() {
 
+    }
+
+    public static void showError(TextField ctf, String message) {
+        ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-error-icon.png").toExternalForm()));
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(20);
+        ctf.getStyleClass().add("error");
+        if (ctf instanceof CustomTextField) {
+            ((CustomTextField) ctf).setRight(iv);
+        }else if (ctf instanceof CustomPasswordField){
+            ((CustomPasswordField) ctf).setRight(iv);
+        }
+
+        ctf.setTooltip(new Tooltip(message));
+    }
+
+    public static void hideError(TextField ctf) {
+        Node set = new Pane();
+        if (ctf instanceof CustomTextField) {
+            ((CustomTextField) ctf).setRight(set);
+        }else if (ctf instanceof CustomPasswordField){
+            ((CustomPasswordField) ctf).setRight(set);
+        }
+        ctf.setTooltip(null);
+        ctf.getStyleClass().remove("error");
     }
 
     public static MethodBuilder createMethodBuilder(Object source) {
