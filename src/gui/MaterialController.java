@@ -203,19 +203,19 @@ public class MaterialController extends VBox {
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
     @FXML
     private void saveMaterial(ActionEvent event) {
-
+        boolean abort = false;
         String name = (String) createMethodBuilder(tfName).addMethods("getText", "trim").run();
         if (name != null) {
             material.setName(name);
             hideError(tfName);
             Material matchingMaterial = dc.getMaterialByName(name);
-            if (matchingMaterial != null && matchingMaterial.getId()!=material.getId()) {
+            if (matchingMaterial != null && matchingMaterial.getId() != material.getId()) {
                 showError(tfName, "Materiaal is al in gebruik!");
-                return;
+                abort = true;
             }
         } else {
             showError(tfName, "Naam moet ingevuld zijn!");
-            return;
+            abort = true;
         }
 
         setMaterialProperty(tfArticleNumber, "setArticleNr");
@@ -223,17 +223,37 @@ public class MaterialController extends VBox {
 
         try {
             material.setPrice(new BigDecimal(
-                    ((String) createMethodBuilder(tfPrice)
+                    ((String) createMethodBuilder(this.tfPrice)
                             .addMethods("getText")
                             .setDefaultValue("")
                             .run()
                     ).replace(',', '.')));
-        } catch (NumberFormatException | InvalidPriceException ignored) {
+            hideError(this.tfPrice);
+        } catch (InvalidPriceException e) {
+            String errorMessage = "De ingevoerde prijs is niet geldig.";
+            switch (e.getPriceInvalidityCause()) {
+                case EXCEEDED_PRECISION:
+                    showError(this.tfPrice, "De ingevoerde prijs heeft een te grote precisie!");
+                    abort = true;
+                    break;
+                case LOWER_THAN_ZERO:
+                    showError(this.tfPrice, "De ingevoerde prijs mag niet kleiner zijn dan 0!");
+                    abort = true;
+                    break;
+                case EXCEEDED_SCALE:
+                    showWarning(this.tfPrice, "De ingevoerde prijs heeft meer getallen na de komma dan er opgeslagen worden.");
+                    break;
+                default:
+                    showError(this.tfPrice, "De ingevoerde prijs is niet geldig.");
+                    abort = true;
+                    break;
+            }
         }
 
         //firma
         //doelgroep
         //leeftijdscathegorie
+        if (abort) return;
         material.setIdentifiers(this.identifiers);
         if (dc.doesMaterialExist(material)) {
             dc.update(material);
@@ -291,7 +311,7 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    private void setMaterialProperty(TextInputControl input, String setter){
+    private void setMaterialProperty(TextInputControl input, String setter) {
         createMethodBuilder(input)
                 .addMethods("getText", "trim")
                 .setTarget(material, setter)

@@ -29,6 +29,7 @@ public class Material implements Serializable, IEntity {
     private String description;
     private String firm;
     private String firmEmail;
+    @Column(scale = 2, precision = 10)
     private BigDecimal price;
     private String articleNr;
     //</editor-fold>
@@ -47,7 +48,6 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setEncoding(String encoding) {
-
         this.encoding = encoding;
     }
 
@@ -93,9 +93,14 @@ public class Material implements Serializable, IEntity {
 
     public void setPrice(BigDecimal price) throws InvalidPriceException {
         if (price.compareTo(BigDecimal.ZERO) == -1) {
-            throw new InvalidPriceException("price_less_than_zero");
+            throw new InvalidPriceException(InvalidPriceException.Cause.LOWER_THAN_ZERO);
+        } else if (price.precision() > 8) {
+            throw new InvalidPriceException(InvalidPriceException.Cause.EXCEEDED_PRECISION);
         }
         this.price = price;
+        if (price.scale() > 2) {
+            throw new InvalidPriceException(InvalidPriceException.Cause.EXCEEDED_SCALE);
+        }
     }
 
     public String getArticleNr() {
@@ -171,7 +176,7 @@ public class Material implements Serializable, IEntity {
     public void removeIdentifier(MaterialIdentifier identifier) {
         items.remove(identifier);
     }
-    //</editor-fold>
+
 
     @Override
     public String toString() {
@@ -187,4 +192,5 @@ public class Material implements Serializable, IEntity {
                 .add("identifiers", items)
                 .toString();
     }
+    //</editor-fold>
 }
