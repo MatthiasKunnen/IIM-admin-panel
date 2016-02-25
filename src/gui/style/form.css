@@ -1,3 +1,7 @@
-.error{
+.error {
     -fx-control-inner-background: #FF9494;
+}
+
+.warning {
+    -fx-control-inner-background: #FFC6A6;
 }

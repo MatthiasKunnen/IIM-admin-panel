@@ -47,6 +47,19 @@ public class GuiHelper {
 
     }
 
+    public static void showWarning(TextField ctf, String message){
+        ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-warning-icon.png").toExternalForm()));
+        iv.setPreserveRatio(true);
+        iv.setFitHeight(20);
+        ctf.getStyleClass().add("warning");
+        if (ctf instanceof CustomTextField) {
+            ((CustomTextField) ctf).setRight(iv);
+        }else if (ctf instanceof CustomPasswordField){
+            ((CustomPasswordField) ctf).setRight(iv);
+        }
+        ctf.setTooltip(new Tooltip(message));
+    }
+
     public static void showError(TextField ctf, String message) {
         ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-error-icon.png").toExternalForm()));
         iv.setPreserveRatio(true);
@@ -57,7 +70,6 @@ public class GuiHelper {
         }else if (ctf instanceof CustomPasswordField){
             ((CustomPasswordField) ctf).setRight(iv);
         }
-
         ctf.setTooltip(new Tooltip(message));
     }
 
@@ -69,7 +81,7 @@ public class GuiHelper {
             ((CustomPasswordField) ctf).setRight(set);
         }
         ctf.setTooltip(null);
-        ctf.getStyleClass().remove("error");
+        ctf.getStyleClass().removeAll("error", "warning");
     }
 
     public static MethodBuilder createMethodBuilder(Object source) {
