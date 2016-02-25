@@ -230,7 +230,6 @@ public class MaterialController extends VBox {
                     ).replace(',', '.')));
             hideError(this.tfPrice);
         } catch (InvalidPriceException e) {
-            String errorMessage = "De ingevoerde prijs is niet geldig.";
             switch (e.getPriceInvalidityCause()) {
                 case EXCEEDED_PRECISION:
                     showError(this.tfPrice, "De ingevoerde prijs heeft een te grote precisie!");
