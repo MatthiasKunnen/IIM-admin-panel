@@ -21,6 +21,7 @@ nbactions.xml
 nb-configuration.xml
 nbbuild.xml
 manifest.mf
+build.xml
 
 # Visual paradigm
 design/IIM.vpp~*
