@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.OverviewConflictsController">
+   <children>
+      <TableView fx:id="tvConflicts" layoutX="32.0" layoutY="14.0" prefHeight="266.0" prefWidth="536.0">
+        <columns>
+          <TableColumn fx:id="tcReservation" prefWidth="75.0" text="Reservatie" />
+          <TableColumn fx:id="tcUser" prefWidth="75.0" text="Gebruiker" />
+            <TableColumn fx:id="tcConflictsWithUser" prefWidth="75.0" text="Conflict met" />
+        </columns>
+         <columnResizePolicy>
+            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+         </columnResizePolicy>
+      </TableView>
+   </children>
+</AnchorPane>
