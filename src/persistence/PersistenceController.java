@@ -10,12 +10,13 @@ public final class PersistenceController {
     private static PersistenceEnforcer enforcer;
     private static EntityManager manager;
     private static EntityManagerFactory factory;
-    private static final String PU_NAME = "IIM_test";
+    private static final String PU_NAME = "IIM";
+    private static final String PU_LOCAL_NAME = "IIM_test";
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
     public static void start() {
-        factory = Persistence.createEntityManagerFactory(PU_NAME);
+        factory = Persistence.createEntityManagerFactory(PU_LOCAL_NAME);
         manager = factory.createEntityManager();
         enforcer = new PersistenceEnforcer(manager);
     }
