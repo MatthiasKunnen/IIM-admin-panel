@@ -48,6 +48,7 @@ public class GuiHelper {
     }
 
     public static void showWarning(TextField ctf, String message){
+        resetTextfieldColorCss(ctf);
         ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-warning-icon.png").toExternalForm()));
         iv.setPreserveRatio(true);
         iv.setFitHeight(20);
@@ -61,6 +62,7 @@ public class GuiHelper {
     }
 
     public static void showError(TextField ctf, String message) {
+        resetTextfieldColorCss(ctf);
         ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-error-icon.png").toExternalForm()));
         iv.setPreserveRatio(true);
         iv.setFitHeight(20);
@@ -80,8 +82,12 @@ public class GuiHelper {
         }else if (ctf instanceof CustomPasswordField){
             ((CustomPasswordField) ctf).setRight(set);
         }
+        resetTextfieldColorCss(ctf);
         ctf.setTooltip(null);
-        ctf.getStyleClass().removeAll("error", "warning");
+    }
+
+    private static void resetTextfieldColorCss(TextField tf){
+        tf.getStyleClass().removeAll("error", "warning");
     }
 
     public static MethodBuilder createMethodBuilder(Object source) {
