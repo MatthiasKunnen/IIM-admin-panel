@@ -323,7 +323,11 @@ public class MaterialController extends VBox {
         } else {
             this.material = material;
             this.tfName.setText(material.getName());
-            createMethodBuilder(this.material).addMethods("getPrice", "toString").setTarget(this.tfPrice, "setText").run();
+            createMethodBuilder(this.material)
+                    .addMethods("getPrice", "toString")
+                    .addMethod("replaceAll", "\\.", ",")
+                    .setTarget(this.tfPrice, "setText")
+                    .run();
             tfDescription.setText(this.material.getDescription());
             tfArticleNumber.setText(this.material.getArticleNr());
             String photoUrl = this.material.getPhotoUrl();
