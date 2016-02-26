@@ -19,20 +19,20 @@ import persistence.PersistenceEnforcer;
  *
  * @author matthiasseghers
  */
-public class ReservatieRepository {
+public class ReservationRepository {
 
     private MaterialIdentifier materialIdentifier;
     private PersistenceEnforcer persistence;
     private List<Reservation> reservations = new ArrayList<>();
     private ObservableList<Reservation> reservationList;
 
-    public ReservatieRepository(PersistenceEnforcer persistence) {
+    public ReservationRepository(PersistenceEnforcer persistence) {
         this.persistence = persistence;
         List<Reservation> initialize = persistence.retrieve(Reservation.class);
         reservations = new ArrayList<>(initialize);
         reservationList = FXCollections.observableList(this.reservations);
     }
-
+    
     public Reservation getReservationById(int reservationId) {
          Reservation reservation = reservationId == 0 ? null : this.reservations
                 .stream()
@@ -53,10 +53,10 @@ public class ReservatieRepository {
             throw new ReservationNotFoundException("This user hasn't any reservations");
          return reservation;
     }
-    public List<Reservation> getConflictedReservations(){
-        return reservationList.stream().filter(r-> r.isConflictFlag()).collect(Collectors.toList());
+    public ObservableList<Reservation> getConflictedReservations(){
+        return FXCollections.observableList(reservationList.stream().filter(r-> r.isConflictFlag()).collect(Collectors.toList()));
     }
-
+    
     public void conflictTracing() throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
 
@@ -66,7 +66,10 @@ public class ReservatieRepository {
                 if (!r1.equals(r2)) {
                     if (r1.getPickUpDate().before(r2.getBringBackDate()) && (r2.getPickUpDate().before(r1.getBringBackDate()))) {
                         r1.setConflictFlag(true);
+                        r1.getConflictWithUsers().add(r2.getUserId());//de gebruiker die conflicteert toevoevoegen aan de reservatie
                         r2.setConflictFlag(true);
+                        r2.getConflictWithUsers().add(r1.getUserId());
+                        
                     }
                 }
 

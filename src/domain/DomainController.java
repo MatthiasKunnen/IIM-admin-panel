@@ -9,6 +9,7 @@ public class DomainController {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private MaterialRepository materialRepository;
+    private ReservationRepository reservationRepository;
     private AdministratorRepository administratorRepository;
     private Administrator activeAdministrator;
     //</editor-fold>
@@ -93,7 +94,9 @@ public class DomainController {
         return this.materialRepository.getMaterialByName(name);
     }
     //</editor-fold>
-
+    public ObservableList<Reservation> getConflictReservations(){
+        return reservationRepository.getConflictedReservations();
+    }
     //<editor-fold desc="Local security - login" defaultstate="collapsed">
 
     public void login(String username, String password) throws LoginException {

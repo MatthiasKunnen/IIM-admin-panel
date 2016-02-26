@@ -6,6 +6,7 @@
 package domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -32,6 +33,7 @@ public class Reservation implements Serializable {
     private GregorianCalendar pickUpDate;
     private GregorianCalendar bringBackDate;
     private boolean conflictFlag;
+    private List<Integer> conflictWithUsers;
     
     public Reservation(Long reservationId, int userId, List<MaterialIdentifier> materialIdentifiersList, GregorianCalendar reservationDate, GregorianCalendar pickUpDate, GregorianCalendar bringBackDate, boolean conflictflag){
         this.userId=userId;
@@ -41,6 +43,8 @@ public class Reservation implements Serializable {
         this.pickUpDate=pickUpDate;
         this.bringBackDate=bringBackDate;
         this.conflictFlag=conflictflag;
+        this.conflictWithUsers= new ArrayList<>();
+        
     }
    
     
@@ -100,6 +104,14 @@ public class Reservation implements Serializable {
 
     public void setConflictFlag(boolean conflictFlag) {
         this.conflictFlag = conflictFlag;
+    }
+
+    public List<Integer> getConflictWithUsers() {
+        return conflictWithUsers;
+    }
+
+    public void setConflictWithUsers(List<Integer> conflictWithUsers) {
+        this.conflictWithUsers = conflictWithUsers;
     }
     
  //</editor-fold>
