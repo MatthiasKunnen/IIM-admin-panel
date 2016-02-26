@@ -5,7 +5,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceEnforcer;
 
-import javax.persistence.NoResultException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,32 +33,35 @@ public class AdministratorRepository {
 
     /**
      * Returns an Object of {@link Administrator} if the provided credentials were correct.
+     *
      * @param username the username.
      * @param password the password.
      * @return an Object of {@link Administrator}.
      * @throws LoginException thrown if login failed.
      */
     public Administrator login(String username, String password) throws LoginException {
-        try{
-            Administrator administrator = (Administrator) persistence.getNamedQuery("User.findByName").setParameter("name", username).getSingleResult();
-            if (!administrator.checkPassword(password)) {
-                throw new LoginException();
-            } else if(administrator.isSuspended()) {
-                throw new LoginException(LoginException.Cause.ACCOUNT_SUSPENDED);
-            }else{
-                return copyDefensively(administrator);
-            }
-        }catch (NoResultException e){
+        Administrator administrator;
+        try {
+            administrator = (Administrator) persistence.getNamedQuery(Administrator.class.getSimpleName() + ".findByName").setParameter("name", username).getSingleResult();
+        } catch (Exception e) {
             throw new LoginException();
+        }
+        if (administrator == null || !administrator.checkPassword(password)) {
+            throw new LoginException();
+        } else if (administrator.isSuspended()) {
+            throw new LoginException(LoginException.Cause.ACCOUNT_SUSPENDED);
+        } else {
+            return copyDefensively(administrator);
         }
     }
 
     /**
      * Adds a new {@link Administrator}.
+     *
      * @param administrator the {@link Administrator} to add.
      * @return the {@link Administrator} with the persisted database fields.
      */
-    public Administrator addLogin(Administrator administrator){
+    public Administrator addLogin(Administrator administrator) {
         Administrator toSave = copyDefensively(administrator);
         persistence.persist(toSave);
         addAdministrator(toSave);
@@ -68,7 +70,7 @@ public class AdministratorRepository {
     //</editor-fold>
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
-    private void addAdministrator(Administrator administrator){
+    private void addAdministrator(Administrator administrator) {
         this.administrators.add(administrator);
         this.administratorObservableList.add(administrator);
     }
