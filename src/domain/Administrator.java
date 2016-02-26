@@ -14,7 +14,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 @Entity(name = "Administrator")
 @Access(AccessType.PROPERTY)
-@NamedQuery(name = "User.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
+@NamedQuery(name = "Administrator.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
 public class Administrator implements IEntity{
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
@@ -52,6 +52,7 @@ public class Administrator implements IEntity{
         this.name = name;
     }
 
+    @Column(name = "permission")
     @ElementCollection(targetClass = Permission.class)
     @Convert(converter = PermissionsConverter.class)
     public Set<Permission> getPermissions() {
