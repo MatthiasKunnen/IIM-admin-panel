@@ -8,8 +8,7 @@ import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
- * Makes it possible to map enums while still having the ability to rearrange, add or modify enums without braking the database
- * Created by matthias on 2016-02-13.
+ * Makes it possible to map enums while still having the ability to rearrange, add or modify enums without breaking the database
  */
 @Converter(autoApply = true)
 public class VisibilityConverter implements AttributeConverter<Visibility, Integer> {
