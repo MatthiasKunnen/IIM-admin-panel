@@ -3,8 +3,8 @@ package exceptions;
 /**
  *
  * Exception thrown when a login failed.
- * Use @link{getLoginFailureCause} to get the cause of the failed login.
- * The default cause is @link{Cause.CREDENTIALS_INCORRECT}.
+ * Use {@link #getLoginFailureCause} to get the cause of the failed login.
+ * The default cause is {@link Cause#CREDENTIALS_INCORRECT}.
  * @author Matthias kunnen
  */
 public class LoginException extends AdministratorException {

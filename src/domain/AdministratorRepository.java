@@ -33,10 +33,10 @@ public class AdministratorRepository {
     //<editor-fold desc="Public actions" defaultstate="collapsed">
 
     /**
-     * Returns an Object of @Link{Administrator} if the provided credentials were correct.
+     * Returns an Object of {@link Administrator} if the provided credentials were correct.
      * @param username the username.
      * @param password the password.
-     * @return an Object of @Link{Administrator}.
+     * @return an Object of {@link Administrator}.
      * @throws LoginException thrown if login failed.
      */
     public Administrator login(String username, String password) throws LoginException {
@@ -55,9 +55,9 @@ public class AdministratorRepository {
     }
 
     /**
-     * Adds a new @link{Administrator}.
-     * @param administrator the @link{Administrator} to add.
-     * @return the @link{Administrator} with the persisted database fields.
+     * Adds a new {@link Administrator}.
+     * @param administrator the {@link Administrator} to add.
+     * @return the {@link Administrator} with the persisted database fields.
      */
     public Administrator addLogin(Administrator administrator){
         Administrator toSave = copyDefensively(administrator);
