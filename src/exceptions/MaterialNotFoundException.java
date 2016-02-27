@@ -4,6 +4,10 @@ import domain.Material;
 
 public class MaterialNotFoundException extends MaterialException{
 
+    public MaterialNotFoundException(Material m) {
+        super(m);
+    }
+
     public MaterialNotFoundException(String s) {
         super(s);
     }
@@ -12,11 +16,4 @@ public class MaterialNotFoundException extends MaterialException{
         super(m, s);
     }
 
-    public MaterialNotFoundException(String s, Material m) {
-        super(s, m);
-    }
-
-    public MaterialNotFoundException(Material m) {
-        super(m);
-    }
 }

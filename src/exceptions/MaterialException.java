@@ -16,10 +16,6 @@ public abstract class MaterialException extends IllegalArgumentException {
     }
 
     public MaterialException(Material m, String s){
-        this(s, m);
-    }
-
-    public MaterialException(String s, Material m){
         super(s);
         this.material = m;
     }
