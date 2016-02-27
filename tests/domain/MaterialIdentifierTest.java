@@ -60,7 +60,7 @@ public class MaterialIdentifierTest {
     
     @Test
     public void testSetId(){
-        matID.setId(056);
+        //matID.setId(056);
         Assert.assertEquals(matID.getId(), 056);
     }
     

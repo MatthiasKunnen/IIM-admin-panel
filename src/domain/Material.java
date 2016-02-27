@@ -39,10 +39,6 @@ public class Material implements Serializable, IEntity {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
     public String getEncoding() {
         return this.encoding;
     }

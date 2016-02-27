@@ -13,19 +13,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * An entity class for System Administrators
  */
 @Entity(name = "Administrator")
-@Access(AccessType.PROPERTY)
 @NamedQuery(name = "Administrator.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
-public class Administrator implements IEntity{
+public class Administrator implements IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
-    @Access(AccessType.FIELD)
     @Column(nullable = false)
     private String hash;
+
+    @Column(name = "permission")
+    @ElementCollection(targetClass = Permission.class)
+    @Convert(converter = PermissionsConverter.class)
     private Set<Permission> permissions = new HashSet<>();
-    private boolean isSuspended;
+
+    private boolean suspended;
 
     public enum Permission {
         MANAGE_MATERIALS, VIEW_RESERVATIONS, MANAGE_RESERVATIONS, MANAGE_USERS
@@ -33,17 +40,10 @@ public class Administrator implements IEntity{
     //</editor-fold>
 
     //<editor-fold desc="Properties" defaultstate="collapsed">
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    @Column(nullable = false, unique = true)
     public String getName() {
         return name;
     }
@@ -52,9 +52,6 @@ public class Administrator implements IEntity{
         this.name = name;
     }
 
-    @Column(name = "permission")
-    @ElementCollection(targetClass = Permission.class)
-    @Convert(converter = PermissionsConverter.class)
     public Set<Permission> getPermissions() {
         return permissions;
     }
@@ -64,16 +61,15 @@ public class Administrator implements IEntity{
     }
 
     public boolean isSuspended() {
-        return isSuspended;
+        return suspended;
     }
 
     public void setSuspended(boolean suspended) {
-        isSuspended = suspended;
+        this.suspended = suspended;
     }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    @Transient
     public boolean hasPermission(Permission permission) {
         return permissions.contains(permission);
     }
@@ -82,12 +78,11 @@ public class Administrator implements IEntity{
         this.hash = BCrypt.hashPassword(password, BCrypt.generateSalt());
     }
 
-    @Transient
     public boolean checkPassword(String password) {
         return BCrypt.checkPassword(password, this.hash);
     }
 
-    public void addPermission(Permission permission){
+    public void addPermission(Permission permission) {
         this.permissions.add(permission);
     }
 
@@ -101,7 +96,7 @@ public class Administrator implements IEntity{
                 .omitNullValues()
                 .add("id", id)
                 .add("name", name)
-                .add("suspended", isSuspended)
+                .add("suspended", suspended)
                 .add("Permissions", permissions)
                 .toString();
     }
@@ -123,7 +118,7 @@ public class Administrator implements IEntity{
      * @param administrator the administrator to copy.
      */
     public Administrator(Administrator administrator) {
-        this.setId(administrator.id);
+        this.id = administrator.id;
         this.hash = administrator.hash;
         this.setName(administrator.name);
         this.permissions = new HashSet<>(administrator.getPermissions());

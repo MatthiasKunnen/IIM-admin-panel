@@ -14,7 +14,9 @@ import java.io.Serializable;
 public class MaterialIdentifier implements Serializable, IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Access(value = AccessType.FIELD)
     private int id;
     private Material info;
     private SimpleStringProperty place = new SimpleStringProperty();
@@ -22,14 +24,8 @@ public class MaterialIdentifier implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getPlace() {
