@@ -4,6 +4,7 @@ import exceptions.AzureException;
 import exceptions.LoginException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
+import repository.AdministratorRepository;
 
 public class DomainController {
 
@@ -29,6 +30,10 @@ public class DomainController {
 
     public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
         return materialRepository.getMaterialIdentifiers();
+    }
+
+    public ObservableList<Reservation> getConflictReservations(){
+        return reservationRepository.getConflictedReservations();
     }
     //</editor-fold>
 
@@ -94,9 +99,7 @@ public class DomainController {
         return this.materialRepository.getMaterialByName(name);
     }
     //</editor-fold>
-    public ObservableList<Reservation> getConflictReservations(){
-        return reservationRepository.getConflictedReservations();
-    }
+
     //<editor-fold desc="Local security - login" defaultstate="collapsed">
 
     public void login(String username, String password) throws LoginException {
@@ -104,7 +107,15 @@ public class DomainController {
     }
 
     public Administrator addAdministrator(Administrator administrator){
-        return administratorRepository.addLogin(administrator);
+        return administratorRepository.add(administrator);
+    }
+
+    public void updateAdministrator(Administrator administrator){
+        administratorRepository.remove(administrator);
+    }
+
+    public void removeAdministrator(Administrator administrator){
+        administratorRepository.remove(administrator);
     }
 
     public boolean hasPermission(Administrator.Permission permission){
