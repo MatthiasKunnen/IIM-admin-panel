@@ -3,6 +3,7 @@ package exceptions;
 import domain.Material;
 
 public class MaterialNotFoundException extends MaterialException{
+
     public MaterialNotFoundException(String s) {
         super(s);
     }

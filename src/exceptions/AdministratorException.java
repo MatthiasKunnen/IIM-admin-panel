@@ -2,11 +2,9 @@ package exceptions;
 
 import domain.Administrator;
 
-/**
- * Created by matthias on 2016-02-24.
- */
-public abstract class AdministratorException extends Exception {
+public abstract class AdministratorException extends RepositoryException {
     private Administrator administrator;
+
     public AdministratorException() {
     }
 
