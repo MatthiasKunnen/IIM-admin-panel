@@ -32,9 +32,6 @@ public class DomainController {
         return materialRepository.getMaterialIdentifiers();
     }
 
-    public ObservableList<Reservation> getConflictReservations(){
-        return reservationRepository.getConflictedReservations();
-    }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
@@ -97,6 +94,21 @@ public class DomainController {
 
     public Material getMaterialByName(String name) {
         return this.materialRepository.getMaterialByName(name);
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Reservation" defaultstate="collapsed">
+    public Reservation addReservation(Reservation reservation){
+        return this.reservationRepository.addReservation(reservation);
+    }
+    public void removeReservation(Reservation reservation){
+        this.reservationRepository.removeReservation(reservation);
+    }
+    public void update(Reservation reservation){
+        this.reservationRepository.update(reservation);
+    }
+    public ObservableList<Reservation> getReservations(){
+        return reservationRepository.getReservations();
     }
     //</editor-fold>
 
