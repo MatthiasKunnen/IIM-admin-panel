@@ -48,7 +48,7 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setEncoding(String encoding) {
-        this.encoding = encoding;
+        this.encoding = encoding.toLowerCase();
     }
 
     public String getName() {
