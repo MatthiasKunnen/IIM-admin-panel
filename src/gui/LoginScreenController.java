@@ -148,7 +148,7 @@ public class LoginScreenController extends AnchorPane {
                             dc.login(username, password);
                             this.updateMessage("Data aan het inladen!");
                             Platform.runLater(() -> {
-                                //Run this method when we're back on the UI thread.
+                                //Run this method when we're back on the GUI thread.
                                 OverviewController chooseActionScreen = new OverviewController(dc);
                                 Scene scene = new Scene(chooseActionScreen);
                                 Stage currentStage = (Stage) getScene().getWindow();
@@ -172,7 +172,7 @@ public class LoginScreenController extends AnchorPane {
                                     updateMessage("Uw account is geschorst!");
                                     break;
                                 case ACCOUNT_LOCKED:
-                                    updateMessage("De beveiliging heeft teveel mislukte aanmelding gedecteerd en bijgevolg het aanmelden verhinderd.");
+                                    updateMessage("De beveiliging heeft teveel mislukte aanmeldingen gedecteerd en bijgevolg het aanmelden verhinderd.");
                                     timer = new Timer();
                                     timer.scheduleAtFixedRate(new TimerTask() { //We don't want the GUI to be unresponsive. -> run a new task
                                         @Override
