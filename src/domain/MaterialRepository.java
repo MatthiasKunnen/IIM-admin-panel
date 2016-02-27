@@ -86,9 +86,7 @@ public class MaterialRepository {
      * @param material the Material to remove.
      */
     public void removeMaterial(Material material) {
-        Material remove = getMaterialById(material.getId());
-        if (remove == null)
-            throw new MaterialNotFoundException(material);
+        Material remove = getMaterialByIdForced(material.getId(), "Cannot remove a nonexistent Material");
         persistence.remove(remove);
         persistence.remove(remove.getIdentifiers());
         removeMaterialSynced(remove);
