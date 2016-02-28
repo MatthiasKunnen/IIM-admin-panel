@@ -1,13 +1,15 @@
-package domain;
+package repository;
 
 import com.google.common.io.Files;
+import domain.IEntity;
+import domain.Material;
+import domain.MaterialIdentifier;
 import exceptions.AzureException;
 import exceptions.MaterialAlreadyExistsException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.AzureBlobStorage;
 import persistence.PersistenceEnforcer;
-import repository.Repository;
 
 import java.io.File;
 import java.util.ArrayList;

@@ -5,6 +5,7 @@ import exceptions.LoginException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.AdministratorRepository;
+import repository.MaterialRepository;
 
 public class DomainController {
 
