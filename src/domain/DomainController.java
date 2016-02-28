@@ -21,6 +21,7 @@ public class DomainController {
         PersistenceController.start();
         this.administratorRepository = new AdministratorRepository(PersistenceController.getEnforcer());
         this.materialRepository = new MaterialRepository(PersistenceController.getEnforcer());
+        this.reservationRepository= new ReservationRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 

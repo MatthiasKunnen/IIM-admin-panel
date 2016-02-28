@@ -27,12 +27,12 @@ public class ReservationRepository {
 
     private ObservableList<MaterialIdentifier> materialIdentifiers;
     private PersistenceEnforcer persistence;
-    private List<Reservation> reservations = new ArrayList<>();
+    public List<Reservation> reservations = new ArrayList<>();
 
     public ReservationRepository(PersistenceEnforcer persistence) {
         this.persistence = persistence;
-        List<Reservation> initialize = persistence.retrieve(Reservation.class);
-        reservations = new ArrayList<>(initialize);
+        //List<Reservation> initialize = persistence.retrieve(Reservation.class);
+        reservations = new ArrayList<>(/*initialize*/);
     }
     
     public ObservableList<Reservation> getReservations(){
@@ -69,7 +69,7 @@ public class ReservationRepository {
         if (remove == null)
             throw new ReservationNotFoundException(reservation);
         persistence.remove(remove);
-        persistence.remove(remove.getMaterialIdentifierList());
+        persistence.remove(remove.getMaterialIdentifiersList());
         removeReservationSynced(remove);
     }
     /**
@@ -79,7 +79,7 @@ public class ReservationRepository {
      */
     public void update(Reservation reservation) {
         Reservation original = getReservationByIdForced(reservation.getId(), "Cannot update a record that does not appear in the database.");
-        for (MaterialIdentifier mi : reservation.getMaterialIdentifierList()) {
+        for (MaterialIdentifier mi : reservation.getMaterialIdentifiersList()) {
             if (mi.getId() == 0) {
                 persistence.persist(mi);
             } else {
@@ -87,8 +87,8 @@ public class ReservationRepository {
             }
         }
 
-        List<MaterialIdentifier> remove = new ArrayList<>(original.getMaterialIdentifierList());
-        remove.removeAll(reservation.getMaterialIdentifierList());
+        List<MaterialIdentifier> remove = new ArrayList<>(original.getMaterialIdentifiersList());
+        remove.removeAll(reservation.getMaterialIdentifiersList());
         remove.forEach(materialIdentifier -> persistence.remove(materialIdentifier));
 
         Reservation toSave = copyDefensively(reservation);
@@ -124,9 +124,7 @@ public class ReservationRepository {
 //         return reservation;
 //    }
     
-    public List<Reservation> getConflictedReservations(){
-        return FXCollections.observableList(reservations.stream().filter(r-> r.isConflictFlag()).collect(Collectors.toList()));
-    }
+   
     
 //    public void conflictTracing() throws ParseException {
 //        SimpleDateFormat sdf = new SimpleDateFormat("dd-M-yyyy");
@@ -156,11 +154,11 @@ public class ReservationRepository {
     }
      private void addReservationLocally(Reservation reservation) {
         this.reservations.add(reservation);
-        this.materialIdentifiers.addAll(reservation.getMaterialIdentifierList());
+        this.materialIdentifiers.addAll(reservation.getMaterialIdentifiersList());
     }
      private void addReservationToObservers(Reservation reservation) {
         this.reservations.add(reservation);
-        this.materialIdentifiers.addAll(reservation.getMaterialIdentifierList());
+        this.materialIdentifiers.addAll(reservation.getMaterialIdentifiersList());
     }
      private void removeReservationSynced(Reservation reservation) {
         removeReservationLocally(reservation);
@@ -168,12 +166,12 @@ public class ReservationRepository {
     }
      private void removeReservationLocally(Reservation reservation) {
         removeById(this.reservations, reservation.getId());
-        removeById(this.materialIdentifiers, reservation.getMaterialIdentifierList().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
+        removeById(this.materialIdentifiers, reservation.getMaterialIdentifiersList().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
     }
 
     private void removeReservationFromObservers(Reservation reservation) {
         removeById(this.reservations, reservation.getId());
-        removeById(this.materialIdentifiers, reservation.getMaterialIdentifierList().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
+        removeById(this.materialIdentifiers, reservation.getMaterialIdentifiersList().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
     }
     private void removeById(Collection<? extends IEntity> collection, int id) {
         collection.removeIf(e -> e.getId() == id);
@@ -183,6 +181,6 @@ public class ReservationRepository {
     }
     private void persistReservation(Reservation reservation) {
         persistence.persist(reservation);
-        persistence.persist(reservation.getMaterialIdentifierList());
+        persistence.persist(reservation.getMaterialIdentifiersList());
     }
 }

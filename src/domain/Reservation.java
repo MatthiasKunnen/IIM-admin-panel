@@ -5,8 +5,10 @@
  */
 package domain;
 
+import static com.google.common.base.MoreObjects.toStringHelper;
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -14,6 +16,8 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -24,25 +28,24 @@ import javax.persistence.Id;
  * @author matthiasseghers
  */
 @Entity
-public class Reservation implements Serializable,IEntity {
+public class Reservation implements Serializable, IEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String userEmail;
     private List<MaterialIdentifier> materialIdentifiersList;
-    private LocalDate reservationDate;
-    private LocalDate pickUpDate;
-    private LocalDate bringBackDate;
-    private boolean conflictFlag;
-    private Map<MaterialIdentifier, Integer> conflictWithUsers=new HashMap<>();;
+    private ObjectProperty<LocalDate>  reservationDate = new SimpleObjectProperty<>() ;
+    private ObjectProperty<LocalDate>  pickUpDate= new SimpleObjectProperty<>();
+    private ObjectProperty<LocalDate>  bringBackDate= new SimpleObjectProperty<>();
     
-    
-    public Reservation(){}
    
-    
-    //<editor-fold desc="Getters and setters" defaultstate="collapsed">
 
+    public Reservation() {
+        
+    }
+
+    //<editor-fold desc="Getters and setters" defaultstate="collapsed">
     @Override
     public int getId() {
         return id;
@@ -56,69 +59,81 @@ public class Reservation implements Serializable,IEntity {
         this.userEmail = userEmail;
     }
 
-    public List<MaterialIdentifier> getMaterialIdentifierList() {
+    public List<MaterialIdentifier> getMaterialIdentifiersList() {
         return materialIdentifiersList;
     }
 
-    public void setMaterialIdentifierList(List<MaterialIdentifier> materialIdentifierList) {
-        this.materialIdentifiersList = materialIdentifierList;
+    public void setMaterialIdentifiersList(List<MaterialIdentifier> materialIdentifiersList) {
+        this.materialIdentifiersList = materialIdentifiersList;
     }
 
     public LocalDate getReservationDate() {
-        return reservationDate;
+        return reservationDate.get();
     }
 
     public void setReservatieDate(LocalDate reservationDate) {
-        this.reservationDate = reservationDate;
+        this.reservationDate.set(reservationDate);
     }
 
     public LocalDate getPickUpDate() {
-        return pickUpDate;
+        return pickUpDate.get();
     }
 
     public void setPickUpDate(LocalDate pickUpDate) {
-        this.pickUpDate = pickUpDate;
+        this.pickUpDate.set(pickUpDate);
     }
 
     public LocalDate getBringBackDate() {
-        return bringBackDate;
+        return bringBackDate.get();
     }
 
     public void setBringBackDate(LocalDate bringBackDate) {
-        this.bringBackDate = bringBackDate;
+        this.bringBackDate.set(bringBackDate);
     }
 
-    public boolean isConflictFlag() {
-        return conflictFlag;
+    public ObjectProperty<LocalDate> getBringBackDateProperty() {
+        return bringBackDate;
     }
 
-    public void setConflictFlag(boolean conflictFlag) {
-        this.conflictFlag = conflictFlag;
+//    public void setBringBackDateProperty(ObjectProperty<LocalDate> bringBackDateProperty) {
+//        this.bringBackDateProperty = bringBackDateProperty;
+//    }
+
+    public ObjectProperty<LocalDate> getPickUpDateProperty() {
+        return pickUpDate;
     }
 
-    public Map<MaterialIdentifier, Integer> getConflictWithUsers() {
-        return conflictWithUsers;
+//    public void setPickUpDateProperty(ObjectProperty<LocalDate> pickUpDateProperty) {
+//        this.pickUpDateProperty = pickUpDateProperty;
+//    }
+
+    public ObjectProperty<LocalDate> getReservationDateProperty() {
+        return reservationDate;
     }
 
-    public void setConflictWithUsers(Map<MaterialIdentifier, Integer> conflictWithUsers) {
-        this.conflictWithUsers = conflictWithUsers;
-    }
-    
- //</editor-fold>
-    
-     /**
+//    public void setReservationDateProperty(ObjectProperty<LocalDate> reservationDateProperty) {
+//        this.reservationDateProperty = reservationDateProperty;
+//    }
+
+    //</editor-fold>
+    /**
      * De reservatie wordt vroeg tijdig stopgezet
      */
-    public void reservationSuspend(LocalDate earlyBringBack){
-        this.bringBackDate= earlyBringBack;
-    }
-    
+//    public void reservationSuspend(LocalDate earlyBringBack) {
+//        this.bringBackDate = earlyBringBack;
+//    }
 
     @Override
     public String toString() {
-        return "domain.Reservatie[ id=" + id + " ]";
+        return toStringHelper(this)
+                .omitNullValues()
+                .add("id", id)
+                .add("userEmail", userEmail)
+                .add("materialIdentifiersList", materialIdentifiersList)
+                .add("reservationDate", reservationDate)
+                .add("pickUpDate", pickUpDate)
+                .add("bringBackDate", bringBackDate)
+                .toString();
     }
 
-
-    
 }
