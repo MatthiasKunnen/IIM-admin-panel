@@ -1,5 +1,6 @@
 package domain;
 
+import repository.ReservationRepository;
 import exceptions.AzureException;
 import exceptions.LoginException;
 import javafx.collections.ObservableList;
@@ -101,16 +102,13 @@ public class DomainController {
 
     //<editor-fold desc="Reservation" defaultstate="collapsed">
     public Reservation addReservation(Reservation reservation){
-        return this.reservationRepository.addReservation(reservation);
+        return this.reservationRepository.add(reservation);
     }
     public void removeReservation(Reservation reservation){
-        this.reservationRepository.removeReservation(reservation);
+        this.reservationRepository.remove(reservation);
     }
     public void update(Reservation reservation){
         this.reservationRepository.update(reservation);
-    }
-    public ObservableList<Reservation> getReservations(){
-        return reservationRepository.getReservations();
     }
     //</editor-fold>
 
