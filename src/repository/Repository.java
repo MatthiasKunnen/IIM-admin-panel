@@ -74,6 +74,9 @@ public abstract class Repository<E extends IEntity> {
         persistence.remove(remove);
         removeItem(remove);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Protected actions" defaultstate="collapsed">
 
     /**
      * Finds a persisted {@link E repository item} by id.
@@ -82,7 +85,7 @@ public abstract class Repository<E extends IEntity> {
      * @param exceptionMessage thrown when the {@link E repository item} is not found.
      * @return the {@link E repository item} that has been found.
      */
-    private E getItemByIdForced(int id, String exceptionMessage) {
+    protected E getItemByIdForced(int id, String exceptionMessage) {
         E found = getItemById(id);
         if (found == null)
             throw new RepositoryItemNotFoundException(exceptionMessage);
@@ -95,19 +98,17 @@ public abstract class Repository<E extends IEntity> {
      * @param id the id to search.
      * @return the {@link E repository item} if one has been found or Null.
      */
-    public E getItemById(int id) {
+    protected E getItemById(int id) {
         return id == 0 ? null : this.eList
                 .stream()
                 .filter(m -> m.getId() == id)
                 .findAny()
                 .orElse(null);
     }
-    //</editor-fold>
 
-    //<editor-fold desc="Private actions" defaultstate="collapsed">
     protected void addItem(E add) {
         this.eList.add(add);
-        this.eObservableList.add(add);
+        this.eObservableList.add(copyDefensively(add));
     }
 
     protected void removeItem(E remove) {
