@@ -12,8 +12,10 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import javafx.beans.binding.Bindings;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
@@ -39,8 +41,6 @@ public class ReservationOverviewController extends AnchorPane {
 
     private DomainController dc;
     @FXML
-    private TableColumn<Reservation, Integer> tcId;
-    @FXML
     private TableColumn<Reservation, String> tcReservedFor;
     @FXML
     private TableColumn<Reservation, LocalDate> tcPickUpDate;
@@ -48,6 +48,8 @@ public class ReservationOverviewController extends AnchorPane {
     private TableColumn<Reservation, LocalDate> tcBringBackDate;
     @FXML
     private TableView<Reservation> tvReservations;
+    @FXML
+    private TableColumn<?, ?> tcOptions;
 
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
@@ -63,75 +65,48 @@ public class ReservationOverviewController extends AnchorPane {
         }
 
         ivAddButton.setImage(new Image(getClass().getResource("/gui/images/material-add.png").toExternalForm()));
-        tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        //tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcReservedFor.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
         tcPickUpDate.setCellValueFactory(col->col.getValue().getPickUpDateProperty());
         tcBringBackDate.setCellValueFactory(col->col.getValue().getBringBackDateProperty());
         
         this.tvReservations.setItems(dc.getReservations());
-
-
-//        tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
-//
-//            @Override
-//            public TableCell<Material, Boolean> call(TableColumn<Material, Boolean> param) {
-//                return new TableCell<Material, Boolean>() {
-//                    private final IdentifierOptionsController ioc = new IdentifierOptionsController();
-//
-//                    @Override
-//                    protected void updateItem(Boolean item, boolean empty) {
-//                        super.updateItem(item, empty);
-//                        if (empty) {
-//                            setGraphic(null);
-//                            setText(null);
-//                        } else {
-//                            setGraphic(ioc);
-//                            EventHandler filter = new EventHandler<MouseEvent>() {
-//                                @Override
-//                                public void handle(MouseEvent event) {
-//                                    Material m = (Material) getTableRow().getItem();
-//                                    dc.removeMaterial(m);
-//                                    
-//                                }
-//
-//                            };
-//
-//                            ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
-//                        }
-//
-//                    }
-//
-//                };
-//            }
-//        });
                
 
-//        tvReservations.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//
-//            @Override
-//            public void handle(MouseEvent event) {
-//                if (event.getClickCount() >= 2) {
-//                    Stage newStage = new Stage(StageStyle.DECORATED);
-//                    Reservation theMaterial = tvReservations.getSelectionModel().getSelectedItem();
-//                    //MaterialController mc = new MaterialController(dc, newStage, theMaterial);
-//                    newStage.setTitle(theMaterial.getName() + " - IIM");
-//                    openMaterialScreen(mc, newStage);
-//                }
-//            }
-//
-//        });
+        tvReservations.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+            @Override
+            public void handle(MouseEvent event) {
+                if (event.getClickCount() >= 2) {
+                    Stage newStage = new Stage(StageStyle.DECORATED);
+                    Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
+                    ReservationController rc = new ReservationController(dc, newStage, theReservation);
+                    newStage.setTitle("Reservatie van "+theReservation.getUserEmail()+ " - IIM");
+                    openReservationScreen(rc, newStage);
+                }
+            }
+
+        });
     }
 
     @FXML
     private void addReservation(MouseEvent event) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle("Nieuw Materiaal - IIM");
-        //MaterialController mc = new MaterialController(dc, newStage);
+        newStage.setTitle("Nieuwe reservatie - IIM");
+        //ReservationController rc = new ReservationController(dc, newStage);
 
-        //openMaterialScreen(mc, newStage);
+        //openReservationScreen(mc, newStage);
     }
     
+    private void openReservationScreen(ReservationController rc, Stage newStage){
+        
+        Scene scene = new Scene(rc);
 
+        newStage.setMinWidth(620);
+        newStage.setMinHeight(463);
+        newStage.setScene(scene);
+        newStage.show();
+    }
 
     
 }

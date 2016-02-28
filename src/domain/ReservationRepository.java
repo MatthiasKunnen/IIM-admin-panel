@@ -42,6 +42,10 @@ public class ReservationRepository {
         r.setPickUpDate(pickUpDate);
         r.setReservatieDate(LocalDate.of(2016, Month.JANUARY, 20));
         r.setUserEmail("ik@hotmail.com");
+        MaterialIdentifier mi = new MaterialIdentifier(new Material("Wereldbol"),Visibility.Docent);
+        List<MaterialIdentifier> l = new ArrayList<>();
+        l.add(mi);
+        r.setMaterialIdentifiersList(l);
         reservations.add(r);
         return FXCollections.observableList(this.reservations);
     }
