@@ -3,11 +3,11 @@ package domain;
 import com.google.common.io.Files;
 import exceptions.AzureException;
 import exceptions.MaterialAlreadyExistsException;
-import exceptions.MaterialNotFoundException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.AzureBlobStorage;
 import persistence.PersistenceEnforcer;
+import repository.Repository;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,29 +18,26 @@ import java.util.stream.Collectors;
 import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
 
-public class MaterialRepository {
+public class MaterialRepository extends Repository<Material>{
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
-    private List<Material> materials;
     private List<MaterialIdentifier> materialIdentifiers;
-    private PersistenceEnforcer persistence;
     private AzureBlobStorage azureBlobStorage;
-    private ObservableList<Material> materialObservableList;
     private ObservableList<MaterialIdentifier> materialIdentifierObservableList;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public MaterialRepository(PersistenceEnforcer persistence) {
-        this.persistence = persistence;
+        super(persistence);
         List<Material> initialize = persistence.retrieve(Material.class);
-        this.materials = new ArrayList<>(initialize);
+        this.eList = new ArrayList<>(initialize);
         this.materialIdentifiers = new ArrayList<>(initialize
                 .stream()
                 .flatMap(m -> m.getIdentifiers().stream())
                 .collect(Collectors.toList()));
-        this.materialObservableList = FXCollections.observableList((List<Material>) copyCollectionDefensively(this.materials));
+        this.eObservableList = FXCollections.observableList((List<Material>) copyCollectionDefensively(this.eList));
         this.materialIdentifierObservableList = FXCollections.observableList((List<MaterialIdentifier>) copyCollectionDefensively(this.materialIdentifiers));
         this.azureBlobStorage = new AzureBlobStorage();
     }
@@ -52,7 +49,7 @@ public class MaterialRepository {
      * @return returns an ObservableList of no-reference {@link domain.Material}.
      */
     public ObservableList<Material> getMaterials() {
-        return FXCollections.unmodifiableObservableList(materialObservableList);
+        return FXCollections.unmodifiableObservableList(eObservableList);
     }
 
     /**
@@ -71,8 +68,9 @@ public class MaterialRepository {
      * @param material the Material to save.
      * @return the material with updates database fields.
      */
-    public Material addMaterial(Material material) {
-        if (getMaterialById(material.getId()) != null)
+    @Override
+    public Material add(Material material) {
+        if (getItemById(material.getId()) != null)
             throw new MaterialAlreadyExistsException(material);
         Material toPersist = copyDefensively(material);
         persistMaterial(toPersist);
@@ -85,8 +83,9 @@ public class MaterialRepository {
      *
      * @param material the Material to remove.
      */
-    public void removeMaterial(Material material) {
-        Material remove = getMaterialByIdForced(material.getId(), "Cannot remove a nonexistent Material");
+    @Override
+    public void remove(Material material) {
+        Material remove = getItemByIdForced(material.getId(), "Cannot remove a nonexistent Material");
         persistence.remove(remove);
         persistence.remove(remove.getIdentifiers());
         removeMaterialSynced(remove);
@@ -97,8 +96,9 @@ public class MaterialRepository {
      *
      * @param material the Material to update.
      */
+    @Override
     public void update(Material material) {
-        Material original = getMaterialByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
+        Material original = getItemByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
         for (MaterialIdentifier mi : material.getIdentifiers()) {
             if (mi.getId() == 0) {
                 persistence.persist(mi);
@@ -126,7 +126,7 @@ public class MaterialRepository {
      * @throws AzureException
      */
     public void updatePhoto(Material material, String imagePath) throws AzureException {
-        Material original = getMaterialByIdForced(material.getId(), "Cannot add photo of a nonexistent material.");
+        Material original = getItemByIdForced(material.getId(), "Cannot add photo of a nonexistent material.");
         material.setEncoding(Files.getFileExtension(imagePath));
         File upload = new File(imagePath);
 
@@ -138,41 +138,17 @@ public class MaterialRepository {
     }
 
     /**
-     * Finds a persisted material by id.
-     *
-     * @param id               the id of the material to search.
-     * @param exceptionMessage thrown when the material is not found.
-     * @return the Material that has been found.
-     */
-    private Material getMaterialByIdForced(int id, String exceptionMessage) {
-        Material found = getMaterialById(id);
-        if (found == null)
-            throw new MaterialNotFoundException(exceptionMessage);
-        return found;
-    }
-
-    /**
-     * Finds a persisted material by id.
-     *
-     * @param id the id to search.
-     * @return the Material if one has been found or Null.
-     */
-    public Material getMaterialById(int id) {
-        return id == 0 ? null : this.materials
-                .stream()
-                .filter(m -> m.getId() == id)
-                .findAny()
-                .orElse(null);
-    }
-
-    /**
      * Check if a name of a material already exists.
      *
      * @param name the name to check.
      * @return true if the name is already in use. False otherwise.
      */
     public boolean doesMaterialNameAlreadyExist(String name) {
-        return this.materials.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
+        return this.eList.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
+    }
+
+    public boolean doesMaterialExist(Material material){
+        return getItemById(material.getId()) != null;
     }
 
     /**
@@ -182,7 +158,7 @@ public class MaterialRepository {
      * @return a material with a matching name or null if no material has been found.
      */
     public Material getMaterialByName(String name) {
-        return copyDefensively(this.materials.stream().filter(m -> m.getName().equals(name)).findAny().orElse(null));
+        return copyDefensively(this.eList.stream().filter(m -> m.getName().equals(name)).findAny().orElse(null));
     }
 
     //</editor-fold>
@@ -204,22 +180,22 @@ public class MaterialRepository {
     }
 
     private void addMaterialLocally(Material material) {
-        this.materials.add(material);
+        this.eList.add(material);
         this.materialIdentifiers.addAll(material.getIdentifiers());
     }
 
     private void addMaterialToObservers(Material material) {
-        this.materialObservableList.add(material);
+        this.eObservableList.add(material);
         this.materialIdentifierObservableList.addAll(material.getIdentifiers());
     }
 
     private void removeMaterialLocally(Material material) {
-        removeById(this.materials, material.getId());
+        removeById(this.eList, material.getId());
         removeById(this.materialIdentifiers, material.getIdentifiers().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
     }
 
     private void removeMaterialFromObservers(Material material) {
-        removeById(this.materialObservableList, material.getId());
+        removeById(this.eObservableList, material.getId());
         removeById(this.materialIdentifierObservableList, material.getIdentifiers().stream().map(MaterialIdentifier::getId).collect(Collectors.toList()));
     }
 

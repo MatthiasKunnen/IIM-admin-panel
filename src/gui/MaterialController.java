@@ -222,12 +222,12 @@ public class MaterialController extends VBox {
         setMaterialProperty(tfDescription, "setDescription");
 
         try {
-            material.setPrice(new BigDecimal(
-                    ((String) createMethodBuilder(this.tfPrice)
-                            .addMethods("getText")
-                            .setDefaultValue("")
-                            .run()
-                    ).replace(',', '.')));
+            String price = ((String) createMethodBuilder(this.tfPrice)
+                    .addMethods("getText")
+                    .setDefaultValue("")
+                    .run()
+            ).replace(',', '.');
+            material.setPrice(price.equals("") ? null : new BigDecimal(price));
             hideError(this.tfPrice);
         } catch (InvalidPriceException e) {
             switch (e.getPriceInvalidityCause()) {

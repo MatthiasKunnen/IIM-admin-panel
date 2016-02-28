@@ -44,7 +44,7 @@ public class DomainController {
      * @return the material with updates database fields.
      */
     public Material addMaterial(Material material) {
-        return this.materialRepository.addMaterial(material);
+        return this.materialRepository.add(material);
     }
 
 
@@ -54,7 +54,7 @@ public class DomainController {
      * @param material the Material to save.
      */
     public void removeMaterial(Material material) {
-        this.materialRepository.removeMaterial(material);
+        this.materialRepository.remove(material);
     }
 
     /**
@@ -79,7 +79,7 @@ public class DomainController {
 
 
     public boolean doesMaterialExist(Material material) {
-        return this.materialRepository.getMaterialById(material.getId()) != null;
+        return this.materialRepository.doesMaterialExist(material);
     }
 
     /**
