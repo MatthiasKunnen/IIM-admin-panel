@@ -88,7 +88,10 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setPrice(BigDecimal price) throws InvalidPriceException {
-        if (price.compareTo(BigDecimal.ZERO) == -1) {
+        if (price == null){
+            this.price = null;
+            return;
+        }else if (price.compareTo(BigDecimal.ZERO) == -1) {
             throw new InvalidPriceException(InvalidPriceException.Cause.LOWER_THAN_ZERO);
         } else if (price.precision() > 8) {
             throw new InvalidPriceException(InvalidPriceException.Cause.EXCEEDED_PRECISION);
