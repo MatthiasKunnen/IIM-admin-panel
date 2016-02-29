@@ -29,6 +29,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Button fx:id="btnRemove" mnemonicParsing="false" onMouseClicked="#removeReservation" text="Verwijder reservatie" />
          </children>
       </HBox>
    </children>

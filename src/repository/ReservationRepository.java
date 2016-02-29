@@ -5,7 +5,10 @@
  */
 package repository;
 
+import domain.Material;
 import domain.Reservation;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import persistence.PersistenceEnforcer;
 
 public class ReservationRepository extends Repository<Reservation> {
@@ -15,4 +18,15 @@ public class ReservationRepository extends Repository<Reservation> {
         super(persistence);
     }
     //</editor-fold>
+    
+    /**
+     * @return returns an ObservableList of no-reference {@link domain.Reservation}.
+     */
+    public ObservableList<Reservation> getReservations() {
+        return FXCollections.unmodifiableObservableList(eObservableList);
+    }
+    
+    public boolean doesReservationExist(Reservation reservation){
+        return getItemById(reservation.getId()) != null;
+    }
 }

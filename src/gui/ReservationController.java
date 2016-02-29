@@ -9,7 +9,9 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
+import static gui.GuiHelper.createMethodBuilder;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 import java.util.HashMap;
@@ -29,6 +31,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.MapValueFactory;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -56,9 +60,13 @@ public class ReservationController extends AnchorPane {
     private Reservation reservation;
     @FXML
     private TextField txfUserEmail;
+    @FXML
+    private AnchorPane AnchorPane;
+    @FXML
+    private TextField txfSearch;
 
     public ReservationController(DomainController dc, Stage stage) {
-        //super(dc, stage, new Reservation());
+        this(dc, stage, new Reservation());
 
     }
 
@@ -77,19 +85,40 @@ public class ReservationController extends AnchorPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        txfUserEmail.setText(reservation.getUserEmail());
-        dpBringBackDate.setValue(reservation.getBringBackDate());
-        dpPickUpDate.setValue(reservation.getPickUpDate());
-        tcMaterial.setCellValueFactory((TableColumn.CellDataFeatures<MaterialIdentifier, String> param) -> 
-                 new SimpleStringProperty(param.getValue().getInfo().getName()));
-        tcPlace.setCellValueFactory(new PropertyValueFactory<>("place"));
-        
-        identifiers.addAll(reservation.getMaterialIdentifiersList());
-        tvMaterials.setItems(identifiers);
+        setReservation(this.reservation);
+//        txfUserEmail.setText(reservation.getUserEmail());
+//        dpBringBackDate.setValue(reservation.getBringBackDate());
+//        dpPickUpDate.setValue(reservation.getPickUpDate());
+//        tcMaterial.setCellValueFactory((TableColumn.CellDataFeatures<MaterialIdentifier, String> param) -> 
+//                 new SimpleStringProperty(param.getValue().getInfo().getName()));
+//        tcPlace.setCellValueFactory(new PropertyValueFactory<>("place"));
+//        
+//        tvMaterials.setItems(identifiers);
+    }
+
+    private void setReservation(Reservation reservation) {
+        if (reservation == null || !dc.doesReservationExist(reservation)) {
+            this.reservation = new Reservation();
+        } else {
+            this.reservation = reservation;
+            this.txfUserEmail.setText(reservation.getUserEmail());
+            this.dpBringBackDate.setValue(reservation.getBringBackDate());
+            this.dpPickUpDate.setValue(reservation.getPickUpDate());
+                  
+            this.identifiers.addAll(this.reservation.getMaterialIdentifiersList());
+        }
+    }
+    @FXML
+    private void saveReservation(ActionEvent event) {
+        reservation.setBringBackDate(this.dpBringBackDate.getValue());
+        reservation.setPickUpDate(this.dpPickUpDate.getValue());
+        reservation.setReservatieDate(LocalDate.now());
+        reservation.setUserEmail(txfUserEmail.getText());
+        dc.addReservation(reservation);
     }
 
     @FXML
-    private void saveReservation(ActionEvent event) {
+    private void searchMaterial(KeyEvent event) {
         
     }
 

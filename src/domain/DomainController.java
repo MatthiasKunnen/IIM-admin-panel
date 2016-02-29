@@ -3,6 +3,7 @@ package domain;
 import repository.ReservationRepository;
 import exceptions.AzureException;
 import exceptions.LoginException;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.AdministratorRepository;
@@ -22,7 +23,7 @@ public class DomainController {
         PersistenceController.start();
         this.administratorRepository = new AdministratorRepository(PersistenceController.getEnforcer());
         this.materialRepository = new MaterialRepository(PersistenceController.getEnforcer());
-        //this.reservationRepository= new ReservationRepository(PersistenceController.getEnforcer());
+        this.reservationRepository= new ReservationRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 
@@ -97,6 +98,9 @@ public class DomainController {
     public Material getMaterialByName(String name) {
         return this.materialRepository.getMaterialByName(name);
     }
+    public ObservableList<Material> searchMaterialByName(String name){
+        return FXCollections.unmodifiableObservableList(this.materialRepository.searchMaterials(name));
+    }
     //</editor-fold>
 
     //<editor-fold desc="Reservation" defaultstate="collapsed">
@@ -110,6 +114,12 @@ public class DomainController {
 
     public void update(Reservation reservation) {
         this.reservationRepository.update(reservation);
+    }
+    public ObservableList<Reservation> getReservations(){
+       return this.reservationRepository.getReservations();
+    }
+    public boolean doesReservationExist(Reservation reservation){
+        return this.reservationRepository.doesReservationExist(reservation);
     }
     //</editor-fold>
 

@@ -16,6 +16,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableCell;
@@ -50,6 +51,8 @@ public class ReservationOverviewController extends AnchorPane {
     private TableView<Reservation> tvReservations;
     @FXML
     private TableColumn<?, ?> tcOptions;
+    @FXML
+    private Button btnRemove;
 
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
@@ -93,9 +96,8 @@ public class ReservationOverviewController extends AnchorPane {
     private void addReservation(MouseEvent event) {
         Stage newStage = new Stage(StageStyle.DECORATED);
         newStage.setTitle("Nieuwe reservatie - IIM");
-        //ReservationController rc = new ReservationController(dc, newStage);
-
-        //openReservationScreen(mc, newStage);
+        ReservationController rc = new ReservationController(dc, newStage);
+        openReservationScreen(rc, newStage);
     }
     
     private void openReservationScreen(ReservationController rc, Stage newStage){
@@ -106,6 +108,12 @@ public class ReservationOverviewController extends AnchorPane {
         newStage.setMinHeight(463);
         newStage.setScene(scene);
         newStage.show();
+    }
+
+    @FXML
+    private void removeReservation(MouseEvent event) {
+        dc.removeReservation(this.tvReservations.getSelectionModel().getSelectedItem());
+        
     }
 
     
