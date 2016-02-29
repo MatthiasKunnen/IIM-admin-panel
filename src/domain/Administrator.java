@@ -94,9 +94,9 @@ public class Administrator implements IEntity {
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-                .add("id", id)
-                .add("name", name)
-                .add("suspended", suspended)
+                .add("ID", id)
+                .add("Name", name)
+                .add("Is suspended", suspended)
                 .add("Permissions", permissions)
                 .toString();
     }

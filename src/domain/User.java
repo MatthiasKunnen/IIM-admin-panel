@@ -80,7 +80,7 @@ public class User implements Serializable {
     public String toString() {
         return MoreObjects.toStringHelper(this)
                 .omitNullValues()
-                .add("Id", id)
+                .add("ID", id)
                 .add("First name", firstName)
                 .add("Last name", lastName)
                 .add("Type", type)
