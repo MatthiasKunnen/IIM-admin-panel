@@ -49,7 +49,9 @@ public class InvalidMaterialFirmEmailTest {
 
     @Test(expected = InvalidEmailException.class)
     public void testEmail() throws InvalidEmailException {
-        material.setFirmEmail(email);
+        Firm theFirm = new Firm();
+        theFirm.setEmail(email);
+        material.setFirm(theFirm);
         System.out.println(email);
     }
 }

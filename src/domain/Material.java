@@ -27,8 +27,10 @@ public class Material implements Serializable, IEntity {
     @Column(nullable = false, unique = true)
     private String name;
     private String description;
-    private String firm;
-    private String firmEmail;
+    private Firm firm;
+    private Curricular curricular;
+    private List<TargetGroup> targetGroups;
+    //private String firmEmail;
     @Column(scale = 2, precision = 10)
     private BigDecimal price;
     private String articleNr;
@@ -63,24 +65,28 @@ public class Material implements Serializable, IEntity {
         this.description = description;
     }
 
-    public String getFirm() {
+    public Firm getFirm() {
         return this.firm;
     }
 
-    public void setFirm(String firm) {
+    public void setFirm(Firm firm) {
         this.firm = firm;
     }
 
-    public String getFirmEmail() {
-        return this.firmEmail;
+    public Curricular getCurricular() {
+        return curricular;
     }
 
-    public void setFirmEmail(String firmEmail) throws InvalidEmailException {
-        if (EmailValidator.getInstance().isValid(firmEmail)) {
-            this.firmEmail = firmEmail;
-        } else {
-            throw new InvalidEmailException("email_bad_format", firmEmail);
-        }
+    public void setCurricular(Curricular curricular) {
+        this.curricular = curricular;
+    }
+
+    public List<TargetGroup> getTargetGroups() {
+        return targetGroups;
+    }
+
+    public void setTargetGroups(List<TargetGroup> targetGroups) {
+        this.targetGroups = targetGroups;
     }
 
     public BigDecimal getPrice() {
@@ -88,10 +94,10 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setPrice(BigDecimal price) throws InvalidPriceException {
-        if (price == null){
+        if (price == null) {
             this.price = null;
             return;
-        }else if (price.compareTo(BigDecimal.ZERO) == -1) {
+        } else if (price.compareTo(BigDecimal.ZERO) == -1) {
             throw new InvalidPriceException(InvalidPriceException.Cause.LOWER_THAN_ZERO);
         } else if (price.precision() > 8) {
             throw new InvalidPriceException(InvalidPriceException.Cause.EXCEEDED_PRECISION);
@@ -120,7 +126,6 @@ public class Material implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-
     /**
      * @param name Name of the material.
      */
@@ -140,7 +145,6 @@ public class Material implements Serializable, IEntity {
         this.name = material.name;
         this.description = material.description;
         this.firm = material.firm;
-        this.firmEmail = material.firmEmail;
         this.price = material.price;
         this.articleNr = material.articleNr;
     }
@@ -153,7 +157,6 @@ public class Material implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-
     /**
      * @param identifier The identifier to add.
      */
@@ -176,18 +179,21 @@ public class Material implements Serializable, IEntity {
         items.remove(identifier);
     }
 
-
     @Override
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-                .add("ID", id)
-                .add("Name", name)
-                .add("Encoding", encoding)
-                .add("Firm", firm)
-                .add("Price", price)
-                .add("Article number", articleNr)
-                .add("Identifiers", items)
+
+                .add("id", id)
+                .add("name", name)
+                .add("encoding", encoding)
+                .add("firm", firm.getName())
+                .add("firm phonenumber", firm.getPhoneNumber())
+                .add("firm email", firm.getEmail())
+                .add("price", price)
+                .add("articleNr", articleNr)
+                .add("identifiers", items)
+
                 .toString();
     }
     //</editor-fold>
