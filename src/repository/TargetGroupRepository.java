@@ -22,7 +22,7 @@ public class TargetGroupRepository extends Repository<TargetGroup>{
     }
 
     public ObservableList<TargetGroup> getOptions(){
-        return FXCollections.observableList(this.eList.stream().distinct().collect(Collectors.toList()));
+        return FXCollections.observableList(this.eList.stream().collect(Collectors.toList()));
     }
     
 }

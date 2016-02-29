@@ -16,6 +16,6 @@ public class FirmRepository extends Repository<Firm>{
     }
 
     public ObservableList<Firm> getExistingFirms(){
-        return FXCollections.observableArrayList(this.eList.stream().distinct().collect(Collectors.toList()));
+        return FXCollections.observableArrayList(this.eList.stream().collect(Collectors.toList()));
     }
 }

@@ -23,6 +23,6 @@ public class CurricularRepository extends Repository<Curricular>{
     }
 
     public ObservableList<Curricular> getOptions(){
-        return FXCollections.observableList(this.eList.stream().distinct().collect(Collectors.toList()));
+        return FXCollections.observableList(this.eList.stream().collect(Collectors.toList()));
     }
 }
