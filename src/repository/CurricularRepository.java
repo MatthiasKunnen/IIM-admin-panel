@@ -21,11 +21,7 @@ public class CurricularRepository extends Repository<Curricular>{
     public CurricularRepository(PersistenceEnforcer persistence) {
         super(persistence);
     }
-    
-    public CurricularRepository(PersistenceEnforcer persistence, List<Curricular> theList) {
-        super(persistence, theList);
-    }
-    
+
     public ObservableList<Curricular> getOptions(){
         return FXCollections.observableList(this.eList.stream().distinct().collect(Collectors.toList()));
     }

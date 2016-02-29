@@ -5,7 +5,6 @@
  */
 package repository;
 
-import domain.Material;
 import domain.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

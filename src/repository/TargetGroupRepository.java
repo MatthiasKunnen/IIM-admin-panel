@@ -5,9 +5,7 @@
  */
 package repository;
 
-import domain.Curricular;
 import domain.TargetGroup;
-import java.util.List;
 import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -22,11 +20,7 @@ public class TargetGroupRepository extends Repository<TargetGroup>{
     public TargetGroupRepository(PersistenceEnforcer persistence) {
         super(persistence);
     }
-    
-    public TargetGroupRepository(PersistenceEnforcer persistence, List<TargetGroup> theItems) {
-        super(persistence,theItems);
-    }
-    
+
     public ObservableList<TargetGroup> getOptions(){
         return FXCollections.observableList(this.eList.stream().distinct().collect(Collectors.toList()));
     }

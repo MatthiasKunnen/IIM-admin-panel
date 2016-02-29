@@ -14,11 +14,7 @@ public class FirmRepository extends Repository<Firm>{
     public FirmRepository(PersistenceEnforcer persistence) {
         super(persistence);
     }
-    
-    public FirmRepository(PersistenceEnforcer persistence, List<Firm> theFirms) {
-        super(persistence, theFirms);
-    }
-    
+
     public ObservableList<Firm> getExistingFirms(){
         return FXCollections.observableArrayList(this.eList.stream().distinct().collect(Collectors.toList()));
     }
