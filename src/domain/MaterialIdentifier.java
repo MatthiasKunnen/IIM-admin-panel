@@ -17,13 +17,14 @@ public class MaterialIdentifier implements Serializable, IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Access(value = AccessType.FIELD)
-    private int id;
+    private Integer id;
     private Material info;
     private SimpleStringProperty place = new SimpleStringProperty();
     private SimpleObjectProperty<Visibility> visibility = new SimpleObjectProperty<>();
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
+    @Id
     public int getId() {
         return id;
     }
@@ -77,10 +78,13 @@ public class MaterialIdentifier implements Serializable, IEntity {
     /**
      * @param info The material
      */
+        
     public MaterialIdentifier(Material info, Visibility visibility) {
         this.setInfo(info);
         this.setVisibility(visibility);
     }
+    
+
 
     public MaterialIdentifier(MaterialIdentifier identifier) {
         this(identifier, ImmutabilityHelper.copyDefensively(identifier.info));
