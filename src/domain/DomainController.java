@@ -34,7 +34,6 @@ public class DomainController {
     public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
         return materialRepository.getMaterialIdentifiers();
     }
-
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
@@ -101,13 +100,15 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Reservation" defaultstate="collapsed">
-    public Reservation addReservation(Reservation reservation){
+    public Reservation addReservation(Reservation reservation) {
         return this.reservationRepository.add(reservation);
     }
-    public void removeReservation(Reservation reservation){
+
+    public void removeReservation(Reservation reservation) {
         this.reservationRepository.remove(reservation);
     }
-    public void update(Reservation reservation){
+
+    public void update(Reservation reservation) {
         this.reservationRepository.update(reservation);
     }
     //</editor-fold>
@@ -118,19 +119,19 @@ public class DomainController {
         activeAdministrator = administratorRepository.login(username, password);
     }
 
-    public Administrator addAdministrator(Administrator administrator){
+    public Administrator addAdministrator(Administrator administrator) {
         return administratorRepository.add(administrator);
     }
 
-    public void updateAdministrator(Administrator administrator){
+    public void updateAdministrator(Administrator administrator) {
         administratorRepository.remove(administrator);
     }
 
-    public void removeAdministrator(Administrator administrator){
+    public void removeAdministrator(Administrator administrator) {
         administratorRepository.remove(administrator);
     }
 
-    public boolean hasPermission(Administrator.Permission permission){
+    public boolean hasPermission(Administrator.Permission permission) {
         return activeAdministrator.hasPermission(permission);
     }
     //</editor-fold>
