@@ -41,7 +41,4 @@ public class AdministratorRepository extends Repository<Administrator>{
         }
     }
     //</editor-fold>
-
-    //<editor-fold desc="Private actions" defaultstate="collapsed">
-    //</editor-fold>
 }

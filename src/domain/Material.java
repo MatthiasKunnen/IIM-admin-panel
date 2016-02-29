@@ -181,14 +181,13 @@ public class Material implements Serializable, IEntity {
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-                .add("id", id)
-                .add("name", name)
-                .add("encoding", encoding)
-                .add("firm", firm)
-                .add("firmEmail", firmEmail)
-                .add("price", price)
-                .add("articleNr", articleNr)
-                .add("identifiers", items)
+                .add("ID", id)
+                .add("Name", name)
+                .add("Encoding", encoding)
+                .add("Firm", firm)
+                .add("Price", price)
+                .add("Article number", articleNr)
+                .add("Identifiers", items)
                 .toString();
     }
     //</editor-fold>

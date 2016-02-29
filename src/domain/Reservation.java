@@ -22,6 +22,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import util.ImmutabilityHelper;
 
 /**
  *
@@ -40,8 +41,22 @@ public class Reservation implements Serializable, IEntity {
     private ObjectProperty<LocalDate>  bringBackDate= new SimpleObjectProperty<>();
     
    
-
-    public Reservation() {
+    /**
+    JPA-constructor
+    */
+    public Reservation() { 
+    }
+    /**
+     * Copy constructor
+     * @param reservation 
+     */
+    public Reservation(Reservation reservation){
+        this.id=reservation.id;
+        this.userEmail= reservation.userEmail;
+        this.materialIdentifiersList= (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(reservation.materialIdentifiersList, this);
+        this.reservationDate=reservation.reservationDate;
+        this.pickUpDate=reservation.pickUpDate;
+        this.bringBackDate=reservation.bringBackDate;
         
     }
 

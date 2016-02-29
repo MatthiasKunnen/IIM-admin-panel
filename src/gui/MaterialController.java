@@ -170,7 +170,22 @@ public class MaterialController extends VBox {
             @Override
             public TableCell<MaterialIdentifier, Boolean> call(TableColumn<MaterialIdentifier, Boolean> param) {
                 return new TableCell<MaterialIdentifier, Boolean>() {
-                    private final IdentifierOptionsController ioc = new IdentifierOptionsController();
+                    private final CustomOptionsController coc = new CustomOptionsController();
+
+                    {
+                        coc.addExistingSVG("delete");
+                        coc.addExistingSVG("calendar");
+                        coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
+                            if (getTableRow().getItem() != null) {
+                                getTableView().getItems().remove((MaterialIdentifier) getTableRow().getItem());
+                            }
+                        });
+                        coc.bind("calendar", MouseEvent.MOUSE_CLICKED, event -> {
+                            if (getTableRow().getItem() != null) {
+                                //TODO implement history
+                            }
+                        });
+                    }
 
                     @Override
                     protected void updateItem(Boolean item, boolean empty) {
@@ -179,15 +194,7 @@ public class MaterialController extends VBox {
                             setGraphic(null);
                             setText(null);
                         } else {
-                            setGraphic(ioc);
-                            EventHandler filter = new EventHandler<MouseEvent>() {
-                                @Override
-                                public void handle(MouseEvent event) {
-                                    MaterialIdentifier mi = (MaterialIdentifier) getTableRow().getItem();
-                                    identifiers.remove(mi);
-                                }
-                            };
-                            ioc.getNodeByName("delete").addEventFilter(MouseEvent.MOUSE_CLICKED, filter);
+                            setGraphic(coc);
                         }
                     }
                 };
