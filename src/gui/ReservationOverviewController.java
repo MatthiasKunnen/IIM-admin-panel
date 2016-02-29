@@ -84,7 +84,7 @@ public class ReservationOverviewController extends AnchorPane {
                     Stage newStage = new Stage(StageStyle.DECORATED);
                     Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
                     ReservationController rc = new ReservationController(dc, newStage, theReservation);
-                    newStage.setTitle("Reservatie van "+theReservation.getUserEmail()+ " - IIM");
+                    newStage.setTitle("Reservatie van "+theReservation.getUser().getFirstName()+" "+theReservation.getUser().getLastName()+ " - IIM");
                     openReservationScreen(rc, newStage);
                 }
             }
