@@ -15,7 +15,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -30,6 +29,8 @@ import javafx.scene.input.KeyEvent;
  * FXML Controller class
  */
 public class OverviewController extends VBox {
+    //<editor-fold desc="Variables" defaultstate="collapsed">
+
     @FXML
     private TableColumn<?, ?> tcName;
     @FXML
@@ -47,10 +48,8 @@ public class OverviewController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-
     private DomainController dc;
     //</editor-fold>
-    
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
 
@@ -156,12 +155,12 @@ public class OverviewController extends VBox {
         MaterialController mc = new MaterialController(dc, newStage);
         openNewWindow(mc, newStage);
     }
-    //</editor-fold>
 
     @FXML
     private void filterMaterials(KeyEvent event) {
         this.tvMaterials.setItems(dc.filterMaterialByName(txfFilterMaterials.getText()));
-                Platform.runLater(() -> this.setMinWidth(this.getWidth()));
+        Platform.runLater(() -> this.setMinWidth(this.getWidth()));
 
     }
+    //</editor-fold>
 }
