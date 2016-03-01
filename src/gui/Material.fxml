@@ -71,12 +71,12 @@
                               prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0"
                               AnchorPane.topAnchor="189.0">
                             <children>
-                                <ComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                          prefWidth="0.0" promptText="Doelgroep" HBox.hgrow="ALWAYS">
+                                <org.controlsfx.control.CheckComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
+                                          prefWidth="0.0" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
                                         <Insets right="5.0"/>
                                     </HBox.margin>
-                                </ComboBox>
+                                </org.controlsfx.control.CheckComboBox>
                                 <org.controlsfx.control.CheckComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0"
                                           prefWidth="0.0" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
