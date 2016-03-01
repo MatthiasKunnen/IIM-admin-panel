@@ -22,15 +22,14 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import javafx.application.Platform;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
  */
 public class OverviewController extends VBox {
-    //<editor-fold desc="FXML variables" defaultstate="collapsed">
-
-    @FXML
-    private AnchorPane AnchorPane;
     @FXML
     private TableColumn<?, ?> tcName;
     @FXML
@@ -43,12 +42,15 @@ public class OverviewController extends VBox {
     private ImageView ivAddButton;
     @FXML
     private TableView<Material> tvMaterials;
+    @FXML
+    private TextField txfFilterMaterials;
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
     private DomainController dc;
     //</editor-fold>
+    
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
 
@@ -155,4 +157,11 @@ public class OverviewController extends VBox {
         openNewWindow(mc, newStage);
     }
     //</editor-fold>
+
+    @FXML
+    private void filterMaterials(KeyEvent event) {
+        this.tvMaterials.setItems(dc.filterMaterialByName(txfFilterMaterials.getText()));
+                Platform.runLater(() -> this.setMinWidth(this.getWidth()));
+
+    }
 }

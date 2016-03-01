@@ -119,8 +119,8 @@ public class DomainController {
     public Material getMaterialByName(String name) {
         return this.materialRepository.getMaterialByName(name);
     }
-    public ObservableList<Material> searchMaterialByName(String name){
-        return FXCollections.unmodifiableObservableList(this.materialRepository.searchMaterials(name));
+    public ObservableList<Material> filterMaterialByName(String name){
+        return FXCollections.unmodifiableObservableList(this.materialRepository.filterByName(name));
     }
     //</editor-fold>
 

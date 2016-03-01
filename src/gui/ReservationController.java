@@ -11,6 +11,7 @@ import domain.MaterialIdentifier;
 import domain.Reservation;
 import java.io.IOException;
 import java.time.LocalDate;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,7 +22,6 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -126,15 +126,6 @@ public class ReservationController extends AnchorPane {
         dc.addReservation(reservation);
     }
 
-    /**
-     * zoekfunctie voor het materiaal te zoeken.
-     *
-     * @param event
-     */
-    @FXML
-    private void searchMaterial(KeyEvent event) {
-        this.tvMaterials.setItems(dc.searchMaterialByName(txfSearch.getText()));
-    }
     //</editor-fold>
 
 }
