@@ -1,8 +1,6 @@
 package domain;
 
-import exceptions.InvalidEmailException;
 import exceptions.InvalidPriceException;
-import org.apache.commons.validator.routines.EmailValidator;
 import util.ImmutabilityHelper;
 
 import javax.persistence.*;
@@ -27,8 +25,12 @@ public class Material implements Serializable, IEntity {
     @Column(nullable = false, unique = true)
     private String name;
     private String description;
+
+    @ManyToOne
     private Firm firm;
-    private Curricular curricular;
+    @ManyToMany
+    private List<Curricular> curricular;
+    @ManyToMany
     private List<TargetGroup> targetGroups;
     //private String firmEmail;
     @Column(scale = 2, precision = 10)
@@ -73,11 +75,11 @@ public class Material implements Serializable, IEntity {
         this.firm = firm;
     }
 
-    public Curricular getCurricular() {
+    public List<Curricular> getCurricular() {
         return curricular;
     }
 
-    public void setCurricular(Curricular curricular) {
+    public void setCurricular(List<Curricular> curricular) {
         this.curricular = curricular;
     }
 
@@ -144,7 +146,7 @@ public class Material implements Serializable, IEntity {
         this.encoding = material.encoding;
         this.name = material.name;
         this.description = material.description;
-        this.firm = material.firm;
+        this.firm = ImmutabilityHelper.copyDefensively(material.firm);
         this.price = material.price;
         this.articleNr = material.articleNr;
     }

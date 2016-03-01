@@ -2,9 +2,12 @@
 <persistence xmlns="http://java.sun.com/xml/ns/persistence" version="2.0">
     <persistence-unit name="IIM">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>domain.Administrator</class>
+        <class>domain.Curricular</class>
+        <class>domain.Firm</class>
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
-        <class>domain.Administrator</class>
+        <class>domain.TargetGroup</class>
         <class>domain.User</class>
         <class>persistence.VisibilityConverter</class>
         <class>persistence.PermissionsConverter</class>
@@ -19,9 +22,12 @@
     </persistence-unit>
     <persistence-unit name="IIM_test">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <class>domain.Administrator</class>
+        <class>domain.Curricular</class>
+        <class>domain.Firm</class>
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
-        <class>domain.Administrator</class>
+        <class>domain.TargetGroup</class>
         <class>domain.User</class>
         <class>persistence.VisibilityConverter</class>
         <class>persistence.PermissionsConverter</class>
