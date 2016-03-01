@@ -3,17 +3,13 @@ package gui;
 import domain.DomainController;
 import domain.Firm;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.FocusModel;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.IOException;
@@ -44,6 +40,7 @@ public class FirmSceneController extends VBox {
 
     public FirmSceneController(DomainController dc, Stage stage) {
         stage.setResizable(true);
+        stage.setTitle("Firma's - IIM");
         this.dc = dc;
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("FirmScene.fxml"));
         loader.setRoot(this);
