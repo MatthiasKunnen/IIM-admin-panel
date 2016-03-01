@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "\"user\"")
-public class User implements Serializable {
+public class User implements Serializable, IEntity {
     //<editor-fold desc="Declarations" defaultstate="collapsed">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
