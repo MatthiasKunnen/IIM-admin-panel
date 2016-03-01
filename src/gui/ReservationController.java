@@ -101,7 +101,7 @@ public class ReservationController extends AnchorPane {
             this.reservation = new Reservation();
         } else {
             this.reservation = reservation;
-            this.txfUserEmail.setText(reservation.getUserEmail());
+            //this.txfUserEmail.setText(reservation.getUserEmail());
             this.dpBringBackDate.setValue(reservation.getBringBackDate());
             this.dpPickUpDate.setValue(reservation.getPickUpDate());
                   
@@ -113,7 +113,7 @@ public class ReservationController extends AnchorPane {
         reservation.setBringBackDate(this.dpBringBackDate.getValue());
         reservation.setPickUpDate(this.dpPickUpDate.getValue());
         reservation.setReservatieDate(LocalDate.now());
-        reservation.setUserEmail(txfUserEmail.getText());
+        //reservation.setUserEmail(txfUserEmail.getText());
         dc.addReservation(reservation);
     }
 
