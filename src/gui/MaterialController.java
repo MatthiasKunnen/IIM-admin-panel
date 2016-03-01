@@ -5,9 +5,12 @@
  */
 package gui;
 
+import domain.Curricular;
 import domain.DomainController;
+import domain.Firm;
 import domain.Material;
 import domain.MaterialIdentifier;
+import domain.TargetGroup;
 import domain.Visibility;
 import exceptions.AzureException;
 import exceptions.InvalidPriceException;
@@ -39,6 +42,8 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
+import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.IndexedCheckModel;
 
 
 /**
@@ -58,11 +63,11 @@ public class MaterialController extends VBox {
     @FXML
     private Button btnAddIdentifier;
     @FXML
-    private ComboBox cboFirm;
+    private ComboBox<Firm> cboFirm;
     @FXML
-    private ComboBox cboCurricular;
+    private CheckComboBox<Curricular> cboCurricular;
     @FXML
-    private ComboBox cboTargetAudience;
+    private CheckComboBox<TargetGroup> cboTargetAudience;
     @FXML
     private ImageView ivPhoto;
     @FXML
@@ -202,6 +207,9 @@ public class MaterialController extends VBox {
         });
 
         tvIdentifiers.setItems(this.identifiers);
+        this.cboCurricular = new CheckComboBox<>(dc.getCurriculars());
+        this.cboFirm.setItems(dc.getFirms());
+        this.cboTargetAudience = new CheckComboBox<>(dc.getTargetGroups());
 
         Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
@@ -258,6 +266,7 @@ public class MaterialController extends VBox {
 
         //firma
         //doelgroep
+        material.setCurricular(cboCurricular.getCheckModel().getCheckedItems());
         //leeftijdscathegorie
         if (abort) return;
         material.setIdentifiers(this.identifiers);
@@ -341,6 +350,9 @@ public class MaterialController extends VBox {
             if (photoUrl != null && !photoUrl.isEmpty()) {
                 ivPhoto.setImage(new Image(photoUrl));
             }
+            this.cboCurricular.getCheckModel().getCheckedItems().addAll(material.getCurricular());
+            this.cboFirm.getSelectionModel().select(material.getFirm());
+            this.cboTargetAudience.getCheckModel().getCheckedItems().addAll(material.getTargetGroups());
             this.identifiers.addAll(this.material.getIdentifiers());
         }
     }
