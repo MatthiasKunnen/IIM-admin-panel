@@ -350,9 +350,11 @@ public class MaterialController extends VBox {
             if (photoUrl != null && !photoUrl.isEmpty()) {
                 ivPhoto.setImage(new Image(photoUrl));
             }
-            this.cboCurricular.getCheckModel().getCheckedItems().addAll(material.getCurricular());
+            
+            
+            dc.getCurriculars().forEach(c-> cboCurricular.getCheckModel().check(c));
             this.cboFirm.getSelectionModel().select(material.getFirm());
-            this.cboTargetAudience.getCheckModel().getCheckedItems().addAll(material.getTargetGroups());
+            dc.getTargetGroups().forEach(tg-> cboTargetAudience.getCheckModel().check(tg));
             this.identifiers.addAll(this.material.getIdentifiers());
         }
     }

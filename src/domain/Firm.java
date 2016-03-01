@@ -42,10 +42,11 @@ public class Firm implements IEntity, Serializable {
     public void setEmail(String email) throws InvalidEmailException {
         if (EmailValidator.getInstance().isValid(email)) {
             this.email = email;
+
+        } else {
+
+            throw new InvalidEmailException("Het emailadres is niet correct!");
         }
-
-        throw new InvalidEmailException("Het emailadres is niet correct!");
-
     }
 
     public String getPhoneNumber() {
@@ -55,11 +56,8 @@ public class Firm implements IEntity, Serializable {
     }
 
     public void setPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
-        if (phoneNumber.matches("^[0-9]{10}$")) {
             this.phoneNumber = phoneNumber;
-        }
 
-        throw new InvalidPhoneNumberException("Het telefoonnummer is niet correct");
     }
 
     public String getWebsite() {
@@ -72,7 +70,7 @@ public class Firm implements IEntity, Serializable {
 
     }
 
-    public Firm(Firm firm){
+    public Firm(Firm firm) {
         this.id = firm.id;
         this.name = firm.name;
         this.email = firm.email;

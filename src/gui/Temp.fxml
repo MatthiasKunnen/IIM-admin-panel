@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import org.controlsfx.control.textfield.*?>
+<?import impl.org.controlsfx.skin.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <HBox alignment="CENTER" layoutX="83.0" layoutY="6.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="6.0">
+         <children>
+            <Label fx:id="lblTitel" layoutX="83.0" layoutY="6.0" text="Naam" AnchorPane.topAnchor="6.0" />
+         </children>
+      </HBox>
+      <VBox fx:id="vbNodes" layoutX="5.0" layoutY="233.0" AnchorPane.bottomAnchor="44.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="24.0">
+         <children>
+            <ListView fx:id="lvItems" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </ListView>
+         </children>
+      </VBox>
+      <HBox fx:id="hbButtons" alignment="CENTER" layoutX="-21.0" layoutY="147.0" maxHeight="-Infinity" prefHeight="25.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+   </children>
+</fx:root>
