@@ -60,7 +60,11 @@ public class CustomOptionsController extends HBox {
     }
 
     public void addExistingSVG(String key) {
-        addSVGPath(key, GuiHelper.getSVGContent(key));
+        addExistingSVG(key, key);
+    }
+
+    public void addExistingSVG(String name, String key) {
+        addSVGPath(name, GuiHelper.getSVGContent(key));
     }
 
     public void bind(String name, EventType event, EventHandler handler) {
