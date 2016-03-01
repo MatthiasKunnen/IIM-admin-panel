@@ -2,12 +2,17 @@ package gui;
 
 import domain.DomainController;
 import domain.Firm;
+import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.FocusModel;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -37,7 +42,8 @@ public class FirmSceneController extends VBox {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
-    public FirmSceneController(DomainController dc) {
+    public FirmSceneController(DomainController dc, Stage stage) {
+        stage.setResizable(true);
         this.dc = dc;
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("FirmScene.fxml"));
         loader.setRoot(this);
@@ -60,6 +66,16 @@ public class FirmSceneController extends VBox {
                     setText(String.format("%s (%s)", item.getName(), item.getEmail()));
                 }
             }
+        });
+        this.lvFirms.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue != null) {
+                ctfName.setText(newValue.getName());
+                ctfEmail.setText(newValue.getEmail());
+            }
+        });
+        Platform.runLater(()->{
+            stage.setMinWidth(stage.getWidth());
+            stage.setMinHeight(stage.getHeight());
         });
     }
     //</editor-fold>
