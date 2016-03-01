@@ -8,14 +8,7 @@ package domain;
 import static com.google.common.base.MoreObjects.toStringHelper;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Entity;
@@ -101,10 +94,12 @@ public class Reservation implements Serializable, IEntity {
 
     public LocalDate getBringBackDate() {
         return bringBackDate.get();
+        
     }
 
     public void setBringBackDate(LocalDate bringBackDate) {
         this.bringBackDate.set(bringBackDate);
+        this.pickUpDate.get().plusDays(7);
     }
 
     public ObjectProperty<LocalDate> getBringBackDateProperty() {
