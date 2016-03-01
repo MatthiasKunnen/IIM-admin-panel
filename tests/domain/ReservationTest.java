@@ -5,6 +5,8 @@
  */
 package domain;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -18,42 +20,62 @@ import org.junit.Assert;
  * @author Pieter
  */
 public class ReservationTest {
-    
-    private List<MaterialIdentifier> reservationList = new ArrayList<>();
-    private int userId = 007;
-    private Long reservationId= new Long(007);
-    private GregorianCalendar reservationDate= new GregorianCalendar(2016,01,01);
-    private GregorianCalendar pickUpDate= new GregorianCalendar(2016,02,07);
-    private GregorianCalendar bringBackDate= new GregorianCalendar(2016,02,14);
-    private boolean conflictFlag= false;
+
     private Reservation res;
+    private User user = new User();
+    private List<MaterialIdentifier> resList;
+    private MaterialIdentifier matId;
+    private Material mat;
+    private LocalDate pickUp = LocalDate.of(2016, Month.FEBRUARY, 1);
+    private LocalDate bringBack = LocalDate.of(2016, Month.FEBRUARY, 14);
+    private LocalDate resDate = LocalDate.of(2016, Month.JANUARY, 14);
+    
+    
     
     @Before
     public void init(){
-        Material hamer = new Material("Hamer");
-        MaterialIdentifier redHamer = new MaterialIdentifier(hamer,Visibility.Student);
-        reservationList.add(redHamer);
-        res = new Reservation(reservationId,userId,reservationList,reservationDate,pickUpDate,bringBackDate,conflictFlag);
-
+        res = new Reservation();
+        mat = new Material("Tool");
+        matId = new MaterialIdentifier(mat, Visibility.Student);
+        resList = new ArrayList<>();
+        resList.add(matId);
+        
+     }
+    
+    
+    @Test
+    public void testSetMaterialIdentifierList(){
+        res.setMaterialIdentifiersList(resList);
+        Assert.assertEquals(resList, res.getMaterialIdentifiersList());
     }
     
     @Test
-    public void testConstructor(){
-                
-        Assert.assertEquals(userId,res.getUserId());
-        Assert.assertEquals(reservationId, res.getReservationId());
-        Assert.assertEquals(reservationDate, res.getReservationDate());
-        Assert.assertEquals(pickUpDate, res.getPickUpDate());
-        Assert.assertEquals(bringBackDate,res.getBringBackDate());
-        Assert.assertEquals(conflictFlag, res.isConflictFlag());
-    
+    public void testSetReservationDate(){
+        res.setReservatieDate(resDate);
+        Assert.assertEquals(resDate, res.getReservationDate());
     }
     
     @Test
-    public void testReservationSuspend(){
-        GregorianCalendar early =  new GregorianCalendar(2016, 2, 8);
-        res.reservationSuspend(early);
-        Assert.assertEquals(early, res.getBringBackDate());
+    public void testSetPickUpDate(){
+        res.setPickUpDate(pickUp);        
+        Assert.assertEquals(pickUp, res.getPickUpDate());
+    }
+    
+    @Test
+    public void testSetBringBackDate(){
+        res.setPickUpDate(pickUp);
+        res.setBringBackDate(bringBack);
+        Assert.assertEquals(bringBack, res.getBringBackDate());
+    }
+    
+    
+    //When bringBack is befor pickUp, bringBack should be standard value (4 days after pickUp)
+    @Test
+    public void testSetBringBackDateBeforePickup(){
+        res.setPickUpDate(pickUp);
+        res.setBringBackDate(resDate);
+        
+        Assert.assertEquals(pickUp.plusDays(4), res.getBringBackDate());
     }
     
     

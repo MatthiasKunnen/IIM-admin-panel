@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package domain;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
@@ -98,8 +94,13 @@ public class Reservation implements Serializable, IEntity {
     }
 
     public void setBringBackDate(LocalDate bringBackDate) {
-        this.bringBackDate.set(bringBackDate);
-        this.pickUpDate.get().plusDays(7);
+        if(bringBackDate.isAfter(this.getPickUpDate()))
+             this.bringBackDate.set(bringBackDate);
+        else
+            this.bringBackDate.set(this.pickUpDate.get().plusDays(4));
+        
+       
+        
     }
 
     public ObjectProperty<LocalDate> getBringBackDateProperty() {

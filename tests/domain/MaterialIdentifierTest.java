@@ -5,68 +5,59 @@
  */
 package domain;
 
+import java.util.ArrayList;
+import java.util.List;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 /**
  *
  * @author Pieter
  */
 public class MaterialIdentifierTest {
-    
+
     public MaterialIdentifierTest() {
     }
 
     private MaterialIdentifier matID;
-    private Material hamer;
-    
+    private Material tool;
+
     @Before
-    public void initialize(){
-        matID = new MaterialIdentifier();
-        hamer = new Material("Hamer");
+    public void initialize() {
+        tool = new Material("Tool");
+        matID = new MaterialIdentifier(tool, Visibility.Student);
     }
-    
+
     @Test
-    public void testConstructor(){
-        matID = new MaterialIdentifier(hamer, Visibility.Student);
+    public void testConstructor() {
+        matID = new MaterialIdentifier(tool, Visibility.Student);
         Assert.assertEquals(matID.getVisibility(), Visibility.Student);
-        Assert.assertEquals(matID.getInfo(), hamer );
+        Assert.assertEquals(matID.getInfo(), tool);
     }
-       
-    
+
     @Test
-    public void testSetPlace(){
-        matID.setPlace("keuken");
-        Assert.assertEquals(matID.getPlace(), "keuken");
+    public void testSetPlace() {
+        matID.setPlace("kitchen");
+        Assert.assertEquals(matID.getPlace(), "kitchen");
     }
-    
-       
+
     @Test
-    public void testSetInfo(){
-        matID.setInfo(hamer);
-        Assert.assertEquals(matID.getInfo(), hamer);
-        
+    public void testSetInfo() {
+        matID.setInfo(tool);
+        Assert.assertEquals(matID.getInfo(), tool);
+
     }
-    
+
     @Test
-    public void testSetVisibility(){
+    public void testSetVisibility() {
         matID.setVisibility(Visibility.Administrator);
         Assert.assertEquals(matID.getVisibility(), Visibility.Administrator);
     }
-    
-    @Test
-    public void testSetId(){
-        //matID.setId(056);
-        Assert.assertEquals(matID.getId(), 056);
-    }
-    
-   
-    
-    
-    
-    
+
 }
