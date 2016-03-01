@@ -150,10 +150,12 @@ public class LoginScreenController extends AnchorPane {
                             this.updateMessage("Data aan het inladen!");
                             Platform.runLater(() -> {
                                 //Run this method when we're back on the GUI thread.
-                                OverviewController chooseActionScreen = new OverviewController(dc);
-                                Scene scene = new Scene(chooseActionScreen);
+                                
+                                
                                 Stage currentStage = (Stage) getScene().getWindow();
                                 currentStage.close();
+                                TabsController chooseActionScreen = new TabsController(dc,currentStage);
+                                Scene scene = new Scene(chooseActionScreen);
                                 currentStage.setScene(scene);
                                 currentStage.setMinWidth(620);
                                 currentStage.setMinHeight(463);
