@@ -9,6 +9,7 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
+import domain.User;
 import java.io.IOException;
 import java.time.LocalDate;
 import javafx.application.Platform;
@@ -22,13 +23,15 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import static gui.GuiHelper.*;
+
 
 
 public class ReservationController extends AnchorPane {
     //<editor-fold desc="FXML variables" defaultstate="collapsed">
-
     @FXML
     private Button btnSave;
     @FXML
@@ -42,11 +45,9 @@ public class ReservationController extends AnchorPane {
     @FXML
     private DatePicker dpPickUpDate;
     @FXML
-    private TextField txfUserEmail;
+    private TextField tfUserEmail;
     @FXML
     private AnchorPane AnchorPane;
-    @FXML
-    private TextField txfSearch;
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
@@ -54,6 +55,7 @@ public class ReservationController extends AnchorPane {
     private ObservableList<MaterialIdentifier> identifiers;
     private Stage theStage;
     private Reservation reservation;
+    
     //</editor-fold>
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
@@ -122,10 +124,32 @@ public class ReservationController extends AnchorPane {
         reservation.setBringBackDate(this.dpBringBackDate.getValue());
         reservation.setPickUpDate(this.dpPickUpDate.getValue());
         reservation.setReservatieDate(LocalDate.now());
-        //reservation.setUserEmail(txfUserEmail.getText());
-        dc.addReservation(reservation);
+        User user =dc.getUserByEmail(tfUserEmail.getText());
+        if(user==null){
+            showError(tfUserEmail, "Deze gebruiker bestaat niet, controleer het emailadres.");
+        }else{
+            
+            reservation.setUser(user);
+            //reservatie mag maar toegevoegd worden wanneer user bekent is 
+            dc.addReservation(reservation);
+        }
+        
+    }
+    /**
+     * Check if user exist when leaving userEmail textfield 
+     * @param event 
+     */
+    @FXML
+    private void checkUserEmail(MouseEvent event) {
+        if(dc.getUserByEmail(tfUserEmail.getText())==null){
+            showError(tfUserEmail, "Deze gebruiker bestaat niet, controleer het emailadres.");
+        }else{
+            hideError(tfUserEmail);
+        }
     }
 
     //</editor-fold>
+
+    
 
 }

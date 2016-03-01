@@ -11,6 +11,7 @@ import repository.CurricularRepository;
 import repository.FirmRepository;
 import repository.MaterialRepository;
 import repository.TargetGroupRepository;
+import repository.UserRepository;
 
 public class DomainController {
 
@@ -22,6 +23,7 @@ public class DomainController {
     private TargetGroupRepository targetGroupRepository;
     private CurricularRepository curricularRepository;
     private FirmRepository firmRepository;
+    private UserRepository userRepository;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -33,6 +35,7 @@ public class DomainController {
         this.firmRepository = new FirmRepository(PersistenceController.getEnforcer());
         this.targetGroupRepository = new TargetGroupRepository(PersistenceController.getEnforcer());
         this.curricularRepository = new CurricularRepository(PersistenceController.getEnforcer());
+        this.userRepository= new UserRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 
@@ -58,6 +61,9 @@ public class DomainController {
     public ObservableList<Curricular> getCurriculars() {
         return curricularRepository.getOptions();
     }
+     public User getUserByEmail(String email){
+        return this.userRepository.getUserByEmail(email);
+     }
 
     //</editor-fold>
     
