@@ -1,29 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
 <?import java.lang.*?>
-<?import java.util.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 
-<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" >
+<fx:root spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.OverviewController">
    <children>
-      <TableView fx:id="tvMaterials" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="500.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" style="-fx-focus-color: transparent">
+      <TableView fx:id="tvMaterials" prefHeight="200.0" prefWidth="500.0" style="-fx-focus-color: transparent" VBox.vgrow="ALWAYS">
         <columns>
-          <TableColumn fx:id="tcName" prefWidth="75.0" text="Naam" style="-fx-alignment: center"/>
-          <TableColumn fx:id="tcDescription" prefWidth="75.0" text="Beschrijving" style="-fx-alignment: center"/>
-            <TableColumn fx:id="tcAmount" prefWidth="75.0" text="Aantal" style="-fx-alignment: center"/>
-            <TableColumn fx:id="tcActions" prefWidth="75.0" text="Acties" style="-fx-alignment: center"/>
+          <TableColumn fx:id="tcName" prefWidth="75.0" style="-fx-alignment: center" text="Naam" />
+          <TableColumn fx:id="tcDescription" prefWidth="75.0" style="-fx-alignment: center" text="Beschrijving" />
+            <TableColumn fx:id="tcAmount" prefWidth="75.0" style="-fx-alignment: center" text="Aantal" />
+            <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties" />
         </columns>
          <columnResizePolicy>
             <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
          </columnResizePolicy>
       </TableView>
-      <HBox alignment="CENTER" layoutX="145.0" layoutY="323.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+      <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0">
          <children>
+            <TextField fx:id="txfFilterMaterials" onKeyPressed="#filterMaterials" />
             <ImageView fx:id="ivAddButton" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#addMaterial" pickOnBounds="true" preserveRatio="true">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -32,4 +38,7 @@
          </children>
       </HBox>
    </children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
 </fx:root>

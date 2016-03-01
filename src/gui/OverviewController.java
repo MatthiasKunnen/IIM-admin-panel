@@ -1,30 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import domain.DomainController;
 import domain.Material;
-import domain.MaterialIdentifier;
-
-import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
-
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ObservableValue;
-import javafx.beans.value.ObservableValueBase;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -34,19 +16,20 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.shape.SVGPath;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
+import java.io.IOException;
+import javafx.application.Platform;
+import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
+
 /**
  * FXML Controller class
  */
-public class OverviewController extends AnchorPane {
-    //<editor-fold desc="FXML variables" defaultstate="collapsed">
-
-    @FXML
-    private AnchorPane AnchorPane;
+public class OverviewController extends VBox {
     @FXML
     private TableColumn<?, ?> tcName;
     @FXML
@@ -59,12 +42,15 @@ public class OverviewController extends AnchorPane {
     private ImageView ivAddButton;
     @FXML
     private TableView<Material> tvMaterials;
+    @FXML
+    private TextField txfFilterMaterials;
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
     private DomainController dc;
     //</editor-fold>
+    
 
     //<editor-fold desc="Constructor" defaultstate="collapsed">
 
@@ -80,7 +66,18 @@ public class OverviewController extends AnchorPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-
+        CustomOptionsController coc = new CustomOptionsController();
+        coc.setAlignment(Pos.CENTER_RIGHT);
+        coc.addExistingSVG("firms", "briefcase");
+        coc.addExistingSVG("users");
+        coc.addExistingSVG("settings", "wrench");
+        coc.bind("firms", MouseEvent.MOUSE_CLICKED, (event -> {
+            Stage newStage = new Stage(StageStyle.DECORATED);
+            openNewWindow(new FirmSceneController(dc, newStage), newStage);
+        }));
+        coc.prefWidthProperty().bind(tvMaterials.widthProperty());
+        coc.setSpacing(20.0);
+        getChildren().add(0, coc);
         ivAddButton.setImage(new Image(getClass().getResource("/gui/images/material-add.png").toExternalForm()));
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -140,15 +137,13 @@ public class OverviewController extends AnchorPane {
         Stage newStage = new Stage(StageStyle.DECORATED);
         MaterialController mc = new MaterialController(dc, newStage, material);
         newStage.setTitle(material.getName() + " - IIM");
-        openMaterialScreen(mc, newStage);
+        openNewWindow(mc, newStage);
     }
 
-    private void openMaterialScreen(MaterialController mc, Stage newStage) {
-        Scene scene = new Scene(mc);
-        newStage.setMinWidth(620);
-        newStage.setMinHeight(463);
-        newStage.setScene(scene);
-        newStage.show();
+    private void openNewWindow(Parent parent, Stage stage){
+        Scene scene = new Scene(parent);
+        stage.setScene(scene);
+        stage.show();
     }
     //</editor-fold>
 
@@ -159,7 +154,14 @@ public class OverviewController extends AnchorPane {
         Stage newStage = new Stage(StageStyle.DECORATED);
         newStage.setTitle("Nieuw Materiaal - IIM");
         MaterialController mc = new MaterialController(dc, newStage);
-        openMaterialScreen(mc, newStage);
+        openNewWindow(mc, newStage);
     }
     //</editor-fold>
+
+    @FXML
+    private void filterMaterials(KeyEvent event) {
+        this.tvMaterials.setItems(dc.filterMaterialByName(txfFilterMaterials.getText()));
+                Platform.runLater(() -> this.setMinWidth(this.getWidth()));
+
+    }
 }

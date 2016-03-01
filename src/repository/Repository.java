@@ -23,15 +23,10 @@ public abstract class Repository<E extends IEntity> {
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public Repository(PersistenceEnforcer persistence) {
-        this(persistence, new ArrayList<E>());
-    }
-
-    public Repository(PersistenceEnforcer persistence, List<E> eList) {
         this.persistence = persistence;
-        this.eList = eList;
+        this.eList = new ArrayList<>();
         this.eObservableList = FXCollections.observableList((List<E>) copyCollectionDefensively(this.eList));
     }
-
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">

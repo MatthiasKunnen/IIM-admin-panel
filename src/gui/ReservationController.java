@@ -9,16 +9,9 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
-import static gui.GuiHelper.createMethodBuilder;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -29,42 +22,41 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
-import javafx.scene.control.cell.MapValueFactory;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import javafx.util.StringConverter;
+
 
 public class ReservationController extends AnchorPane {
+    //<editor-fold desc="FXML variables" defaultstate="collapsed">
 
     @FXML
     private Button btnSave;
     @FXML
-    private TableView<MaterialIdentifier> tvMaterials;
+    private TableView<Material> tvMaterials;
     @FXML
-    private TableColumn<MaterialIdentifier, Integer> tcPlace;
+    private TableColumn<Material, Integer> tcPlace;
     @FXML
-    private TableColumn<MaterialIdentifier, String> tcMaterial;
+    private TableColumn<Material, String> tcMaterialName;
     @FXML
     private DatePicker dpBringBackDate;
     @FXML
     private DatePicker dpPickUpDate;
-
-    private DomainController dc;
-    private ObservableList<MaterialIdentifier> identifiers;
-    private Stage theStage;
-    private Map<Material, Integer> materialAmountMap;
-    private Reservation reservation;
     @FXML
     private TextField txfUserEmail;
     @FXML
     private AnchorPane AnchorPane;
     @FXML
     private TextField txfSearch;
+    //</editor-fold>
 
+    //<editor-fold desc="Variables" defaultstate="collapsed">
+    private DomainController dc;
+    private ObservableList<MaterialIdentifier> identifiers;
+    private Stage theStage;
+    private Reservation reservation;
+    //</editor-fold>
+
+    //<editor-fold desc="Constructor" defaultstate="collapsed">
     public ReservationController(DomainController dc, Stage stage) {
         this(dc, stage, new Reservation());
 
@@ -74,7 +66,6 @@ public class ReservationController extends AnchorPane {
         this.identifiers = FXCollections.observableArrayList();
         this.theStage = stage;
         this.dc = dc;
-        this.materialAmountMap = new HashMap<>();
         this.reservation = reservation;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Reservation.fxml"));
         loader.setRoot(this);
@@ -95,31 +86,46 @@ public class ReservationController extends AnchorPane {
 //        
 //        tvMaterials.setItems(identifiers);
     }
+    //</editor-fold>
 
+    //<editor-fold desc="Action" defaultstate="collapsed">
+    /**
+     * deze methode wordt gebruikt om te kijken of er een nieuwe reservatie moet
+     * laden worden in het scherm of een reservatie die al bestaat
+     *
+     * @param reservation
+     */
     private void setReservation(Reservation reservation) {
         if (reservation == null || !dc.doesReservationExist(reservation)) {
             this.reservation = new Reservation();
         } else {
             this.reservation = reservation;
-            this.txfUserEmail.setText(reservation.getUserEmail());
+            //this.txfUserEmail.setText(reservation.getUserEmail());
             this.dpBringBackDate.setValue(reservation.getBringBackDate());
             this.dpPickUpDate.setValue(reservation.getPickUpDate());
-                  
+
             this.identifiers.addAll(this.reservation.getMaterialIdentifiersList());
         }
     }
+    //</editor-fold>
+
+    //<editor-fold desc="FXML actions" defaultstate="collapsed">
+    /**
+     * om de reservatie op te slaan ik wist niet hoe ik de materialen moest
+     * toevoegen aan reservatie (via nieuw scherm, via combobox, via
+     * zoekfunctie)
+     *
+     * @param event
+     */
     @FXML
     private void saveReservation(ActionEvent event) {
         reservation.setBringBackDate(this.dpBringBackDate.getValue());
         reservation.setPickUpDate(this.dpPickUpDate.getValue());
         reservation.setReservatieDate(LocalDate.now());
-        reservation.setUserEmail(txfUserEmail.getText());
+        //reservation.setUserEmail(txfUserEmail.getText());
         dc.addReservation(reservation);
     }
 
-    @FXML
-    private void searchMaterial(KeyEvent event) {
-        
-    }
+    //</editor-fold>
 
 }

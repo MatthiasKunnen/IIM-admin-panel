@@ -5,7 +5,6 @@
  */
 package repository;
 
-import domain.Material;
 import domain.Reservation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -25,7 +24,11 @@ public class ReservationRepository extends Repository<Reservation> {
     public ObservableList<Reservation> getReservations() {
         return FXCollections.unmodifiableObservableList(eObservableList);
     }
-    
+    /**
+     * Checks if an Reservation already exist.
+     * @param reservation
+     * @return true if Reservation already exist if not it returns false
+     */
     public boolean doesReservationExist(Reservation reservation){
         return getItemById(reservation.getId()) != null;
     }

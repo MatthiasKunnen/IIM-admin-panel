@@ -60,7 +60,7 @@ public class LoginScreenController extends AnchorPane {
 
     //<editor-fold defaultstate="collapsed" desc="Constructor">
 
-    public LoginScreenController(DomainController domaincontroller) {
+    public LoginScreenController(DomainController domaincontroller, Stage stage) {
         this.dc = domaincontroller;
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
         loader.setRoot(this);
@@ -70,6 +70,7 @@ public class LoginScreenController extends AnchorPane {
             this.getStylesheets().add("/gui/style/form.css");
         } catch (IOException ex) {
         }
+        stage.setResizable(false);
         this.txfUsername.requestFocus();
         lblError.textProperty().bind(loginService.messageProperty());
     }

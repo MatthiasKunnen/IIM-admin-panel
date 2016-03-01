@@ -8,19 +8,15 @@
 
 <fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReservationController">
    <children>
-      <Label layoutX="60.0" layoutY="38.0" text="UserEmail" />
-      <TextField fx:id="txfUserEmail" layoutX="181.0" layoutY="33.0" />
-      <Label layoutX="60.0" layoutY="71.0" text="OphaalDatum" />
+      <TextField fx:id="txfUserEmail" layoutX="88.0" layoutY="33.0" promptText="Reservatie voor" />
       <Button fx:id="btnSave" layoutX="517.0" layoutY="339.0" mnemonicParsing="false" onAction="#saveReservation" text="save" />
-      <Label layoutX="60.0" layoutY="110.0" text="Terugbrengdatum" />
       <TableView fx:id="tvMaterials" layoutX="46.0" layoutY="182.0" prefHeight="184.0" prefWidth="465.0">
         <columns>
-          <TableColumn fx:id="tcMaterial" prefWidth="203.0" text="Materiaal" />
+          <TableColumn fx:id="tcMaterialName" prefWidth="203.0" text="Materiaal" />
           <TableColumn fx:id="tcPlace" prefWidth="75.0" text="Plaats" />
         </columns>
       </TableView>
-      <DatePicker fx:id="dpBringBackDate" layoutX="181.0" layoutY="105.0" />
-      <DatePicker fx:id="dpPickUpDate" layoutX="181.0" layoutY="66.0" />
-      <TextField fx:id="txfSearch" layoutX="88.0" layoutY="144.0" onKeyTyped="#searchMaterial" promptText="zoek materiaal" />
+      <DatePicker fx:id="dpBringBackDate" layoutX="88.0" layoutY="102.0" promptText="Terugbrengdatum" />
+      <DatePicker fx:id="dpPickUpDate" layoutX="88.0" layoutY="66.0" promptText="Ophaaldatum" />
    </children>
 </fx:root>

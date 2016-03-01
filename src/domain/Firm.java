@@ -72,6 +72,13 @@ public class Firm implements IEntity, Serializable {
 
     }
 
+    public Firm(Firm firm){
+        this.id = firm.id;
+        this.name = firm.name;
+        this.email = firm.email;
+        this.phoneNumber = firm.phoneNumber;
+    }
+
     @Override
     public int getId() {
         return this.id;

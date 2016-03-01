@@ -6,41 +6,31 @@
 package gui;
 
 import domain.DomainController;
-import domain.Material;
 import domain.Reservation;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import javafx.beans.binding.Bindings;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ContentDisplay;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class ReservationOverviewController extends AnchorPane {
+    //<editor-fold desc="FXML variables" defaultstate="collapsed">
 
     @FXML
     private AnchorPane AnchorPane;
     @FXML
     private ImageView ivAddButton;
-
-
-    private DomainController dc;
     @FXML
     private TableColumn<Reservation, String> tcReservedFor;
     @FXML
@@ -53,6 +43,14 @@ public class ReservationOverviewController extends AnchorPane {
     private TableColumn<?, ?> tcOptions;
     @FXML
     private Button btnRemove;
+        //</editor-fold>
+
+    //<editor-fold desc="variables" defaultstate="collapsed">
+    private DomainController dc;
+        //</editor-fold>
+
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
+    
 
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
@@ -84,13 +82,16 @@ public class ReservationOverviewController extends AnchorPane {
                     Stage newStage = new Stage(StageStyle.DECORATED);
                     Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
                     ReservationController rc = new ReservationController(dc, newStage, theReservation);
-                    newStage.setTitle("Reservatie van "+theReservation.getUserEmail()+ " - IIM");
+                    newStage.setTitle("Reservatie van "+theReservation.getUser().getFirstName()+" "+theReservation.getUser().getLastName()+ " - IIM");
                     openReservationScreen(rc, newStage);
                 }
             }
 
         });
     }
+        //</editor-fold>
+
+    //<editor-fold desc="FXML actions" defaultstate="collapsed">
 
     @FXML
     private void addReservation(MouseEvent event) {
@@ -99,7 +100,15 @@ public class ReservationOverviewController extends AnchorPane {
         ReservationController rc = new ReservationController(dc, newStage);
         openReservationScreen(rc, newStage);
     }
-    
+    @FXML
+    private void removeReservation(MouseEvent event) {
+        dc.removeReservation(this.tvReservations.getSelectionModel().getSelectedItem());
+        //het scherm zou moeten refreshen 
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="actions" defaultstate="collapsed">
+
     private void openReservationScreen(ReservationController rc, Stage newStage){
         
         Scene scene = new Scene(rc);
@@ -109,13 +118,10 @@ public class ReservationOverviewController extends AnchorPane {
         newStage.setScene(scene);
         newStage.show();
     }
+    //</editor-fold>
 
-    @FXML
-    private void removeReservation(MouseEvent event) {
-        dc.removeReservation(this.tvReservations.getSelectionModel().getSelectedItem());
-        
-    }
-
+    
+    
     
 }
 

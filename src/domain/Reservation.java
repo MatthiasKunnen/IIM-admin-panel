@@ -1,21 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package domain;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javax.persistence.Entity;
@@ -34,7 +23,7 @@ public class Reservation implements Serializable, IEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private String userEmail;
+    private User user;
     private List<MaterialIdentifier> materialIdentifiersList;
     private ObjectProperty<LocalDate>  reservationDate = new SimpleObjectProperty<>() ;
     private ObjectProperty<LocalDate>  pickUpDate= new SimpleObjectProperty<>();
@@ -46,13 +35,14 @@ public class Reservation implements Serializable, IEntity {
     */
     public Reservation() { 
     }
+    
     /**
      * Copy constructor
      * @param reservation 
      */
     public Reservation(Reservation reservation){
         this.id=reservation.id;
-        this.userEmail= reservation.userEmail;
+        this.user= reservation.user;
         this.materialIdentifiersList= (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(reservation.materialIdentifiersList, this);
         this.reservationDate=reservation.reservationDate;
         this.pickUpDate=reservation.pickUpDate;
@@ -66,12 +56,12 @@ public class Reservation implements Serializable, IEntity {
         return id;
     }
 
-    public String getUserEmail() {
-        return userEmail;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserEmail(String userEmail) {
-        this.userEmail = userEmail;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public List<MaterialIdentifier> getMaterialIdentifiersList() {
@@ -100,10 +90,17 @@ public class Reservation implements Serializable, IEntity {
 
     public LocalDate getBringBackDate() {
         return bringBackDate.get();
+        
     }
 
     public void setBringBackDate(LocalDate bringBackDate) {
-        this.bringBackDate.set(bringBackDate);
+        if(bringBackDate.isAfter(this.getPickUpDate()))
+             this.bringBackDate.set(bringBackDate);
+        else
+            this.bringBackDate.set(this.pickUpDate.get().plusDays(4));
+        
+       
+        
     }
 
     public ObjectProperty<LocalDate> getBringBackDateProperty() {
@@ -143,11 +140,11 @@ public class Reservation implements Serializable, IEntity {
         return toStringHelper(this)
                 .omitNullValues()
                 .add("id", id)
-                .add("userEmail", userEmail)
-                .add("materialIdentifiersList", materialIdentifiersList)
-                .add("reservationDate", reservationDate)
-                .add("pickUpDate", pickUpDate)
-                .add("bringBackDate", bringBackDate)
+                .add("user", user)
+                .add("material identifiers list", materialIdentifiersList)
+                .add("Date of reservation", reservationDate)
+                .add("Date of pickup", pickUpDate)
+                .add("Date of bringback", bringBackDate)
                 .toString();
     }
 

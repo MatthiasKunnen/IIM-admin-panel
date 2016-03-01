@@ -22,7 +22,7 @@ import org.junit.Assert;
 public class ReservationTest {
 
     private Reservation res;
-    private String mail = "test@test.com";
+    private User user = new User();
     private List<MaterialIdentifier> resList;
     private MaterialIdentifier matId;
     private Material mat;
@@ -39,14 +39,9 @@ public class ReservationTest {
         matId = new MaterialIdentifier(mat, Visibility.Student);
         resList = new ArrayList<>();
         resList.add(matId);
+        
      }
     
-    @Test
-    public void testSetUserEmail(){
-        res.setUserEmail(mail);
-        Assert.assertEquals(mail, res.getUserEmail());
-    
-    }
     
     @Test
     public void testSetMaterialIdentifierList(){
@@ -68,6 +63,7 @@ public class ReservationTest {
     
     @Test
     public void testSetBringBackDate(){
+        res.setPickUpDate(pickUp);
         res.setBringBackDate(bringBack);
         Assert.assertEquals(bringBack, res.getBringBackDate());
     }
