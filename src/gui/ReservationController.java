@@ -43,11 +43,11 @@ public class ReservationController extends AnchorPane {
     @FXML
     private Button btnSave;
     @FXML
-    private TableView<MaterialIdentifier> tvMaterials;
+    private TableView<Material> tvMaterials;
     @FXML
-    private TableColumn<MaterialIdentifier, Integer> tcPlace;
+    private TableColumn<Material, Integer> tcPlace;
     @FXML
-    private TableColumn<MaterialIdentifier, String> tcMaterial;
+    private TableColumn<Material, String> tcMaterialName;
     @FXML
     private DatePicker dpBringBackDate;
     @FXML
@@ -56,7 +56,6 @@ public class ReservationController extends AnchorPane {
     private DomainController dc;
     private ObservableList<MaterialIdentifier> identifiers;
     private Stage theStage;
-    private Map<Material, Integer> materialAmountMap;
     private Reservation reservation;
     @FXML
     private TextField txfUserEmail;
@@ -74,7 +73,6 @@ public class ReservationController extends AnchorPane {
         this.identifiers = FXCollections.observableArrayList();
         this.theStage = stage;
         this.dc = dc;
-        this.materialAmountMap = new HashMap<>();
         this.reservation = reservation;
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Reservation.fxml"));
         loader.setRoot(this);
@@ -95,31 +93,43 @@ public class ReservationController extends AnchorPane {
 //        
 //        tvMaterials.setItems(identifiers);
     }
-
+    /**
+     * deze methode wordt gebruikt om te kijken of er een nieuwe reservatie moet laden worden 
+     * in het scherm of een reservatie die al bestaat
+     * @param reservation 
+     */
     private void setReservation(Reservation reservation) {
         if (reservation == null || !dc.doesReservationExist(reservation)) {
             this.reservation = new Reservation();
         } else {
             this.reservation = reservation;
-            this.txfUserEmail.setText(reservation.getUserEmail());
+            //this.txfUserEmail.setText(reservation.getUserEmail());
             this.dpBringBackDate.setValue(reservation.getBringBackDate());
             this.dpPickUpDate.setValue(reservation.getPickUpDate());
                   
             this.identifiers.addAll(this.reservation.getMaterialIdentifiersList());
         }
     }
+    /**
+     * om de reservatie op te slaan
+     * ik wist niet hoe ik de materialen moest toevoegen aan reservatie (via nieuw scherm, via combobox, via zoekfunctie)
+     * @param event 
+     */
     @FXML
     private void saveReservation(ActionEvent event) {
         reservation.setBringBackDate(this.dpBringBackDate.getValue());
         reservation.setPickUpDate(this.dpPickUpDate.getValue());
         reservation.setReservatieDate(LocalDate.now());
-        reservation.setUserEmail(txfUserEmail.getText());
+        //reservation.setUserEmail(txfUserEmail.getText());
         dc.addReservation(reservation);
     }
-
+/**
+ * zoekfunctie voor het materiaal te zoeken.
+ * @param event 
+ */
     @FXML
     private void searchMaterial(KeyEvent event) {
-        
+        this.tvMaterials.setItems(dc.searchMaterialByName(txfSearch.getText()));
     }
 
 }

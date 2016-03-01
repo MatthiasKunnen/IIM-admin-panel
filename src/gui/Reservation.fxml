@@ -15,7 +15,7 @@
       <Label layoutX="60.0" layoutY="110.0" text="Terugbrengdatum" />
       <TableView fx:id="tvMaterials" layoutX="46.0" layoutY="182.0" prefHeight="184.0" prefWidth="465.0">
         <columns>
-          <TableColumn fx:id="tcMaterial" prefWidth="203.0" text="Materiaal" />
+          <TableColumn fx:id="tcMaterialName" prefWidth="203.0" text="Materiaal" />
           <TableColumn fx:id="tcPlace" prefWidth="75.0" text="Plaats" />
         </columns>
       </TableView>
