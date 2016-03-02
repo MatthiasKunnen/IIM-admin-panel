@@ -72,6 +72,7 @@ public class TabsController extends TabPane {
         TempController<TargetGroup> tcTargetGroup = createTargetGroupOverview();
 
         tcCurricular.getListView().maxHeightProperty().bind(tcFirm.getListView().heightProperty());
+        tcTargetGroup.getListView().maxHeightProperty().bind(tcFirm.getListView().heightProperty());
 
         overview.getChildren().add(tcFirm);
         overview.getChildren().add(tcCurricular);

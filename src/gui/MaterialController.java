@@ -205,6 +205,8 @@ public class MaterialController extends VBox {
         this.cboCurricular = new CheckComboBox<>(dc.getCurriculars());
         this.cboFirm.setItems(dc.getFirms());
         this.cboTargetAudience = new CheckComboBox<>(dc.getTargetGroups());
+        
+        
         Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
     //</editor-fold>
