@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
 
-public class MaterialRepository extends Repository<Material>{
+public class MaterialRepository extends Repository<Material> {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
 
@@ -109,9 +109,8 @@ public class MaterialRepository extends Repository<Material>{
             }
         }
 
-        List<MaterialIdentifier> remove = new ArrayList<>(original.getIdentifiers());
-        remove.removeAll(material.getIdentifiers());
-        remove.forEach(materialIdentifier -> persistence.remove(materialIdentifier));
+        getAllItemsInAThatAreNotInB(original.getIdentifiers(), material.getIdentifiers())
+                .forEach(materialIdentifier -> persistence.remove(materialIdentifier));
 
         Material toSave = copyDefensively(material);
 
@@ -149,7 +148,7 @@ public class MaterialRepository extends Repository<Material>{
         return this.eList.stream().anyMatch(m -> m.getName().equalsIgnoreCase(name));
     }
 
-    public boolean doesMaterialExist(Material material){
+    public boolean doesMaterialExist(Material material) {
         return getItemById(material.getId()) != null;
     }
 
@@ -165,6 +164,13 @@ public class MaterialRepository extends Repository<Material>{
     //</editor-fold>
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
+
+    private <E extends IEntity> List<E> getAllItemsInAThatAreNotInB(List<E> a, List<E> b) {
+        List<E> result = new ArrayList<>(a);
+        result.removeAll(b);
+        return result;
+    }
+
     private void persistMaterial(Material material) {
         persistence.persist(material);
         persistence.persist(material.getIdentifiers());
