@@ -20,6 +20,11 @@ public class Curricular implements IEntity, Serializable {
     protected Curricular() {
 
     }
+    
+    public Curricular(Curricular c){
+        this.name = c.name;
+        this.id = c.id;
+    }
 
     public Curricular(String name) {
         this.name = name;

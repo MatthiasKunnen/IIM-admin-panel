@@ -16,6 +16,15 @@ public class TargetGroup implements IEntity, Serializable{
     @Column(nullable = false, unique = true)
     private String name;
 
+    public TargetGroup(){
+        
+    }
+    
+    public TargetGroup(TargetGroup t){
+        this.id = t.id;
+        this.name = t.name;
+    }
+    
     public String getName() {
         return name;
     }
