@@ -7,8 +7,10 @@ package gui;
 
 import domain.DomainController;
 import domain.Reservation;
+
 import java.io.IOException;
 import java.time.LocalDate;
+
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -43,14 +45,14 @@ public class ReservationOverviewController extends AnchorPane {
     private TableColumn<?, ?> tcOptions;
     @FXML
     private Button btnRemove;
-        //</editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="variables" defaultstate="collapsed">
     private DomainController dc;
-        //</editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-    
+
 
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
@@ -68,28 +70,23 @@ public class ReservationOverviewController extends AnchorPane {
         ivAddButton.setImage(new Image(getClass().getResource("/gui/images/material-add.png").toExternalForm()));
         //tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcReservedFor.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
-        tcPickUpDate.setCellValueFactory(col->col.getValue().getPickUpDateProperty());
-        tcBringBackDate.setCellValueFactory(col->col.getValue().getBringBackDateProperty());
-        
+        tcPickUpDate.setCellValueFactory(col -> col.getValue().startDateProperty());
+        tcBringBackDate.setCellValueFactory(col -> col.getValue().endDateProperty());
+
         this.tvReservations.setItems(dc.getReservations());
-               
 
-        tvReservations.setOnMouseClicked(new EventHandler<MouseEvent>() {
 
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount() >= 2) {
-                    Stage newStage = new Stage(StageStyle.DECORATED);
-                    Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
-                    ReservationController rc = new ReservationController(dc, newStage, theReservation);
-                    newStage.setTitle("Reservatie van "+theReservation.getUser().getFirstName()+" "+theReservation.getUser().getLastName()+ " - IIM");
-                    openReservationScreen(rc, newStage);
-                }
+        tvReservations.setOnMouseClicked(event -> {
+            if (event.getClickCount() >= 2) {
+                Stage newStage = new Stage(StageStyle.DECORATED);
+                Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
+                ReservationController rc = new ReservationController(dc, newStage, theReservation);
+                newStage.setTitle("Reservatie van " + theReservation.getUser().getFirstName() + " " + theReservation.getUser().getLastName() + " - IIM");
+                openReservationScreen(rc, newStage);
             }
-
         });
     }
-        //</editor-fold>
+    //</editor-fold>
 
     //<editor-fold desc="FXML actions" defaultstate="collapsed">
 
@@ -100,6 +97,7 @@ public class ReservationOverviewController extends AnchorPane {
         ReservationController rc = new ReservationController(dc, newStage);
         openReservationScreen(rc, newStage);
     }
+
     @FXML
     private void removeReservation(MouseEvent event) {
         dc.removeReservation(this.tvReservations.getSelectionModel().getSelectedItem());
@@ -109,8 +107,8 @@ public class ReservationOverviewController extends AnchorPane {
 
     //<editor-fold desc="actions" defaultstate="collapsed">
 
-    private void openReservationScreen(ReservationController rc, Stage newStage){
-        
+    private void openReservationScreen(ReservationController rc, Stage newStage) {
+
         Scene scene = new Scene(rc);
 
         newStage.setMinWidth(620);
@@ -120,8 +118,6 @@ public class ReservationOverviewController extends AnchorPane {
     }
     //</editor-fold>
 
-    
-    
-    
+
 }
 

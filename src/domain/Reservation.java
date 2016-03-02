@@ -101,7 +101,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Transient
-    public ObjectProperty<LocalDate> pickUpDateProperty() {
+    public ObjectProperty<LocalDate> startDateProperty() {
         return startDate;
     }
 
@@ -116,7 +116,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Transient
-    public ObjectProperty<LocalDate> bringBackDateProperty() {
+    public ObjectProperty<LocalDate> endDateProperty() {
         return endDate;
     }
 
