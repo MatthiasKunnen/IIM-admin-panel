@@ -12,7 +12,7 @@ import domain.Reservation;
 import domain.User;
 import java.io.IOException;
 import java.time.LocalDate;
-import javafx.application.Platform;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -103,8 +103,8 @@ public class ReservationController extends AnchorPane {
         } else {
             this.reservation = reservation;
             //this.txfUserEmail.setText(reservation.getUserEmail());
-            this.dpBringBackDate.setValue(reservation.getBringBackDate());
-            this.dpPickUpDate.setValue(reservation.getPickUpDate());
+            this.dpBringBackDate.setValue(reservation.getEndDate());
+            this.dpPickUpDate.setValue(reservation.getStartDate());
 
             this.identifiers.addAll(this.reservation.getMaterialIdentifiersList());
         }
@@ -121,8 +121,8 @@ public class ReservationController extends AnchorPane {
      */
     @FXML
     private void saveReservation(ActionEvent event) {
-        reservation.setBringBackDate(this.dpBringBackDate.getValue());
-        reservation.setPickUpDate(this.dpPickUpDate.getValue());
+        reservation.setEndDate(this.dpBringBackDate.getValue());
+        reservation.setStartDate(this.dpPickUpDate.getValue());
         reservation.setReservatieDate(LocalDate.now());
         User user =dc.getUserByEmail(tfUserEmail.getText());
         if(user==null){
