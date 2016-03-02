@@ -47,7 +47,6 @@ public class DomainController {
         return materialRepository.getMaterialIdentifiers();
     }   
 
-
     public ObservableList<Firm> getFirms() {
         return firmRepository.getExistingFirms();
     }
@@ -56,14 +55,13 @@ public class DomainController {
         return targetGroupRepository.getOptions();
     }
 
-
-    public ObservableList<Curricular> getCurriculars() {
+    public ObservableList<Curricular> getCurricular() {
         return curricularRepository.getOptions();
     }
-     public User getUserByEmail(String email){
+
+    public User getUserByEmail(String email){
         return this.userRepository.getUserByEmail(email);
      }
-
     //</editor-fold>
     
     //<editor-fold desc="Actions" defaultstate="collapsed">

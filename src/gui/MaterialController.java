@@ -202,7 +202,7 @@ public class MaterialController extends VBox {
                 };
             }
         });
-        this.cboCurricular.getItems().addAll(dc.getCurriculars());
+        this.cboCurricular.getItems().addAll(dc.getCurricular());
         this.cboCurricular.setConverter(new StringConverter<Curricular>() {
             @Override
             public String toString(Curricular c) {
@@ -211,7 +211,7 @@ public class MaterialController extends VBox {
 
             @Override
             public Curricular fromString(String string) {
-                return dc.getCurriculars().stream()
+                return dc.getCurricular().stream()
                         .filter(c -> c.getName().equals(string))
                         .findAny()
                         .orElse(null);
