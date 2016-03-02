@@ -126,8 +126,6 @@ public class MaterialController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        setMaterial(material);
-
         this.tvIdentifiers.setItems(this.identifiers);
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
@@ -247,6 +245,8 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
+
+        setMaterial(material);
 
         Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
@@ -386,9 +386,8 @@ public class MaterialController extends VBox {
             if (photoUrl != null && !photoUrl.isEmpty()) {
                 ivPhoto.setImage(new Image(photoUrl));
             }
-
-            material.getCurricular().forEach(c -> cboCurricular.getCheckModel().check(c));
-            material.getTargetGroups().forEach(c -> cboTargetAudience.getCheckModel().check(c));
+            cboCurricular.getItems().stream().filter(c -> material.getCurricular().contains(c)).forEach(c -> cboCurricular.getCheckModel().check(c));
+            cboTargetAudience.getItems().stream().filter(t -> material.getTargetGroups().contains(t)).forEach(t -> cboTargetAudience.getCheckModel().check(t));
             this.cboFirm.getSelectionModel().select(material.getFirm());
             this.identifiers.addAll(this.material.getIdentifiers());
         }
