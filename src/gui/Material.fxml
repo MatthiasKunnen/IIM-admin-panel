@@ -97,13 +97,13 @@
         </HBox>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <children>
-                <TableView fx:id="tvIdentifiers" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
+                <TableView fx:id="tvIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
                            style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="10.0"
                            AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
                     <columns>
                         <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
                                      style="-fx-alignment: center" text="#"/>
-                        <TableColumn fx:id="tcLocation" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
+                        <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
                         <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center"
                                      text="Beschikbaarheid"/>
                         <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties"/>
