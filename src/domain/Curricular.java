@@ -43,4 +43,11 @@ public class Curricular implements IEntity, Serializable {
         return this.id;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Curricular))
+            return false;
+        Curricular curricular = (Curricular) obj;
+        return curricular.getId() != 0 && curricular.getId() == this.id || super.equals(obj);
+    }
 }

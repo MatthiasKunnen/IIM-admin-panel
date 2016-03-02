@@ -38,4 +38,11 @@ public class TargetGroup implements IEntity, Serializable{
         return this.id;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof TargetGroup))
+            return false;
+        TargetGroup targetGroup = (TargetGroup) obj;
+        return targetGroup.getId() != 0 && targetGroup.getId() == this.id || super.equals(obj);
+    }
 }
