@@ -162,8 +162,6 @@ public class OverviewController extends VBox {
 
     @FXML
     private void filterMaterials(KeyEvent event) {
-        this.tvMaterials.setItems(dc.filterMaterialByName(txfFilterMaterials.getText()));
-        Platform.runLater(() -> this.setMinWidth(this.getWidth()));
 
     }
     //</editor-fold>

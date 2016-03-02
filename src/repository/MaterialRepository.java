@@ -162,10 +162,6 @@ public class MaterialRepository extends Repository<Material>{
     public Material getMaterialByName(String name) {
         return copyDefensively(this.eList.stream().filter(m -> m.getName().equals(name)).findAny().orElse(null));
     }
-    public ObservableList<Material> filterByName(String name){
-        return FXCollections.observableList(copyDefensively(this.eList.stream().filter(m -> m.getName().contains(name)/*.equals(name).findAny().orElse(null)*/).collect(Collectors.toList())));
-
-    }
     //</editor-fold>
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
