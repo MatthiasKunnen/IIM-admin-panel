@@ -107,8 +107,8 @@ public abstract class Repository<E extends IEntity> {
     }
 
     protected void removeItem(E remove) {
-        this.eList.remove(remove);
-        this.eObservableList.remove(remove);
+        this.eList.removeIf(e-> e.getId() == remove.getId());
+        this.eObservableList.removeIf(e-> e.getId() == remove.getId());
     }
     //</editor-fold>
 }
