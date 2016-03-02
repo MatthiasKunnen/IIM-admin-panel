@@ -29,10 +29,10 @@ public class Material implements Serializable, IEntity {
     private Firm firm;
 
     @ManyToMany
-    private List<Curricular> curricular;
+    private List<Curricular> curricular = new ArrayList<>();
 
     @ManyToMany
-    private List<TargetGroup> targetGroups;
+    private List<TargetGroup> targetGroups = new ArrayList<>();
 
     @Column(scale = 2, precision = 10)
     private BigDecimal price;
@@ -189,17 +189,15 @@ public class Material implements Serializable, IEntity {
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-
-                .add("id", id)
-                .add("name", name)
-                .add("encoding", encoding)
-                .add("firm", firm.getName())
-                .add("firm phonenumber", firm.getPhoneNumber())
-                .add("firm email", firm.getEmail())
-                .add("price", price)
-                .add("articleNr", articleNr)
-                .add("identifiers", items)
-
+                .add("ID", id)
+                .add("Name", name)
+                .add("Article number", articleNr)
+                .add("Price", price)
+                .add("Encoding", encoding)
+                .add("Firm", firm)
+                .add("Curricular", curricular)
+                .add("TargetGroups", targetGroups)
+                .add("Identifiers", items)
                 .toString();
     }
     //</editor-fold>
