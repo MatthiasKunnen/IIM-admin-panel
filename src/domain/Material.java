@@ -32,6 +32,9 @@ public class Material implements Serializable, IEntity {
     private List<Curricular> curricular = new ArrayList<>();
 
     @ManyToMany
+    @JoinTable(
+            inverseJoinColumns = @JoinColumn(name = "TARGETGROUP_ID")
+    )
     private List<TargetGroup> targetGroups = new ArrayList<>();
 
     @Column(scale = 2, precision = 10)
@@ -150,6 +153,8 @@ public class Material implements Serializable, IEntity {
         this.name = material.name;
         this.description = material.description;
         this.firm = ImmutabilityHelper.copyDefensively(material.firm);
+        this.curricular = (List<Curricular>) ImmutabilityHelper.copyCollectionDefensively(material.curricular);
+        this.targetGroups = (List<TargetGroup>) ImmutabilityHelper.copyCollectionDefensively(material.targetGroups);
         this.price = material.price;
         this.articleNr = material.articleNr;
     }
