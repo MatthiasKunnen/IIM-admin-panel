@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import domain.Curricular;
@@ -24,6 +19,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -33,6 +29,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.controlsfx.control.textfield.CustomTextField;
+import org.controlsfx.control.CheckComboBox;
 
 import java.io.File;
 import java.io.IOException;
@@ -42,9 +39,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
-import org.controlsfx.control.CheckComboBox;
-import org.controlsfx.control.IndexedCheckModel;
-
 
 /**
  * FXML Controller class
@@ -134,8 +128,11 @@ public class MaterialController extends VBox {
         }
         setMaterial(material);
 
+        this.tvIdentifiers.setItems(this.identifiers);
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
+        tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
+        tcLocation.setOnEditCommit(event -> event.getRowValue().setPlace(event.getNewValue()));
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
         tcAvailable.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Visibility>, TableCell<MaterialIdentifier, Visibility>>() {
             @Override
@@ -205,12 +202,9 @@ public class MaterialController extends VBox {
                 };
             }
         });
-
-        tvIdentifiers.setItems(this.identifiers);
         this.cboCurricular = new CheckComboBox<>(dc.getCurriculars());
         this.cboFirm.setItems(dc.getFirms());
         this.cboTargetAudience = new CheckComboBox<>(dc.getTargetGroups());
-
         Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
     //</editor-fold>
@@ -269,6 +263,7 @@ public class MaterialController extends VBox {
         material.setCurricular(cboCurricular.getCheckModel().getCheckedItems());
         //leeftijdscathegorie
         if (abort) return;
+
         material.setIdentifiers(this.identifiers);
         if (dc.doesMaterialExist(material)) {
             dc.update(material);
@@ -285,7 +280,6 @@ public class MaterialController extends VBox {
         } catch (AzureException ex) {
             //warning
         }
-
     }
 
     @FXML
