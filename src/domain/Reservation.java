@@ -1,61 +1,67 @@
-
 package domain;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
+
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+
+import javax.persistence.*;
+
+import persistence.LocalDateConverter;
 import util.ImmutabilityHelper;
 
-/**
- *
- * @author matthiasseghers
- */
 @Entity
+@Access(AccessType.PROPERTY)
 public class Reservation implements Serializable, IEntity {
 
+    //<editor-fold desc="Declarations" defaultstate="collapsed">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Access(AccessType.FIELD)
     private int id;
     private User user;
     private List<MaterialIdentifier> materialIdentifiersList;
-    private ObjectProperty<LocalDate>  reservationDate = new SimpleObjectProperty<>() ;
-    private ObjectProperty<LocalDate>  pickUpDate= new SimpleObjectProperty<>();
-    private ObjectProperty<LocalDate>  bringBackDate= new SimpleObjectProperty<>();
-    
-   
+    private ObjectProperty<LocalDate>
+            creationDate = new SimpleObjectProperty<>(),
+            startDate = new SimpleObjectProperty<>(),
+            endDate = new SimpleObjectProperty<>();
+    //</editor-fold>
+
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
+
     /**
-    JPA-constructor
-    */
-    public Reservation() { 
-    }
-    
-    /**
-     * Copy constructor
-     * @param reservation 
+     * JPA-constructor
      */
-    public Reservation(Reservation reservation){
-        this.id=reservation.id;
-        this.user= reservation.user;
-        this.materialIdentifiersList= (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(reservation.materialIdentifiersList, this);
-        this.reservationDate=reservation.reservationDate;
-        this.pickUpDate=reservation.pickUpDate;
-        this.bringBackDate=reservation.bringBackDate;
-        
+    public Reservation() {
     }
 
-    //<editor-fold desc="Getters and setters" defaultstate="collapsed">
+    /**
+     * Copy constructor
+     *
+     * @param reservation
+     */
+    public Reservation(Reservation reservation) {
+        this.id = reservation.id;
+        this.user = reservation.user;
+        this.materialIdentifiersList = (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(reservation.materialIdentifiersList, this);
+        this.creationDate = reservation.creationDate;
+        this.startDate = reservation.startDate;
+        this.endDate = reservation.endDate;
+
+    }
+    //</editor-fold>
+
+    //<editor-fold desc="Properties" defaultstate="collapsed">
     @Override
     public int getId() {
         return id;
     }
 
+    @ManyToOne
     public User getUser() {
         return user;
     }
@@ -64,6 +70,7 @@ public class Reservation implements Serializable, IEntity {
         this.user = user;
     }
 
+    @ManyToMany
     public List<MaterialIdentifier> getMaterialIdentifiersList() {
         return materialIdentifiersList;
     }
@@ -72,80 +79,66 @@ public class Reservation implements Serializable, IEntity {
         this.materialIdentifiersList = materialIdentifiersList;
     }
 
-    public LocalDate getReservationDate() {
-        return reservationDate.get();
+    @Column(nullable = false)
+    @Convert(converter = LocalDateConverter.class)
+    public LocalDate getCreationDate() {
+        return creationDate.get();
     }
 
-    public void setReservatieDate(LocalDate reservationDate) {
-        this.reservationDate.set(reservationDate);
+    @Transient
+    public ObjectProperty<LocalDate> reservationDateProperty() {
+        return creationDate;
     }
 
-    public LocalDate getPickUpDate() {
-        return pickUpDate.get();
+    public void setCreationDate(LocalDate reservationDate) {
+        this.creationDate.set(reservationDate);
     }
 
-    public void setPickUpDate(LocalDate pickUpDate) {
-        this.pickUpDate.set(pickUpDate);
+    @Column(nullable = false)
+    @Convert(converter = LocalDateConverter.class)
+    public LocalDate getStartDate() {
+        return startDate.get();
     }
 
-    public LocalDate getBringBackDate() {
-        return bringBackDate.get();
-        
+    @Transient
+    public ObjectProperty<LocalDate> pickUpDateProperty() {
+        return startDate;
     }
 
-    public void setBringBackDate(LocalDate bringBackDate) {
-        if(bringBackDate.isAfter(this.getPickUpDate()))
-             this.bringBackDate.set(bringBackDate);
-        else
-            this.bringBackDate.set(this.pickUpDate.get().plusDays(4));
-        
-       
-        
+    public void setStartDate(LocalDate pickUpDate) {
+        this.startDate.set(pickUpDate);
     }
 
-    public ObjectProperty<LocalDate> getBringBackDateProperty() {
-        return bringBackDate;
+    @Column(nullable = false)
+    @Convert(converter = LocalDateConverter.class)
+    public LocalDate getEndDate() {
+        return endDate.get();
     }
 
-//    public void setBringBackDateProperty(ObjectProperty<LocalDate> bringBackDateProperty) {
-//        this.bringBackDateProperty = bringBackDateProperty;
-//    }
-
-    public ObjectProperty<LocalDate> getPickUpDateProperty() {
-        return pickUpDate;
+    @Transient
+    public ObjectProperty<LocalDate> bringBackDateProperty() {
+        return endDate;
     }
 
-//    public void setPickUpDateProperty(ObjectProperty<LocalDate> pickUpDateProperty) {
-//        this.pickUpDateProperty = pickUpDateProperty;
-//    }
-
-    public ObjectProperty<LocalDate> getReservationDateProperty() {
-        return reservationDate;
+    public void setEndDate(LocalDate bringBackDate) {
+        this.endDate.set(bringBackDate);
     }
-
-//    public void setReservationDateProperty(ObjectProperty<LocalDate> reservationDateProperty) {
-//        this.reservationDateProperty = reservationDateProperty;
-//    }
 
     //</editor-fold>
-    /**
-     * De reservatie wordt vroeg tijdig stopgezet
-     */
-//    public void reservationSuspend(LocalDate earlyBringBack) {
-//        this.bringBackDate = earlyBringBack;
-//    }
+
+    //<editor-fold desc="Actions" defaultstate="collapsed">
 
     @Override
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-                .add("id", id)
-                .add("user", user)
-                .add("material identifiers list", materialIdentifiersList)
-                .add("Date of reservation", reservationDate)
-                .add("Date of pickup", pickUpDate)
-                .add("Date of bringback", bringBackDate)
+                .add("ID", id)
+                .add("User", user)
+                .add("Identifiers", materialIdentifiersList)
+                .add("Reservation date", creationDate)
+                .add("Start date", startDate)
+                .add("End date", endDate)
                 .toString();
     }
-
+    //</editor-fold>
 }

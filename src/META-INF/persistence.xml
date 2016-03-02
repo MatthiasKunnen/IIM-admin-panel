@@ -7,11 +7,13 @@
         <class>domain.Firm</class>
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
+        <class>domain.Reservation</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
-        <class>persistence.VisibilityConverter</class>
+        <class>persistence.LocalDateConverter</class>
         <class>persistence.PermissionsConverter</class>
         <class>persistence.UserTypeConverter</class>
+        <class>persistence.VisibilityConverter</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:sqlserver://iim.database.windows.net:1433;databaseName=iim_db"/>
@@ -27,11 +29,13 @@
         <class>domain.Firm</class>
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
+        <class>domain.Reservation</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
-        <class>persistence.VisibilityConverter</class>
+        <class>persistence.LocalDateConverter</class>
         <class>persistence.PermissionsConverter</class>
         <class>persistence.UserTypeConverter</class>
+        <class>persistence.VisibilityConverter</class>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.ClientDriver"/>
             <property name="javax.persistence.jdbc.url" value="jdbc:derby://localhost:1527/IIM_test;create=true"/>
