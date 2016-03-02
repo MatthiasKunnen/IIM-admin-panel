@@ -11,18 +11,21 @@ import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceEnforcer;
+import util.ImmutabilityHelper;
 
 /**
  *
  * @author Evert
  */
-public class CurricularRepository extends Repository<Curricular>{
+public class CurricularRepository extends Repository<Curricular> {
 
     public CurricularRepository(PersistenceEnforcer persistence) {
         super(persistence);
+        eList = persistence.retrieve(Curricular.class);
+        eObservableList = FXCollections.observableList((List<Curricular>) ImmutabilityHelper.copyCollectionDefensively(eList));
     }
 
-    public ObservableList<Curricular> getOptions(){
+    public ObservableList<Curricular> getOptions() {
         return FXCollections.observableList(this.eList.stream().collect(Collectors.toList()));
     }
 }
