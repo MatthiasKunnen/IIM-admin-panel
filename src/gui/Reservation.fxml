@@ -1,22 +1,78 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
+<?import javafx.scene.effect.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReservationController">
+
+<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
    <children>
-      <TextField fx:id="tfUserEmail" layoutX="88.0" layoutY="33.0" onMouseEntered="#checkUserEmail" promptText="Reservatie voor" />
-      <Button fx:id="btnSave" layoutX="517.0" layoutY="339.0" mnemonicParsing="false" onAction="#saveReservation" text="save" />
-      <TableView fx:id="tvMaterials" layoutX="46.0" layoutY="182.0" prefHeight="184.0" prefWidth="465.0">
-        <columns>
-          <TableColumn fx:id="tcMaterialName" prefWidth="203.0" text="Materiaal" />
-          <TableColumn fx:id="tcPlace" prefWidth="75.0" text="Plaats" />
-        </columns>
-      </TableView>
-      <DatePicker fx:id="dpBringBackDate" layoutX="88.0" layoutY="102.0" promptText="Terugbrengdatum" />
-      <DatePicker fx:id="dpPickUpDate" layoutX="88.0" layoutY="66.0" promptText="Ophaaldatum" />
+      <VBox layoutX="14.0" layoutY="165.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+         <children>
+            <HBox alignment="CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" text="Afhalen" />
+                  <DatePicker maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </DatePicker>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" text="Om" />
+                  <TextField alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" text="Terugbrengen">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </Label>
+                  <DatePicker maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets left="5.0" right="5.0" />
+                     </HBox.margin>
+                  </DatePicker>
+                  <Label maxWidth="-Infinity" minWidth="-Infinity" text="Om" />
+                  <TextField alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="50.0">
+                     <HBox.margin>
+                        <Insets left="5.0" />
+                     </HBox.margin>
+                  </TextField>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="5.0" />
+               </VBox.margin>
+            </HBox>
+            <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="17.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label layoutX="67.0" layoutY="57.0" text="Gereserveerde materialen" AnchorPane.bottomAnchor="218.0" AnchorPane.leftAnchor="14.0" />
+                  <Separator layoutX="155.0" layoutY="172.0" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="222.0" AnchorPane.leftAnchor="155.0" AnchorPane.rightAnchor="14.0" HBox.hgrow="ALWAYS">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets top="3.0" />
+                     </HBox.margin>
+                  </Separator>
+               </children>
+            </HBox>
+            <TableView layoutX="14.0" layoutY="186.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" VBox.vgrow="ALWAYS">
+              <columns>
+                <TableColumn prefWidth="75.0" text="Naam" />
+                <TableColumn prefWidth="75.0" text="Locatie" />
+                  <TableColumn prefWidth="75.0" text="Beschikbaarheid" />
+                  <TableColumn prefWidth="75.0" text="Acties" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </children>
+      </VBox>
    </children>
 </fx:root>
