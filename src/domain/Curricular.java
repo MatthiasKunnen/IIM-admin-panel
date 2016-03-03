@@ -1,5 +1,6 @@
 package domain;
 
+import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -49,5 +50,15 @@ public class Curricular implements IEntity, Serializable {
             return false;
         Curricular curricular = (Curricular) obj;
         return curricular.getId() != 0 && curricular.getId() == this.id || super.equals(obj);
+    }
+    
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("ID", id)
+                .add("Name", name)
+                .toString();
+                
     }
 }

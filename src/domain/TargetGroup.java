@@ -1,5 +1,6 @@
 package domain;
 
+import com.google.common.base.MoreObjects;
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -45,4 +46,16 @@ public class TargetGroup implements IEntity, Serializable{
         TargetGroup targetGroup = (TargetGroup) obj;
         return targetGroup.getId() != 0 && targetGroup.getId() == this.id || super.equals(obj);
     }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("ID", id)
+                .add("Name", name)
+                .toString();
+                
+    }
+    
+    
 }

@@ -1,5 +1,6 @@
 package domain;
 
+import com.google.common.base.MoreObjects;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPhoneNumberException;
 
@@ -86,9 +87,21 @@ public class Firm implements IEntity, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Firm))
+        if (!(obj instanceof Firm)) {
             return false;
+        }
         Firm firm = (Firm) obj;
         return firm.getId() != 0 && firm.getId() == this.id || super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this)
+                .omitNullValues()
+                .add("ID", id)
+                .add("Name", name)
+                .add("E-mail", email)
+                .add("Phone number", phoneNumber)
+                .toString();
     }
 }
