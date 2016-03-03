@@ -56,7 +56,7 @@ public class Reservation implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Properties" defaultstate="collapsed">
-    @Override
+    @Override    
     public int getId() {
         return id;
     }
