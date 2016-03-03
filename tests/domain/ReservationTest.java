@@ -5,11 +5,9 @@
  */
 package domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,9 +24,9 @@ public class ReservationTest {
     private List<MaterialIdentifier> resList;
     private MaterialIdentifier matId;
     private Material mat;
-    private LocalDate pickUp = LocalDate.of(2016, Month.FEBRUARY, 1);
-    private LocalDate bringBack = LocalDate.of(2016, Month.FEBRUARY, 14);
-    private LocalDate resDate = LocalDate.of(2016, Month.JANUARY, 14);
+    private LocalDateTime pickUp = LocalDateTime.of(2016, Month.FEBRUARY, 1, 16, 0);
+    private LocalDateTime bringBack = LocalDateTime.of(2016, Month.FEBRUARY, 14, 7, 0);
+    private LocalDateTime resDate = LocalDateTime.of(2016, Month.JANUARY, 14, 2, 15);
     
     
     
@@ -51,31 +49,31 @@ public class ReservationTest {
     
     @Test
     public void testSetReservationDate(){
-        res.setReservatieDate(resDate);
-        Assert.assertEquals(resDate, res.getReservationDate());
+        res.setCreationDate(resDate);
+        Assert.assertEquals(resDate, res.getCreationDate());
     }
     
     @Test
     public void testSetPickUpDate(){
-        res.setPickUpDate(pickUp);        
-        Assert.assertEquals(pickUp, res.getPickUpDate());
+        res.setStartDate(pickUp);
+        Assert.assertEquals(pickUp, res.getStartDate());
     }
     
     @Test
     public void testSetBringBackDate(){
-        res.setPickUpDate(pickUp);
-        res.setBringBackDate(bringBack);
-        Assert.assertEquals(bringBack, res.getBringBackDate());
+        res.setStartDate(pickUp);
+        res.setEndDate(bringBack);
+        Assert.assertEquals(bringBack, res.getEndDate());
     }
     
     
     //When bringBack is befor pickUp, bringBack should be standard value (4 days after pickUp)
     @Test
     public void testSetBringBackDateBeforePickup(){
-        res.setPickUpDate(pickUp);
-        res.setBringBackDate(resDate);
+        res.setStartDate(pickUp);
+        res.setEndDate(resDate);
         
-        Assert.assertEquals(pickUp.plusDays(4), res.getBringBackDate());
+        Assert.assertEquals(pickUp.plusDays(4), res.getEndDate());
     }
     
     

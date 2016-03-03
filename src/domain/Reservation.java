@@ -3,15 +3,14 @@ package domain;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-
 import javax.persistence.*;
 
-import persistence.LocalDateConverter;
+import persistence.LocalDateTimeConverter;
 import util.ImmutabilityHelper;
 
 @Entity
@@ -25,7 +24,7 @@ public class Reservation implements Serializable, IEntity {
     private int id;
     private User user;
     private List<MaterialIdentifier> materialIdentifiersList;
-    private ObjectProperty<LocalDate>
+    private ObjectProperty<LocalDateTime>
             creationDate = new SimpleObjectProperty<>(),
             startDate = new SimpleObjectProperty<>(),
             endDate = new SimpleObjectProperty<>();
@@ -80,47 +79,47 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
-    public LocalDate getCreationDate() {
+    @Convert(converter = LocalDateTimeConverter.class)
+    public LocalDateTime getCreationDate() {
         return creationDate.get();
     }
 
     @Transient
-    public ObjectProperty<LocalDate> reservationDateProperty() {
+    public ObjectProperty<LocalDateTime> reservationDateProperty() {
         return creationDate;
     }
 
-    public void setCreationDate(LocalDate reservationDate) {
+    public void setCreationDate(LocalDateTime reservationDate) {
         this.creationDate.set(reservationDate);
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
-    public LocalDate getStartDate() {
+    @Convert(converter = LocalDateTimeConverter.class)
+    public LocalDateTime getStartDate() {
         return startDate.get();
     }
 
     @Transient
-    public ObjectProperty<LocalDate> pickUpDateProperty() {
+    public ObjectProperty<LocalDateTime> startDateProperty() {
         return startDate;
     }
 
-    public void setStartDate(LocalDate pickUpDate) {
+    public void setStartDate(LocalDateTime pickUpDate) {
         this.startDate.set(pickUpDate);
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
-    public LocalDate getEndDate() {
+    @Convert(converter = LocalDateTimeConverter.class)
+    public LocalDateTime getEndDate() {
         return endDate.get();
     }
 
     @Transient
-    public ObjectProperty<LocalDate> bringBackDateProperty() {
+    public ObjectProperty<LocalDateTime> endDateProperty() {
         return endDate;
     }
 
-    public void setEndDate(LocalDate bringBackDate) {
+    public void setEndDate(LocalDateTime bringBackDate) {
         this.endDate.set(bringBackDate);
     }
 
