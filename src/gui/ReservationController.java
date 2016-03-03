@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import domain.DomainController;
@@ -10,47 +5,57 @@ import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
 import domain.User;
-
+import static gui.GuiHelper.hideError;
+import static gui.GuiHelper.showError;
 import java.io.IOException;
 import java.time.LocalDate;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.util.Callback;
 
-import static gui.GuiHelper.*;
+public class ReservationController {
 
+    //<editor-fold desc="FXMLVariables" defaultstate="collapsed">
+    @FXML
+    private TextField tfEndTime;
 
-public class ReservationController extends AnchorPane {
-    //<editor-fold desc="FXML variables" defaultstate="collapsed">
     @FXML
-    private Button btnSave;
+    private TableColumn<MaterialIdentifier, String> tcName;
+
     @FXML
-    private TableView<Material> tvMaterials;
+    private TableColumn<MaterialIdentifier, Boolean> tcActions;
+
     @FXML
-    private TableColumn<Material, Integer> tcPlace;
+    private TableView<MaterialIdentifier> tv;
+
     @FXML
-    private TableColumn<Material, String> tcMaterialName;
+    private DatePicker dpStartDate;
+
     @FXML
-    private DatePicker dpBringBackDate;
+    private TextField tfStartTime;
+
     @FXML
-    private DatePicker dpPickUpDate;
+    private TableColumn<MaterialController, Integer> tcId;
+
     @FXML
-    private TextField tfUserEmail;
+    private TableColumn<MaterialIdentifier, String> tcLocation;
+
     @FXML
-    private AnchorPane AnchorPane;
+    private DatePicker dpEndDate;
+
     //</editor-fold>
-
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private DomainController dc;
     private ObservableList<MaterialIdentifier> identifiers;
@@ -58,18 +63,13 @@ public class ReservationController extends AnchorPane {
     private Reservation reservation;
 
     //</editor-fold>
-
-    //<editor-fold desc="Constructor" defaultstate="collapsed">
-    public ReservationController(DomainController dc, Stage stage) {
-        this(dc, stage, new Reservation());
-
-    }
-
+    //<editor-fold desc="Constructor" defaultstate="collapsed">    
     public ReservationController(DomainController dc, Stage stage, Reservation reservation) {
         this.identifiers = FXCollections.observableArrayList();
         this.theStage = stage;
         this.dc = dc;
         this.reservation = reservation;
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Reservation.fxml"));
         loader.setRoot(this);
         loader.setController(this);
@@ -79,79 +79,50 @@ public class ReservationController extends AnchorPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        setReservation(this.reservation);
-//        txfUserEmail.setText(reservation.getUserEmail());
-//        dpBringBackDate.setValue(reservation.getBringBackDate());
-//        dpPickUpDate.setValue(reservation.getPickUpDate());
-//        tcMaterial.setCellValueFactory((TableColumn.CellDataFeatures<MaterialIdentifier, String> param) -> 
-//                 new SimpleStringProperty(param.getValue().getInfo().getName()));
-//        tcPlace.setCellValueFactory(new PropertyValueFactory<>("place"));
-//        
-//        tvMaterials.setItems(identifiers);
+
+        this.tv.setItems(FXCollections.observableList(reservation.getMaterialIdentifiersList()));
+        tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
+        tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
+        tcActions.setCellValueFactory(new PropertyValueFactory<>("NONEXISTENT"));
+        tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
+
+            @Override
+            public TableCell<MaterialIdentifier, Boolean> call(TableColumn<MaterialIdentifier, Boolean> param) {
+                return new TableCell<MaterialIdentifier, Boolean>() {
+                    private final CustomOptionsController coc = new CustomOptionsController();
+
+                    {
+                        coc.addExistingSVG("tick");
+                        //coc.
+                        coc.addExistingSVG("delete");
+                        coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
+                            if (getTableRow().getItem() != null) {
+                                getTableView().getItems().remove((MaterialIdentifier) getTableRow().getItem());
+                            }
+                        });
+                        
+
+                    }
+
+                    @Override
+                    protected void updateItem(Boolean item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                            setText(null);
+                        } else {
+                            setGraphic(coc);
+                        }
+                    }
+                };
+            }
+        });
     }
     //</editor-fold>
 
     //<editor-fold desc="Action" defaultstate="collapsed">
-
-    /**
-     * deze methode wordt gebruikt om te kijken of er een nieuwe reservatie moet
-     * laden worden in het scherm of een reservatie die al bestaat
-     *
-     * @param reservation
-     */
-    private void setReservation(Reservation reservation) {
-        if (reservation == null || !dc.doesReservationExist(reservation)) {
-            this.reservation = new Reservation();
-        } else {
-            this.reservation = reservation;
-            //this.txfUserEmail.setText(reservation.getUserEmail());
-            this.dpBringBackDate.setValue(reservation.getEndDate());
-            this.dpPickUpDate.setValue(reservation.getStartDate());
-
-            this.identifiers.addAll(this.reservation.getMaterialIdentifiersList());
-        }
-    }
     //</editor-fold>
-
     //<editor-fold desc="FXML actions" defaultstate="collapsed">
-
-    /**
-     * om de reservatie op te slaan ik wist niet hoe ik de materialen moest
-     * toevoegen aan reservatie (via nieuw scherm, via combobox, via
-     * zoekfunctie)
-     *
-     * @param event
-     */
-    @FXML
-    private void saveReservation(ActionEvent event) {
-        reservation.setEndDate(this.dpBringBackDate.getValue());
-        reservation.setStartDate(this.dpPickUpDate.getValue());
-        reservation.setCreationDate(LocalDate.now());
-        User user = dc.getUserByEmail(tfUserEmail.getText());
-        if (user == null) {
-            showError(tfUserEmail, "Deze gebruiker bestaat niet, controleer het emailadres.");
-        } else {
-
-            reservation.setUser(user);
-            //reservatie mag maar toegevoegd worden wanneer user bekent is 
-            dc.addReservation(reservation);
-        }
-
-    }
-
-    /**
-     * Check if user exist when leaving userEmail textfield
-     *
-     * @param event
-     */
-    @FXML
-    private void checkUserEmail(MouseEvent event) {
-        if (dc.getUserByEmail(tfUserEmail.getText()) == null) {
-            showError(tfUserEmail, "Deze gebruiker bestaat niet, controleer het emailadres.");
-        } else {
-            hideError(tfUserEmail);
-        }
-    }
-
     //</editor-fold>
 }
