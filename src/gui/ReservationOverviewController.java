@@ -1,59 +1,42 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui;
 
 import domain.DomainController;
 import domain.Reservation;
 import java.io.IOException;
-import java.time.LocalDate;
-import javafx.event.EventHandler;
+import java.util.List;
+import java.util.Observable;
+import java.util.stream.Collectors;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class ReservationOverviewController extends AnchorPane {
-    //<editor-fold desc="FXML variables" defaultstate="collapsed">
 
     @FXML
-    private AnchorPane AnchorPane;
-    @FXML
-    private ImageView ivAddButton;
-    @FXML
-    private TableColumn<Reservation, String> tcReservedFor;
-    @FXML
-    private TableColumn<Reservation, LocalDate> tcPickUpDate;
-    @FXML
-    private TableColumn<Reservation, LocalDate> tcBringBackDate;
-    @FXML
-    private TableView<Reservation> tvReservations;
-    @FXML
-    private TableColumn<?, ?> tcOptions;
-    @FXML
-    private Button btnRemove;
-        //</editor-fold>
+    private DatePicker dpStartDate;
 
-    //<editor-fold desc="variables" defaultstate="collapsed">
+    @FXML
+    private ListView<Reservation> lvReservaties;
+
+    @FXML
+    private TextField tfFilter;
+
+    @FXML
+    private DatePicker dpEndDate;
+
     private DomainController dc;
-        //</editor-fold>
-
-    //<editor-fold desc="Constructors" defaultstate="collapsed">
-    
+    private FilteredList<Reservation> reservationsList;
 
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
+        reservationsList = new FilteredList<>(dc.getReservations());
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("ReservationOverview.fxml"));
         loader.setRoot(this);
@@ -65,63 +48,47 @@ public class ReservationOverviewController extends AnchorPane {
             throw new RuntimeException(ex);
         }
 
-        ivAddButton.setImage(new Image(getClass().getResource("/gui/images/material-add.png").toExternalForm()));
-        //tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tcReservedFor.setCellValueFactory(new PropertyValueFactory<>("userEmail"));
-        tcPickUpDate.setCellValueFactory(col->col.getValue().getPickUpDateProperty());
-        tcBringBackDate.setCellValueFactory(col->col.getValue().getBringBackDateProperty());
-        
-        this.tvReservations.setItems(dc.getReservations());
-               
-
-        tvReservations.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent event) {
-                if (event.getClickCount() >= 2) {
-                    Stage newStage = new Stage(StageStyle.DECORATED);
-                    Reservation theReservation = tvReservations.getSelectionModel().getSelectedItem();
-                    ReservationController rc = new ReservationController(dc, newStage, theReservation);
-                    newStage.setTitle("Reservatie van "+theReservation.getUser().getFirstName()+" "+theReservation.getUser().getLastName()+ " - IIM");
-                    openReservationScreen(rc, newStage);
-                }
-            }
-
+        dpStartDate.setOnAction(event -> {
+            filterDate();
         });
+
+        dpEndDate.setOnAction(event -> {
+            filterDate();
+        });
+
+        tfFilter.setOnKeyReleased(event -> {
+            filterName();
+        });
+
+        lvReservaties.setItems(reservationsList);
+        lvReservaties.setOnMouseClicked(event->{
+            if(event.getClickCount() > 2){
+                openReservation(lvReservaties.getSelectionModel().getSelectedItem());
+            }
+        });
+
     }
-        //</editor-fold>
 
-    //<editor-fold desc="FXML actions" defaultstate="collapsed">
+    private void filterDate() {
 
-    @FXML
-    private void addReservation(MouseEvent event) {
+        if (dpEndDate.getValue() != null) {
+            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isBefore(dpStartDate.getValue()));
+        } else {
+            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isAfter(dpStartDate.getValue()) && r.getEndDate().plusDays(1).isAfter(dpEndDate.getValue()));
+        }
+
+        filterName();
+    }
+
+    private void filterName() {
+        if (!tfFilter.getText().trim().isEmpty()) {
+            reservationsList = reservationsList.filtered(r -> r.getUser().getEmail().contains(tfFilter.getText()));
+        }
+    }
+
+    private void openReservation(Reservation selectedItem) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle("Nieuwe reservatie - IIM");
-        ReservationController rc = new ReservationController(dc, newStage);
-        openReservationScreen(rc, newStage);
+        newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate() + " - IIM");
+        //create reservationController
     }
-    @FXML
-    private void removeReservation(MouseEvent event) {
-        dc.removeReservation(this.tvReservations.getSelectionModel().getSelectedItem());
-        //het scherm zou moeten refreshen 
-    }
-    //</editor-fold>
-
-    //<editor-fold desc="actions" defaultstate="collapsed">
-
-    private void openReservationScreen(ReservationController rc, Stage newStage){
-        
-        Scene scene = new Scene(rc);
-
-        newStage.setMinWidth(620);
-        newStage.setMinHeight(463);
-        newStage.setScene(scene);
-        newStage.show();
-    }
-    //</editor-fold>
-
-    
-    
-    
 }
-

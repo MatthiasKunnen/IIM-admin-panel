@@ -1,35 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.image.*?>
-<?import javafx.scene.text.*?>
-<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
 <?import java.lang.*?>
 <?import java.util.*?>
 <?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReservationOverviewController">
+<fx:root id="AnchorPane" prefHeight="400.0" prefWidth="600.0" type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ReservationController">
    <children>
-      <TableView fx:id="tvReservations" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="500.0" style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
-        <columns>
-          <TableColumn fx:id="tcReservedFor" prefWidth="151.0" style="-fx-alignment: center" text="Gereserveerd voor" />
-            <TableColumn fx:id="tcPickUpDate" prefWidth="164.0" style="-fx-alignment: center" text="Ophaaldatum" />
-            <TableColumn fx:id="tcBringBackDate" prefWidth="155.0" style="-fx-alignment: center" text="Inleverdatum" />
-          <TableColumn fx:id="tcOptions" maxWidth="1000.0" prefWidth="99.0" style="-fx-alignment: center" text="Opties" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
-      <HBox alignment="CENTER" layoutX="145.0" layoutY="323.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="26.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0">
+      <ListView fx:id="lvReservaties" layoutX="14.0" layoutY="186.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0" />
+      <HBox alignment="CENTER" layoutX="138.0" layoutY="14.0" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
          <children>
-            <ImageView fx:id="ivAddButton" fitHeight="25.0" fitWidth="25.0" onMouseClicked="#addReservation" pickOnBounds="true" preserveRatio="true">
-               <cursor>
-                  <Cursor fx:constant="HAND" />
-               </cursor>
-            </ImageView>
-            <Button fx:id="btnRemove" mnemonicParsing="false" onMouseClicked="#removeReservation" text="Verwijder reservatie" />
+            <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="Reservaties van" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <DatePicker fx:id="dpStartDate" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </DatePicker>
+            <Label maxWidth="1.7976931348623157E308" minWidth="-Infinity" text="tot" HBox.hgrow="NEVER">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Label>
+            <DatePicker fx:id="dpEndDate" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </DatePicker>
+            <TextField fx:id="tfFilter" minWidth="200.0" promptText="Filter op naam" HBox.hgrow="ALWAYS">
+               <HBox.margin>
+                  <Insets left="5.0" />
+               </HBox.margin>
+            </TextField>
          </children>
       </HBox>
    </children>
