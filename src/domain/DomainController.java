@@ -3,7 +3,6 @@ package domain;
 import repository.ReservationRepository;
 import exceptions.AzureException;
 import exceptions.LoginException;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.AdministratorRepository;
@@ -48,7 +47,6 @@ public class DomainController {
         return materialRepository.getMaterialIdentifiers();
     }   
 
-
     public ObservableList<Firm> getFirms() {
         return firmRepository.getExistingFirms();
     }
@@ -57,14 +55,13 @@ public class DomainController {
         return targetGroupRepository.getOptions();
     }
 
-
-    public ObservableList<Curricular> getCurriculars() {
+    public ObservableList<Curricular> getCurricular() {
         return curricularRepository.getOptions();
     }
-     public User getUserByEmail(String email){
+
+    public User getUserByEmail(String email){
         return this.userRepository.getUserByEmail(email);
      }
-
     //</editor-fold>
     
     //<editor-fold desc="Actions" defaultstate="collapsed">
@@ -125,12 +122,9 @@ public class DomainController {
     public Material getMaterialByName(String name) {
         return this.materialRepository.getMaterialByName(name);
     }
-    public ObservableList<Material> filterMaterialByName(String name){
-        return FXCollections.unmodifiableObservableList(this.materialRepository.filterByName(name));
-    }
     //</editor-fold>
 
-    //<editor-fold desc="Firm-Curricular-TargetGroup" defaultstate="collapsed">
+    //<editor-fold desc="Firm" defaultstate="collapsed">
     /**
      * Saves a new {@link domain.Firm} in the database.
      *
@@ -139,7 +133,6 @@ public class DomainController {
      */
     public Firm addFirm(Firm firm) {
         return this.firmRepository.add(firm);
-
     }
 
     /**
@@ -159,7 +152,10 @@ public class DomainController {
     public void updateFirm(Firm firm) {
         this.firmRepository.update(firm);
     }
-    
+    //</editor-fold>
+
+    //<editor-fold desc="Curricular" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Curricular} in the database.
      *
@@ -168,11 +164,10 @@ public class DomainController {
      */
     public Curricular addCurricular(Curricular curricular) {
         return this.curricularRepository.add(curricular);
-
     }
 
     /**
-     * Removes a {@link domain.curricular} from the database.
+     * Removes a {@link domain.Curricular} from the database.
      *
      * @param curricular the curricular to save.
      */
@@ -188,6 +183,9 @@ public class DomainController {
     public void updateCurricular(Curricular curricular) {
         this.curricularRepository.update(curricular);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="TargetGroup" defaultstate="collapsed">
 
     /**
      * Saves a new {@link domain.TargetGroup} in the database.
@@ -197,11 +195,10 @@ public class DomainController {
      */
     public TargetGroup addTargetGroup(TargetGroup targetGroup) {
         return this.targetGroupRepository.add(targetGroup);
-
     }
 
     /**
-     * Removes a {@link domain.targetGroup} from the database.
+     * Removes a {@link domain.TargetGroup} from the database.
      *
      * @param targetGroup the targetGroup to save.
      */
@@ -218,7 +215,7 @@ public class DomainController {
         this.targetGroupRepository.update(targetGroup);
     }
     //</editor-fold>
-    
+
     //<editor-fold desc="Reservation" defaultstate="collapsed">
     public Reservation addReservation(Reservation reservation) {
         return this.reservationRepository.add(reservation);
@@ -231,9 +228,11 @@ public class DomainController {
     public void update(Reservation reservation) {
         this.reservationRepository.update(reservation);
     }
+
     public ObservableList<Reservation> getReservations(){
        return this.reservationRepository.getReservations();
     }
+
     public boolean doesReservationExist(Reservation reservation){
         return this.reservationRepository.doesReservationExist(reservation);
     }

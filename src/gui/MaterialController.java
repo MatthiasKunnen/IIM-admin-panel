@@ -14,7 +14,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
@@ -28,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.CheckComboBox;
 
@@ -126,8 +126,6 @@ public class MaterialController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        setMaterial(material);
-
         this.tvIdentifiers.setItems(this.identifiers);
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
@@ -202,11 +200,54 @@ public class MaterialController extends VBox {
                 };
             }
         });
-        this.cboCurricular = new CheckComboBox<>(dc.getCurriculars());
+        this.cboCurricular.getItems().addAll(dc.getCurricular());
+        this.cboCurricular.setConverter(new StringConverter<Curricular>() {
+            @Override
+            public String toString(Curricular c) {
+                return c.getName();
+            }
+
+            @Override
+            public Curricular fromString(String string) {
+                return dc.getCurricular().stream()
+                        .filter(c -> c.getName().equals(string))
+                        .findAny()
+                        .orElse(null);
+            }
+        });
+        this.cboTargetAudience.getItems().addAll(dc.getTargetGroups());
+        this.cboTargetAudience.setConverter(new StringConverter<TargetGroup>() {
+            @Override
+            public String toString(TargetGroup t) {
+                return t.getName();
+            }
+
+            @Override
+            public TargetGroup fromString(String string) {
+                return dc.getTargetGroups().stream()
+                        .filter(c -> c.getName().equals(string))
+                        .findAny()
+                        .orElse(null);
+            }
+        });
         this.cboFirm.setItems(dc.getFirms());
-        this.cboTargetAudience = new CheckComboBox<>(dc.getTargetGroups());
-        
-        
+        this.cboFirm.setConverter(new StringConverter<Firm>() {
+            @Override
+            public String toString(Firm f) {
+                return f.getName();
+            }
+
+            @Override
+            public Firm fromString(String string) {
+                return dc.getFirms().stream()
+                        .filter(f -> f.getName().equals(string))
+                        .findAny()
+                        .orElse(null);
+            }
+        });
+
+        setMaterial(material);
+
         Platform.runLater(() -> theStage.setMinWidth(theStage.getWidth()));
     }
     //</editor-fold>
@@ -260,10 +301,9 @@ public class MaterialController extends VBox {
             }
         }
 
-        //firma
-        //doelgroep
+        material.setTargetGroups(cboTargetAudience.getCheckModel().getCheckedItems());
+        material.setFirm(cboFirm.getValue());
         material.setCurricular(cboCurricular.getCheckModel().getCheckedItems());
-        //leeftijdscathegorie
         if (abort) return;
 
         material.setIdentifiers(this.identifiers);
@@ -346,11 +386,9 @@ public class MaterialController extends VBox {
             if (photoUrl != null && !photoUrl.isEmpty()) {
                 ivPhoto.setImage(new Image(photoUrl));
             }
-            
-            
-            dc.getCurriculars().forEach(c-> cboCurricular.getCheckModel().check(c));
+            cboCurricular.getItems().stream().filter(c -> material.getCurricular().contains(c)).forEach(c -> cboCurricular.getCheckModel().check(c));
+            cboTargetAudience.getItems().stream().filter(t -> material.getTargetGroups().contains(t)).forEach(t -> cboTargetAudience.getCheckModel().check(t));
             this.cboFirm.getSelectionModel().select(material.getFirm());
-            dc.getTargetGroups().forEach(tg-> cboTargetAudience.getCheckModel().check(tg));
             this.identifiers.addAll(this.material.getIdentifiers());
         }
     }

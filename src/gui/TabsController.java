@@ -11,13 +11,9 @@ import domain.Firm;
 import domain.TargetGroup;
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPhoneNumberException;
-import java.beans.EventHandler;
+
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -175,7 +171,7 @@ public class TabsController extends TabPane {
     }
 
     private TempController<Curricular> createCurricularOverview() {
-        TempController<Curricular> tcCurricular = new TempController<>("Leergebieden", dc.getCurriculars());
+        TempController<Curricular> tcCurricular = new TempController<>("Leergebieden", dc.getCurricular());
         CustomTextField tfName = new CustomTextField();
         tfName.setPromptText("Naam");
         Button btnAdd = new Button("Opslaan");

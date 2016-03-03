@@ -5,7 +5,6 @@ import domain.Material;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
@@ -15,6 +14,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -29,7 +29,8 @@ import javafx.scene.input.KeyEvent;
  * FXML Controller class
  */
 public class OverviewController extends VBox {
-    //<editor-fold desc="Variables" defaultstate="collapsed">
+
+    //<editor-fold desc="FXML Variables" defaultstate="collapsed">
 
     @FXML
     private TableColumn<?, ?> tcName;
@@ -45,6 +46,8 @@ public class OverviewController extends VBox {
     private TableView<Material> tvMaterials;
     @FXML
     private TextField txfFilterMaterials;
+    @FXML
+    private HBox hbOptions;
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
@@ -65,6 +68,7 @@ public class OverviewController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+        /*
         CustomOptionsController coc = new CustomOptionsController();
         coc.setAlignment(Pos.CENTER_RIGHT);
         coc.addExistingSVG("firms", "briefcase");
@@ -76,7 +80,7 @@ public class OverviewController extends VBox {
         }));
         coc.prefWidthProperty().bind(tvMaterials.widthProperty());
         coc.setSpacing(20.0);
-        getChildren().add(0, coc);
+        hbOptions.getChildren().add(coc);*/
         ivAddButton.setImage(new Image(getClass().getResource("/gui/images/material-add.png").toExternalForm()));
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
@@ -158,8 +162,6 @@ public class OverviewController extends VBox {
 
     @FXML
     private void filterMaterials(KeyEvent event) {
-        this.tvMaterials.setItems(dc.filterMaterialByName(txfFilterMaterials.getText()));
-        Platform.runLater(() -> this.setMinWidth(this.getWidth()));
 
     }
     //</editor-fold>

@@ -2,12 +2,19 @@ package gui;
 
 import domain.DomainController;
 import domain.Reservation;
+
 import java.io.IOException;
+<<<<<<< HEAD
 import java.util.List;
 import java.util.Observable;
 import java.util.stream.Collectors;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
+=======
+import java.time.LocalDate;
+
+import javafx.event.EventHandler;
+>>>>>>> b88d3081f1d351158e837d889fd46ec71de417fc
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.DatePicker;
@@ -16,6 +23,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
+
 
 public class ReservationOverviewController extends AnchorPane {
 
@@ -32,8 +41,10 @@ public class ReservationOverviewController extends AnchorPane {
     private DatePicker dpEndDate;
 
     private DomainController dc;
+
     private FilteredList<Reservation> reservationsList;
 
+    //<editor-fold desc="Constructors" defaultstate="collapsed">
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
         reservationsList = new FilteredList<>(dc.getReservations());
@@ -61,8 +72,8 @@ public class ReservationOverviewController extends AnchorPane {
         });
 
         lvReservaties.setItems(reservationsList);
-        lvReservaties.setOnMouseClicked(event->{
-            if(event.getClickCount() > 2){
+        lvReservaties.setOnMouseClicked(event -> {
+            if (event.getClickCount() > 2) {
                 openReservation(lvReservaties.getSelectionModel().getSelectedItem());
             }
         });
@@ -72,9 +83,9 @@ public class ReservationOverviewController extends AnchorPane {
     private void filterDate() {
 
         if (dpEndDate.getValue() != null) {
-            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isBefore(dpStartDate.getValue()));
+            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isBefore(dpStartDate.getValue().atStartOfDay()));
         } else {
-            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isAfter(dpStartDate.getValue()) && r.getEndDate().plusDays(1).isAfter(dpEndDate.getValue()));
+            reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isAfter(dpStartDate.getValue().atStartOfDay()) && r.getEndDate().plusDays(1).isAfter(dpEndDate.getValue().atStartOfDay()));
         }
 
         filterName();
@@ -90,5 +101,6 @@ public class ReservationOverviewController extends AnchorPane {
         Stage newStage = new Stage(StageStyle.DECORATED);
         newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate() + " - IIM");
         //create reservationController
+
     }
 }

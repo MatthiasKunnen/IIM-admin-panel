@@ -2,12 +2,14 @@ package domain;
 
 import exceptions.InvalidEmailException;
 import exceptions.InvalidPhoneNumberException;
+
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+
 import org.apache.commons.validator.routines.EmailValidator;
 
 @Entity
@@ -56,7 +58,7 @@ public class Firm implements IEntity, Serializable {
     }
 
     public void setPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
-            this.phoneNumber = phoneNumber;
+        this.phoneNumber = phoneNumber;
 
     }
 
@@ -80,5 +82,13 @@ public class Firm implements IEntity, Serializable {
     @Override
     public int getId() {
         return this.id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Firm))
+            return false;
+        Firm firm = (Firm) obj;
+        return firm.getId() != 0 && firm.getId() == this.id || super.equals(obj);
     }
 }

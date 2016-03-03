@@ -21,21 +21,26 @@ public class Material implements Serializable, IEntity {
 
     @OneToMany(mappedBy = "info", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<MaterialIdentifier> items = new ArrayList<>();
-    private String encoding;
+
     @Column(nullable = false, unique = true)
     private String name;
-    private String description;
 
     @ManyToOne
     private Firm firm;
+
     @ManyToMany
-    private List<Curricular> curricular;
+    private List<Curricular> curricular = new ArrayList<>();
+
     @ManyToMany
-    private List<TargetGroup> targetGroups;
-    //private String firmEmail;
+    @JoinTable(
+            inverseJoinColumns = @JoinColumn(name = "TARGETGROUP_ID")
+    )
+    private List<TargetGroup> targetGroups = new ArrayList<>();
+
     @Column(scale = 2, precision = 10)
     private BigDecimal price;
-    private String articleNr;
+
+    private String encoding, description, articleNr;
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
@@ -72,7 +77,7 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setFirm(Firm firm) {
-        this.firm = firm;
+        this.firm = ImmutabilityHelper.copyDefensively(firm);
     }
 
     public List<Curricular> getCurricular() {
@@ -80,7 +85,7 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setCurricular(List<Curricular> curricular) {
-        this.curricular = curricular;
+        this.curricular = (List<Curricular>) ImmutabilityHelper.copyCollectionDefensively(new ArrayList<>(curricular));
     }
 
     public List<TargetGroup> getTargetGroups() {
@@ -88,7 +93,7 @@ public class Material implements Serializable, IEntity {
     }
 
     public void setTargetGroups(List<TargetGroup> targetGroups) {
-        this.targetGroups = targetGroups;
+        this.targetGroups = (List<TargetGroup>) ImmutabilityHelper.copyCollectionDefensively(new ArrayList<>(targetGroups));
     }
 
     public BigDecimal getPrice() {
@@ -128,6 +133,7 @@ public class Material implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
+
     /**
      * @param name Name of the material.
      */
@@ -147,6 +153,8 @@ public class Material implements Serializable, IEntity {
         this.name = material.name;
         this.description = material.description;
         this.firm = ImmutabilityHelper.copyDefensively(material.firm);
+        this.curricular = (List<Curricular>) ImmutabilityHelper.copyCollectionDefensively(material.curricular);
+        this.targetGroups = (List<TargetGroup>) ImmutabilityHelper.copyCollectionDefensively(material.targetGroups);
         this.price = material.price;
         this.articleNr = material.articleNr;
     }
@@ -159,6 +167,7 @@ public class Material implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
+
     /**
      * @param identifier The identifier to add.
      */
@@ -185,17 +194,15 @@ public class Material implements Serializable, IEntity {
     public String toString() {
         return toStringHelper(this)
                 .omitNullValues()
-
-                .add("id", id)
-                .add("name", name)
-                .add("encoding", encoding)
-                .add("firm", firm.getName())
-                .add("firm phonenumber", firm.getPhoneNumber())
-                .add("firm email", firm.getEmail())
-                .add("price", price)
-                .add("articleNr", articleNr)
-                .add("identifiers", items)
-
+                .add("ID", id)
+                .add("Name", name)
+                .add("Article number", articleNr)
+                .add("Price", price)
+                .add("Encoding", encoding)
+                .add("Firm", firm)
+                .add("Curricular", curricular)
+                .add("TargetGroups", targetGroups)
+                .add("Identifiers", items)
                 .toString();
     }
     //</editor-fold>
