@@ -10,7 +10,7 @@
         <class>domain.Reservation</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
-        <class>persistence.LocalDateConverter</class>
+        <class>persistence.LocalDateTimeConverter</class>
         <class>persistence.PermissionsConverter</class>
         <class>persistence.UserTypeConverter</class>
         <class>persistence.VisibilityConverter</class>
@@ -32,7 +32,7 @@
         <class>domain.Reservation</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
-        <class>persistence.LocalDateConverter</class>
+        <class>persistence.LocalDateTimeConverter</class>
         <class>persistence.PermissionsConverter</class>
         <class>persistence.UserTypeConverter</class>
         <class>persistence.VisibilityConverter</class>
