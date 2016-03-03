@@ -11,7 +11,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
-        Scene scene = new Scene(new TabsController(new DomainController(), stage));
+        Scene scene = new Scene(new LoginScreenController(new DomainController(), stage));
         stage.setTitle("Login - IIM");
         stage.setScene(scene);
         stage.show();
