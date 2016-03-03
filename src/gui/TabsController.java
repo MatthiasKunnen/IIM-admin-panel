@@ -39,7 +39,7 @@ public class TabsController extends TabPane {
     private Tab tMaterial;
 
     @FXML
-    private Tab tConflicts;
+    private Tab tReservations;
 
     @FXML
     private Tab tOptions;
@@ -61,6 +61,8 @@ public class TabsController extends TabPane {
 
         OverviewController mc = new OverviewController(dc);
         tMaterial.setContent(mc);
+        ReservationOverviewController rc = new ReservationOverviewController(dc);
+        tReservations.setContent(rc);
 
         HBox overview = new HBox();
         TempController<Firm> tcFirm = createFirmOverview();
