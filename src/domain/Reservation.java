@@ -3,16 +3,14 @@ package domain;
 import static com.google.common.base.MoreObjects.toStringHelper;
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
-
 import javax.persistence.*;
 
-import persistence.LocalDateConverter;
+import persistence.LocalDateTimeConverter;
 import util.ImmutabilityHelper;
 
 @Entity
@@ -81,7 +79,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     public LocalDateTime getCreationDate() {
         return creationDate.get();
     }
@@ -96,7 +94,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     public LocalDateTime getStartDate() {
         return startDate.get();
     }
@@ -111,7 +109,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     @Column(nullable = false)
-    @Convert(converter = LocalDateConverter.class)
+    @Convert(converter = LocalDateTimeConverter.class)
     public LocalDateTime getEndDate() {
         return endDate.get();
     }
