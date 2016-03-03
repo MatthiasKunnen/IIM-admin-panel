@@ -10,6 +10,7 @@ import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.lang.reflect.InvocationTargetException;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -19,6 +20,7 @@ public class GuiHelper {
     private static Map<String, String> svgContent = new HashMap<>();
     private final static Pattern NUMBER_ONLY_PATTERN = Pattern.compile("[0-9]");
     private final static String DECIMAL_SEPARATOR = ",";
+    private final static DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     //</editor-fold>
 
     //<editor-fold desc="Static initializer" defaultstate="collapsed">
@@ -126,6 +128,13 @@ public class GuiHelper {
     public static String getSVGContent(String key){
         return svgContent.get(key);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="TextFields" defaultstate="collapsed">
+    public static DateTimeFormatter getDateTimeFormatter(){
+        return DATE_TIME_FORMATTER;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="MethodBuilder methods" defaultstate="collapsed">
