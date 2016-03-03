@@ -26,10 +26,6 @@ public class Firm implements IEntity, Serializable {
     private String phoneNumber;
     private String website;
 
-    public Firm() {
-
-    }
-
     public String getName() {
         return name;
     }
@@ -43,34 +39,26 @@ public class Firm implements IEntity, Serializable {
     }
 
     public void setEmail(String email) throws InvalidEmailException {
-        if (EmailValidator.getInstance().isValid(email)) {
-            this.email = email;
-
-        } else {
-
+        if (!EmailValidator.getInstance().isValid(email)) {
             throw new InvalidEmailException("Het emailadres is niet correct!");
         }
+        this.email = email;
     }
 
     public String getPhoneNumber() {
-
         return phoneNumber;
-
     }
 
     public void setPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
         this.phoneNumber = phoneNumber;
-
     }
 
     public String getWebsite() {
-
         return website;
     }
 
     public void setWebsite(String website) {
         this.website = website;
-
     }
 
     public Firm(Firm firm) {
@@ -80,6 +68,10 @@ public class Firm implements IEntity, Serializable {
         this.phoneNumber = firm.phoneNumber;
     }
 
+    public Firm(){
+
+    }
+
     @Override
     public int getId() {
         return this.id;
@@ -87,7 +79,7 @@ public class Firm implements IEntity, Serializable {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Firm)) {
+        if (obj == null || !(obj instanceof Firm)) {
             return false;
         }
         Firm firm = (Firm) obj;

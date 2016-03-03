@@ -41,7 +41,7 @@ public class TargetGroup implements IEntity, Serializable{
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof TargetGroup))
+        if (obj == null || !(obj instanceof TargetGroup))
             return false;
         TargetGroup targetGroup = (TargetGroup) obj;
         return targetGroup.getId() != 0 && targetGroup.getId() == this.id || super.equals(obj);
@@ -54,8 +54,5 @@ public class TargetGroup implements IEntity, Serializable{
                 .add("ID", id)
                 .add("Name", name)
                 .toString();
-                
     }
-    
-    
 }
