@@ -5,7 +5,7 @@
  */
 package domain;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,9 +24,9 @@ public class ReservationTest {
     private List<MaterialIdentifier> resList;
     private MaterialIdentifier matId;
     private Material mat;
-    private LocalDate pickUp = LocalDate.of(2016, Month.FEBRUARY, 1);
-    private LocalDate bringBack = LocalDate.of(2016, Month.FEBRUARY, 14);
-    private LocalDate resDate = LocalDate.of(2016, Month.JANUARY, 14);
+    private LocalDateTime pickUp = LocalDateTime.of(2016, Month.FEBRUARY, 1, 16, 0);
+    private LocalDateTime bringBack = LocalDateTime.of(2016, Month.FEBRUARY, 14, 7, 0);
+    private LocalDateTime resDate = LocalDateTime.of(2016, Month.JANUARY, 14, 2, 15);
     
     
     
