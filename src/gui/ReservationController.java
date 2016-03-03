@@ -4,28 +4,22 @@ import domain.DomainController;
 import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
-import domain.User;
-import static gui.GuiHelper.hideError;
-import static gui.GuiHelper.showError;
-import java.io.IOException;
-import java.time.LocalDate;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
-import javafx.scene.control.TableCell;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 
-public class ReservationController {
+import java.io.IOException;
+
+public class ReservationController extends AnchorPane {
 
     //<editor-fold desc="FXMLVariables" defaultstate="collapsed">
     @FXML
@@ -82,6 +76,8 @@ public class ReservationController {
 
         this.tv.setItems(FXCollections.observableList(reservation.getMaterialIdentifiersList()));
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
+        tcName.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getInfo().getName()));
+        tcName.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
         tcActions.setCellValueFactory(new PropertyValueFactory<>("NONEXISTENT"));
@@ -93,8 +89,7 @@ public class ReservationController {
                     private final CustomOptionsController coc = new CustomOptionsController();
 
                     {
-                        coc.addExistingSVG("tick");
-                        //coc.
+                        //coc.addExistingSVG("tick");
                         coc.addExistingSVG("delete");
                         coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
                             if (getTableRow().getItem() != null) {
