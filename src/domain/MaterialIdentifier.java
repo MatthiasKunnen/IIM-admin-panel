@@ -108,8 +108,8 @@ public class MaterialIdentifier implements Serializable, IEntity {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MaterialIdentifier)) return false;
+        if (obj == null || !(obj instanceof MaterialIdentifier)) return false;
         MaterialIdentifier o2 = (MaterialIdentifier) obj;
-        return (this.getId() == 0 && o2.getId() == 0) ? super.equals(obj) : this.getId() == o2.getId();
+        return o2.getId() != 0 && getId() == o2.getId() || super.equals(obj);
     }
 }

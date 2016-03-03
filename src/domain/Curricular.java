@@ -49,7 +49,7 @@ public class Curricular implements IEntity, Serializable {
         if (obj == null || !(obj instanceof Curricular))
             return false;
         Curricular curricular = (Curricular) obj;
-        return curricular.getId() != 0 && curricular.getId() == this.id || super.equals(obj);
+        return curricular.getId() != 0 && curricular.getId() == getId() || super.equals(obj);
     }
     
     @Override

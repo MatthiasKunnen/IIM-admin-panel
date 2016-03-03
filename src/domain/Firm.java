@@ -83,7 +83,7 @@ public class Firm implements IEntity, Serializable {
             return false;
         }
         Firm firm = (Firm) obj;
-        return firm.getId() != 0 && firm.getId() == this.id || super.equals(obj);
+        return firm.getId() != 0 && firm.getId() == getId() || super.equals(obj);
     }
 
     @Override

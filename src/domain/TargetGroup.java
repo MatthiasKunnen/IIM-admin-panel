@@ -44,7 +44,7 @@ public class TargetGroup implements IEntity, Serializable{
         if (obj == null || !(obj instanceof TargetGroup))
             return false;
         TargetGroup targetGroup = (TargetGroup) obj;
-        return targetGroup.getId() != 0 && targetGroup.getId() == this.id || super.equals(obj);
+        return targetGroup.getId() != 0 && targetGroup.getId() == getId() || super.equals(obj);
     }
 
     @Override
