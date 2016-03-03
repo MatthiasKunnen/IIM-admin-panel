@@ -9,12 +9,13 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-
+import javafx.util.Callback;
 
 
 public class ReservationOverviewController extends AnchorPane {
@@ -63,6 +64,15 @@ public class ReservationOverviewController extends AnchorPane {
         });
 
         lvReservaties.setItems(reservationsList);
+        lvReservaties.setCellFactory(p-> new ListCell<Reservation>(){
+            @Override
+            protected void updateItem(Reservation item, boolean empty) {
+                super.updateItem(item, empty);
+                if (item != null) {
+                    setText(String.format("%s (%s - %s)", item.getUser().getEmail(), item.getStartDate().format(GuiHelper.getDateTimeFormatter()), item.getEndDate().format(GuiHelper.getDateTimeFormatter())));
+                }
+            }
+        });
         lvReservaties.setOnMouseClicked(event -> {
             if (event.getClickCount() > 2) {
                 openReservation(lvReservaties.getSelectionModel().getSelectedItem());
@@ -90,7 +100,7 @@ public class ReservationOverviewController extends AnchorPane {
 
     private void openReservation(Reservation selectedItem) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate() + " - IIM");
+        newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate().format(GuiHelper.getDateTimeFormatter()) + " - IIM");
         Scene scene = new Scene(new ReservationController(dc, newStage, selectedItem));
         newStage.setScene(scene);
         newStage.show();
