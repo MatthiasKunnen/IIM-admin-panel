@@ -7,6 +7,7 @@ import java.io.IOException;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
@@ -72,7 +73,7 @@ public class ReservationOverviewController extends AnchorPane {
 
     private void filterDate() {
 
-        if (dpEndDate.getValue() != null) {
+        if (dpEndDate.getValue() == null) {
             reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isBefore(dpStartDate.getValue().atStartOfDay()));
         } else {
             reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isAfter(dpStartDate.getValue().atStartOfDay()) && r.getEndDate().plusDays(1).isAfter(dpEndDate.getValue().atStartOfDay()));
@@ -90,7 +91,10 @@ public class ReservationOverviewController extends AnchorPane {
     private void openReservation(Reservation selectedItem) {
         Stage newStage = new Stage(StageStyle.DECORATED);
         newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate() + " - IIM");
-        //create reservationController
+        Scene scene = new Scene(new ReservationController(dc, newStage, selectedItem));
+        newStage.setScene(scene);
+        newStage.show();
+
 
     }
 }
