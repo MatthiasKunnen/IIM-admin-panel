@@ -2,15 +2,12 @@ package domain;
 
 import com.google.common.base.MoreObjects;
 import exceptions.InvalidEmailException;
-import exceptions.InvalidPhoneNumberException;
-
 import java.io.Serializable;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
 import org.apache.commons.validator.routines.EmailValidator;
 
 @Entity
@@ -49,7 +46,7 @@ public class Firm implements IEntity, Serializable {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) throws InvalidPhoneNumberException {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 
