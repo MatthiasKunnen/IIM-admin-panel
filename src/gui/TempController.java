@@ -89,7 +89,7 @@ public class TempController<E> extends AnchorPane {
     //</editor-fold>
 
     //<editor-fold desc="Public actions" defaultstate="collapsed">
-    public void addManagementCustomTextField(String key, ManagedCustomTextField managedCustomTextField) {
+    public void addManagedCustomTextField(String key, ManagedCustomTextField<E> managedCustomTextField) {
         this.managedCustomTextFields.put(key, managedCustomTextField);
         this.vbNodes.getChildren().add(managedCustomTextField);
     }
@@ -141,8 +141,9 @@ public class TempController<E> extends AnchorPane {
         }
         if (exit) return;
         if (this.lvItems.getSelectionModel().isEmpty() ?
-                addEvent.getAsBoolean() :
-                saveEvent.test(this.lvItems.getSelectionModel().getSelectedItem())) clear();
+                addEvent == null || addEvent.getAsBoolean() :
+                saveEvent == null || saveEvent.test(this.lvItems.getSelectionModel().getSelectedItem()))
+            clear();
     }
 
     @FXML
