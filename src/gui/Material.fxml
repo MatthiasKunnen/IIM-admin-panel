@@ -104,6 +104,8 @@
                         <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
                                      style="-fx-alignment: center" text="#"/>
                         <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
+                        <TableColumn fx:id="tcAmount" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Aantal"/>
+
                         <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center"
                                      text="Beschikbaarheid"/>
                         <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties"/>

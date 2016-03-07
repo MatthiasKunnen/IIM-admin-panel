@@ -39,6 +39,7 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
+import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * FXML Controller class
@@ -81,6 +82,8 @@ public class MaterialController extends VBox {
     @FXML
     private TableColumn<MaterialIdentifier, Visibility> tcAvailable;
     @FXML
+    private TableColumn<Material, Integer> tcAmount;
+    @FXML
     private TableColumn<MaterialIdentifier, Boolean> tcActions;
     @FXML
     private TableColumn<MaterialIdentifier, String> tcLocation;
@@ -106,7 +109,7 @@ public class MaterialController extends VBox {
     }
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
-        this.identifiers = FXCollections.observableArrayList();
+        this.identifiers= FXCollections.observableArrayList(material.getIdentifiers());
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
@@ -124,10 +127,14 @@ public class MaterialController extends VBox {
             throw new RuntimeException(ex);
         }
         this.tvIdentifiers.setItems(this.identifiers);
+        tcId.setVisible(false);
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
         tcLocation.setOnEditCommit(event -> event.getRowValue().setPlace(event.getNewValue()));
+        tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) ->
+                new SimpleIntegerProperty((int)param.getValue().getIdentifiers().stream().map(MaterialIdentifier::getPlace).distinct().count()).asObject());
+        tcAvailable.setVisible(false);
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
         tcAvailable.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Visibility>, TableCell<MaterialIdentifier, Visibility>>() {
             @Override
