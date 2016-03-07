@@ -111,11 +111,8 @@ public class MaterialController extends VBox {
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Material.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
+            GuiHelper.loadFXML("Material.fxml", this);
             this.getStylesheets().add("/gui/style/form.css");
             GuiHelper.getKeyEventEventHandlerAssuringDecimalInput(this.tfPrice);
             GuiHelper.getKeyEventEventHandlerAssuringIntegerInput(this.tfAmount);

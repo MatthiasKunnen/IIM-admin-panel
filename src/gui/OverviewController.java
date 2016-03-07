@@ -59,12 +59,8 @@ public class OverviewController extends VBox {
     public OverviewController(DomainController dc) {
         this.dc = dc;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Overview.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
-
+            GuiHelper.loadFXML("Overview.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

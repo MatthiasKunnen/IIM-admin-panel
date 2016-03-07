@@ -41,12 +41,8 @@ public class TabsController extends TabPane {
         this.stage = theStage;
         this.dc = dc;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Tabs.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
-
+            GuiHelper.loadFXML("Tabs.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

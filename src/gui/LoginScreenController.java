@@ -62,11 +62,8 @@ public class LoginScreenController extends AnchorPane {
 
     public LoginScreenController(DomainController domaincontroller, Stage stage) {
         this.dc = domaincontroller;
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("LoginScreen.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
+            GuiHelper.loadFXML("LoginScreen.fxml", this);
             this.getStylesheets().add("/gui/style/form.css");
         } catch (IOException ex) {
         }

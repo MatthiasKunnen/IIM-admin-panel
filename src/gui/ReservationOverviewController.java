@@ -41,12 +41,8 @@ public class ReservationOverviewController extends AnchorPane {
         this.dc = dc;
         reservationsList = new FilteredList<>(dc.getReservations());
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("ReservationOverview.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
-
+            GuiHelper.loadFXML("ReservationOverview.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
