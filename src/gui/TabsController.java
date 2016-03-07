@@ -75,7 +75,7 @@ public class TabsController extends TabPane {
                 TargetGroup::getName,
                 dc.getTargetGroups());
 
-        tcTargetGroup.addManagementCustomTextField("name", new ManagedCustomTextFieldBuilder<TargetGroup>()
+        tcTargetGroup.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<TargetGroup>()
                 .setConverter(TargetGroup::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
@@ -90,7 +90,7 @@ public class TabsController extends TabPane {
                 Curricular::getName,
                 dc.getCurricular());
 
-        tcCurricular.addManagementCustomTextField("name", new ManagedCustomTextFieldBuilder<Curricular>()
+        tcCurricular.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<Curricular>()
                 .setConverter(Curricular::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
@@ -104,18 +104,18 @@ public class TabsController extends TabPane {
                 (Firm f) -> String.format("%s (%s)", f.getName(), f.getEmail()),
                 dc.getFirms());
 
-        tcFirm.addManagementCustomTextField("name", new ManagedCustomTextFieldBuilder<Firm>()
+        tcFirm.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
                 .get());
-        tcFirm.addManagementCustomTextField("email", new ManagedCustomTextFieldBuilder<Firm>()
+        tcFirm.addManagedCustomTextField("email", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getEmail)
                 .setPromptText("E-mail")
                 .addErrorPredicate(email -> !email.isEmpty(), "E-mail moet ingevuld worden!")
                 .addErrorPredicate(email -> EmailValidator.getInstance().isValid(email), "E-mail is niet correct.")
                 .get());
-        tcFirm.addManagementCustomTextField("phone_number", new ManagedCustomTextFieldBuilder<Firm>()
+        tcFirm.addManagedCustomTextField("phone_number", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getPhoneNumber)
                 .setPromptText("Telefoonnummer")
                 .addWarningPredicate(phoneNumber -> !phoneNumber.isEmpty(), "Telefoonnummer is niet ingevuld.")
