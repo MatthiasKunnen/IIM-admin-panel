@@ -48,15 +48,15 @@ public class DomainController {
     }   
 
     public ObservableList<Firm> getFirms() {
-        return firmRepository.getExistingFirms();
+        return firmRepository.getObservableItems();
     }
 
     public ObservableList<TargetGroup> getTargetGroups() {
-        return targetGroupRepository.getOptions();
+        return targetGroupRepository.getObservableItems();
     }
 
     public ObservableList<Curricular> getCurricular() {
-        return curricularRepository.getOptions();
+        return curricularRepository.getObservableItems();
     }
 
     public User getUserByEmail(String email){
@@ -230,7 +230,7 @@ public class DomainController {
     }
 
     public ObservableList<Reservation> getReservations(){
-       return this.reservationRepository.getReservations();
+       return this.reservationRepository.getObservableItems();
     }
 
     public boolean doesReservationExist(Reservation reservation){
