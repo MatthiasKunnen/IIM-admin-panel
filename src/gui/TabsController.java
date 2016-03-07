@@ -12,6 +12,7 @@ import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.apache.commons.validator.routines.EmailValidator;
+
 import java.io.IOException;
 
 /**
@@ -120,7 +121,7 @@ public class TabsController extends TabPane {
                 .addWarningPredicate(phoneNumber -> !phoneNumber.isEmpty(), "Telefoonnummer is niet ingevuld.")
                 .get());
 
-        tcFirm.setOnAdd(()->{
+        tcFirm.setOnAdd(() -> {
             boolean willSave = true;
             String name = tcFirm.getValue("name");
             String email = tcFirm.getValue("email");
@@ -135,7 +136,7 @@ public class TabsController extends TabPane {
                 willSave = false;
             }
 
-            if (willSave){
+            if (willSave) {
                 dc.addFirm(newFirm);
             }
             return willSave;

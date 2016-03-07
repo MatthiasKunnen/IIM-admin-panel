@@ -80,7 +80,7 @@ public class TempController<E> extends AnchorPane {
             btnDelete.setDisable(b);
             btnDelete.setVisible(!b);
             if (!b) { //Something is selected
-                for(ManagedCustomTextField<E> tf: this.managedCustomTextFields.values()){
+                for (ManagedCustomTextField<E> tf : this.managedCustomTextFields.values()) {
                     tf.setText(tf.convert(newValue));
                 }
             }
@@ -147,14 +147,14 @@ public class TempController<E> extends AnchorPane {
     }
 
     @FXML
-    private void cancel(ActionEvent event){
+    private void cancel(ActionEvent event) {
         clear();
     }
     //</editor-fold>
 }
 
 //<editor-fold desc="Classes" defaultstate="collapsed">
-class ManagedCustomTextFieldBuilder  <E>  {
+class ManagedCustomTextFieldBuilder<E> {
     private ManagedCustomTextField<E> ctf = new ManagedCustomTextField<>();
 
     public ManagedCustomTextFieldBuilder<E> addWarningPredicate(Predicate<String> p, String warning) {
