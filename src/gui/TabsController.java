@@ -34,9 +34,11 @@ public class TabsController extends TabPane {
     @FXML
     private Tab tOptions;
 
-    DomainController dc;
+    private DomainController dc;
+    private Stage stage;
 
     public TabsController(DomainController dc, Stage theStage) {
+        this.stage = theStage;
         this.dc = dc;
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Tabs.fxml"));
@@ -79,7 +81,26 @@ public class TabsController extends TabPane {
                 .setConverter(TargetGroup::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> tcTargetGroup.statusIsSaving() || dc.getTargetGroups().stream().anyMatch(t -> t.getName().equalsIgnoreCase(name)), "Deelgebied bestaat al!")
                 .get());
+
+        tcTargetGroup.setOnSave((TargetGroup t) -> {
+            t.setName(tcTargetGroup.getValue("name"));
+            dc.updateTargetGroup(t);
+            return true;
+        });
+
+        tcTargetGroup.setOnAdd(() -> {
+            TargetGroup tg = new TargetGroup();
+            tg.setName(tcTargetGroup.getValue("name"));
+            dc.addTargetGroup(tg);
+            return true;
+        });
+
+        tcTargetGroup.setOnDelete((TargetGroup tg) -> {
+            dc.removeTargetGroup(tg);
+            return true;
+        });
 
         return tcTargetGroup;
     }
@@ -94,7 +115,24 @@ public class TabsController extends TabPane {
                 .setConverter(Curricular::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> tcCurricular.statusIsSaving() || dc.getCurricular().stream().anyMatch(c -> c.getName().equalsIgnoreCase(name)), "Leergebied bestaat al!")
                 .get());
+
+        tcCurricular.setOnSave((Curricular c) -> {
+            c.setName(tcCurricular.getValue("name"));
+            dc.updateCurricular(c);
+            return true;
+        });
+
+        tcCurricular.setOnAdd(() -> {
+            dc.addCurricular(new Curricular(tcCurricular.getValue("name")));
+            return true;
+        });
+
+        tcCurricular.setOnDelete((Curricular c) -> {
+            dc.removeCurricular(c);
+            return true;
+        });
 
         return tcCurricular;
     }
@@ -108,13 +146,14 @@ public class TabsController extends TabPane {
                 .setConverter(Firm::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
-                .addErrorPredicate(name -> dc.getFirms().stream().anyMatch(f -> f.getName().equalsIgnoreCase(name)), "Firmanaam bestaat al!")
+                .addErrorPredicate(name -> tcFirm.statusIsSaving() || dc.getFirms().stream().anyMatch(f -> f.getName().equalsIgnoreCase(name)), "Firmanaam bestaat al!")
                 .get());
         tcFirm.addManagedCustomTextField("email", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getEmail)
                 .setPromptText("E-mail")
                 .addErrorPredicate(email -> !email.isEmpty(), "E-mail moet ingevuld worden!")
                 .addErrorPredicate(email -> EmailValidator.getInstance().isValid(email), "E-mail is niet in een correct formaat.")
+                .addErrorPredicate(email -> tcFirm.statusIsSaving() || dc.getFirms().stream().anyMatch(f -> f.getEmail().equalsIgnoreCase(email)), "E-mail is al geregistreerd in een andere firma!")
                 .get());
         tcFirm.addManagedCustomTextField("phone_number", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getPhoneNumber)
@@ -123,25 +162,33 @@ public class TabsController extends TabPane {
                 .get());
 
         tcFirm.setOnAdd(() -> {
-            boolean willSave = true;
-            String name = tcFirm.getValue("name");
-            String email = tcFirm.getValue("email");
-            String phone = tcFirm.getValue("phone_number");
-
             Firm newFirm = new Firm();
             try {
-                newFirm.setEmail(email);
-                newFirm.setName(name);
-                newFirm.setPhoneNumber(phone);
-            } catch (InvalidEmailException ex) {
-                willSave = false;
-            }
-
-            if (willSave) {
+                newFirm.setEmail(tcFirm.getValue("email"));
+                newFirm.setName(tcFirm.getValue("name"));
+                newFirm.setPhoneNumber(tcFirm.getValue("phone_number"));
                 dc.addFirm(newFirm);
+            } catch (InvalidEmailException ex) {
+                return false;
             }
-            
-            return willSave;
+            return true;
+        });
+
+        tcFirm.setOnSave((Firm f) -> {
+            f.setName(tcFirm.getValue("name"));
+            try {
+                f.setEmail(tcFirm.getValue("email"));
+            } catch (InvalidEmailException e) {
+                return false;
+            }
+            f.setPhoneNumber(tcFirm.getValue("phone_number"));
+            dc.updateFirm(f);
+            return true;
+        });
+
+        tcFirm.setOnDelete((Firm f) -> {
+            dc.removeFirm(f);
+            return true;
         });
 
         return tcFirm;
