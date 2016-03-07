@@ -46,13 +46,16 @@ public class TempController<E> extends AnchorPane {
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-    public TempController(String title, Function<E, String> stringPresentation, ObservableList<E> items) {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Temp.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
 
+    /**
+     * Creates a new TempController.
+     * @param title the text to display on top of the control.
+     * @param stringPresentation a {@link Function} defining how {@link E} is displayed in the {@link ListView}.
+     * @param items the items to add to the {@link ListView}.
+     */
+    public TempController(String title, Function<E, String> stringPresentation, ObservableList<E> items) {
         try {
-            loader.load();
+            GuiHelper.loadFXML("Temp.fxml", this);
             this.getStylesheets().add("/gui/style/form.css");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
@@ -76,9 +79,7 @@ public class TempController<E> extends AnchorPane {
             btnDelete.setDisable(b);
             btnDelete.setVisible(!b);
             if (!b) { //Something is selected
-                for (ManagedCustomTextField<E> tf : this.managedCustomTextFields.values()) {
-                    tf.setText(tf.convert(newValue));
-                }
+                this.managedCustomTextFields.values().forEach(tf->tf.setText(tf.convert(newValue)));
             }
         });
     }
@@ -86,6 +87,7 @@ public class TempController<E> extends AnchorPane {
     //</editor-fold>
 
     //<editor-fold desc="Public actions" defaultstate="collapsed">
+
     public void addManagedCustomTextField(String key, ManagedCustomTextField<E> managedCustomTextField) {
         this.managedCustomTextFields.put(key, managedCustomTextField);
         this.vbNodes.getChildren().add(managedCustomTextField);
@@ -158,11 +160,23 @@ public class TempController<E> extends AnchorPane {
 class ManagedCustomTextFieldBuilder<E> {
     private ManagedCustomTextField<E> ctf = new ManagedCustomTextField<>();
 
+    /**
+     * Adds a validation to the control that will warn the user upon submission if the predicate evaluates to true.
+     * @param p predicate to test.
+     * @param warning the warning message to display when the predicate evaluates to true.
+     * @return this.
+     */
     public ManagedCustomTextFieldBuilder<E> addWarningPredicate(Predicate<String> p, String warning) {
         ctf.addWarningPredicate(p, warning);
         return this;
     }
 
+    /**
+     * Adds a validation to the control that will stop submission if the predicate evaluates to true.
+     * @param p predicate to test.
+     * @param error the error message to display when the predicate evaluates to true.
+     * @return this.
+     */
     public ManagedCustomTextFieldBuilder<E> addErrorPredicate(Predicate<String> p, String error) {
         ctf.addErrorPredicate(p, error);
         return this;
@@ -184,7 +198,7 @@ class ManagedCustomTextFieldBuilder<E> {
 }
 
 class ManagedCustomTextField<E> extends CustomTextField {
-    private List<Validation> warnings, errors;
+    private final List<Validation> warnings, errors;
     private Function<E, String> converter;
 
     public ManagedCustomTextField() {
@@ -215,7 +229,7 @@ class ManagedCustomTextField<E> extends CustomTextField {
     public boolean validate() {
         GuiHelper.hideError(this);
         for (Validation v : errors) {
-            if (!v.getPredicate().test(getText())) {
+            if (v.getPredicate().test(getText())) {
                 GuiHelper.showError(this, v.getMessage());
                 return false;
             }

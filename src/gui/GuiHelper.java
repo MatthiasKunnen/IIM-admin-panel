@@ -1,5 +1,6 @@
 package gui;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
@@ -9,6 +10,7 @@ import javafx.scene.layout.Pane;
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -62,7 +64,7 @@ public class GuiHelper {
                 if (input.getText().contains(DECIMAL_SEPARATOR)) {
                     event.consume();
                 }
-            }else if(!input.getText().contains(DECIMAL_SEPARATOR) && event.getCharacter().equals(".")){
+            } else if (!input.getText().contains(DECIMAL_SEPARATOR) && event.getCharacter().equals(".")) {
                 input.insertText(input.getCaretPosition(), DECIMAL_SEPARATOR);
                 event.consume();
             } else if (!NUMBER_ONLY_PATTERN.matcher(event.getCharacter()).matches()) {
@@ -82,7 +84,7 @@ public class GuiHelper {
 
     //<editor-fold desc="TextFields" defaultstate="collapsed">
 
-    public static void showWarning(TextField ctf, String message){
+    public static void showWarning(TextField ctf, String message) {
         resetTextfieldColorCss(ctf);
         ImageView iv = new ImageView(new Image(GuiHelper.class.getResource("/gui/images/shield-warning-icon.png").toExternalForm()));
         iv.setPreserveRatio(true);
@@ -90,7 +92,7 @@ public class GuiHelper {
         ctf.getStyleClass().add("warning");
         if (ctf instanceof CustomTextField) {
             ((CustomTextField) ctf).setRight(iv);
-        }else if (ctf instanceof CustomPasswordField){
+        } else if (ctf instanceof CustomPasswordField) {
             ((CustomPasswordField) ctf).setRight(iv);
         }
         ctf.setTooltip(new Tooltip(message));
@@ -104,7 +106,7 @@ public class GuiHelper {
         ctf.getStyleClass().add("error");
         if (ctf instanceof CustomTextField) {
             ((CustomTextField) ctf).setRight(iv);
-        }else if (ctf instanceof CustomPasswordField){
+        } else if (ctf instanceof CustomPasswordField) {
             ((CustomPasswordField) ctf).setRight(iv);
         }
         ctf.setTooltip(new Tooltip(message));
@@ -114,34 +116,44 @@ public class GuiHelper {
         Node set = new Pane();
         if (ctf instanceof CustomTextField) {
             ((CustomTextField) ctf).setRight(set);
-        }else if (ctf instanceof CustomPasswordField){
+        } else if (ctf instanceof CustomPasswordField) {
             ((CustomPasswordField) ctf).setRight(set);
         }
         resetTextfieldColorCss(ctf);
         ctf.setTooltip(null);
     }
 
-    private static void resetTextfieldColorCss(TextField tf){
+    private static void resetTextfieldColorCss(TextField tf) {
         tf.getStyleClass().removeAll("error", "warning");
     }
     //</editor-fold>
 
     //<editor-fold desc="SVG" defaultstate="collapsed">
 
-    public static String getSVGContent(String key){
+    public static String getSVGContent(String key) {
         return svgContent.get(key);
     }
     //</editor-fold>
 
     //<editor-fold desc="Formatters" defaultstate="collapsed">
 
-    public static DateTimeFormatter getDateTimeFormatter(){
+    public static DateTimeFormatter getDateTimeFormatter() {
         return DATE_TIME_FORMATTER;
     }
 
-    public static DateTimeFormatter getTimeFormatter(){
+    public static DateTimeFormatter getTimeFormatter() {
         return TIME_FORMATTER;
     }
+    //</editor-fold>
+
+    //<editor-fold desc="FXML" defaultstate="collapsed">
+    public static void loadFXML(String fileName, Object thisObject) throws IOException {
+        FXMLLoader loader = new FXMLLoader(thisObject.getClass().getResource(fileName));
+        loader.setRoot(thisObject);
+        loader.setController(thisObject);
+        loader.load();
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="MethodBuilder methods" defaultstate="collapsed">
@@ -218,7 +230,7 @@ class MethodBuilder {
     }
 
 
-   private class MethodCall {
+    private class MethodCall {
         private String name;
         private Object[] parameters;
 

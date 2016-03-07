@@ -42,11 +42,9 @@ public class FirmSceneController extends VBox {
         stage.setResizable(true);
         stage.setTitle("Firma's - IIM");
         this.dc = dc;
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("FirmScene.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
+
         try {
-            loader.load();
+            GuiHelper.loadFXML("FirmScene.fxml", this);
             coc = new CustomOptionsController();
             coc.addImage("add", new Image(this.getClass().getResource("images/plus.png").toExternalForm()));
             coc.addExistingSVG("save", "floppy-o");

@@ -30,11 +30,8 @@ public class CustomOptionsController extends HBox {
     public CustomOptionsController() {
         this.nodes = new TreeMap<>();
         this.svgPaths = new HashSet<>();
-        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("CustomOption.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
+            GuiHelper.loadFXML("CustomOption.fxml", this);
             iconHeight = prefHeightProperty();
             iconHeight.multiply(0.95);
             heightProperty().addListener((observable, oldValue, newValue) -> {

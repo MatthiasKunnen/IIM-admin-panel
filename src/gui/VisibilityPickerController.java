@@ -54,11 +54,9 @@ public class VisibilityPickerController extends HBox {
         this.visibility = new SimpleObjectProperty<>();
         this.visibility.setValue(DEFAULT);
         this.visibility.addListener((observable, oldValue, newValue) -> setVisibility(newValue));
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("VisibilityPicker.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
+
         try {
-            loader.load();
+            GuiHelper.loadFXML("VisibilityPicker.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }

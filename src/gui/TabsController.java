@@ -42,12 +42,8 @@ public class TabsController extends TabPane {
         this.stage = theStage;
         this.dc = dc;
 
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Tabs.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
         try {
-            loader.load();
-
+            GuiHelper.loadFXML("Tabs.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -83,8 +79,8 @@ public class TabsController extends TabPane {
         tcTargetGroup.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<TargetGroup>()
                 .setConverter(TargetGroup::getName)
                 .setPromptText("Naam")
-                .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
-                .addErrorPredicate(name -> tcTargetGroup.statusIsSaving() || dc.getTargetGroups().stream().anyMatch(t -> t.getName().equalsIgnoreCase(name)), "Deelgebied bestaat al!")
+                .addErrorPredicate(String::isEmpty, "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> !tcTargetGroup.statusIsSaving() && dc.getTargetGroups().stream().anyMatch(t -> t.getName().equalsIgnoreCase(name)), "Doelgroep bestaat al!")
                 .get());
 
         tcTargetGroup.setOnSave((TargetGroup t) -> {
@@ -117,8 +113,8 @@ public class TabsController extends TabPane {
         tcCurricular.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<Curricular>()
                 .setConverter(Curricular::getName)
                 .setPromptText("Naam")
-                .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
-                .addErrorPredicate(name -> tcCurricular.statusIsSaving() || dc.getCurricular().stream().anyMatch(c -> c.getName().equalsIgnoreCase(name)), "Leergebied bestaat al!")
+                .addErrorPredicate(String::isEmpty, "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> !tcCurricular.statusIsSaving() && dc.getCurricular().stream().anyMatch(c -> c.getName().equalsIgnoreCase(name)), "Leergebied bestaat al!")
                 .get());
 
         tcCurricular.setOnSave((Curricular c) -> {
@@ -148,20 +144,20 @@ public class TabsController extends TabPane {
         tcFirm.addManagedCustomTextField("name", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getName)
                 .setPromptText("Naam")
-                .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
-                .addErrorPredicate(name -> tcFirm.statusIsSaving() || dc.getFirms().stream().anyMatch(f -> f.getName().equalsIgnoreCase(name)), "Firmanaam bestaat al!")
+                .addErrorPredicate(String::isEmpty, "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> !tcFirm.statusIsSaving() && dc.getFirms().stream().anyMatch(f -> f.getName().equalsIgnoreCase(name)), "Firmanaam bestaat al!")
                 .get());
         tcFirm.addManagedCustomTextField("email", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getEmail)
                 .setPromptText("E-mail")
-                .addErrorPredicate(email -> !email.isEmpty(), "E-mail moet ingevuld worden!")
-                .addErrorPredicate(email -> EmailValidator.getInstance().isValid(email), "E-mail is niet in een correct formaat.")
-                .addErrorPredicate(email -> tcFirm.statusIsSaving() || dc.getFirms().stream().anyMatch(f -> f.getEmail().equalsIgnoreCase(email)), "E-mail is al geregistreerd in een andere firma!")
+                .addErrorPredicate(String::isEmpty, "E-mail moet ingevuld worden!")
+                .addErrorPredicate(email -> !EmailValidator.getInstance().isValid(email), "E-mail is niet in een correct formaat.")
+                .addErrorPredicate(email -> !tcFirm.statusIsSaving() && dc.getFirms().stream().anyMatch(f -> f.getEmail().equalsIgnoreCase(email)), "E-mail is al geregistreerd in een andere firma!")
                 .get());
         tcFirm.addManagedCustomTextField("phone_number", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getPhoneNumber)
                 .setPromptText("Telefoonnummer")
-                .addWarningPredicate(phoneNumber -> !phoneNumber.isEmpty(), "Telefoonnummer is niet ingevuld.")
+                .addWarningPredicate(String::isEmpty, "Telefoonnummer is niet ingevuld.")
                 .get());
 
         tcFirm.setOnAdd(() -> {
