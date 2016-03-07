@@ -1,7 +1,6 @@
 package gui;
 
 import domain.DomainController;
-import domain.Material;
 import domain.MaterialIdentifier;
 import domain.Reservation;
 import javafx.beans.property.SimpleStringProperty;
@@ -21,7 +20,7 @@ import java.io.IOException;
 
 public class ReservationController extends AnchorPane {
 
-    //<editor-fold desc="FXMLVariables" defaultstate="collapsed">
+    //<editor-fold desc="FXML Variables" defaultstate="collapsed">
     @FXML
     private TextField tfEndTime;
 
@@ -50,6 +49,7 @@ public class ReservationController extends AnchorPane {
     private DatePicker dpEndDate;
 
     //</editor-fold>
+
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private DomainController dc;
     private ObservableList<MaterialIdentifier> identifiers;
@@ -57,6 +57,7 @@ public class ReservationController extends AnchorPane {
     private Reservation reservation;
 
     //</editor-fold>
+
     //<editor-fold desc="Constructor" defaultstate="collapsed">    
     public ReservationController(DomainController dc, Stage stage, Reservation reservation) {
         this.identifiers = FXCollections.observableArrayList();
@@ -69,10 +70,13 @@ public class ReservationController extends AnchorPane {
         loader.setController(this);
         try {
             loader.load();
-
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        dpStartDate.setValue(reservation.getStartDate().toLocalDate());
+        dpEndDate.setValue(reservation.getEndDate().toLocalDate());
+        tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getDateTimeFormatter()));
 
         this.tv.setItems(FXCollections.observableList(reservation.getMaterialIdentifiersList()));
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -96,8 +100,6 @@ public class ReservationController extends AnchorPane {
                                 getTableView().getItems().remove((MaterialIdentifier) getTableRow().getItem());
                             }
                         });
-                        
-
                     }
 
                     @Override
@@ -116,8 +118,6 @@ public class ReservationController extends AnchorPane {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Action" defaultstate="collapsed">
-    //</editor-fold>
     //<editor-fold desc="FXML actions" defaultstate="collapsed">
     //</editor-fold>
 }
