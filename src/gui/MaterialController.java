@@ -39,14 +39,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * FXML Controller class
@@ -95,8 +87,6 @@ public class MaterialController extends VBox {
     @FXML
     private TableColumn<MaterialIdentifier, Integer> tcId;
     @FXML
-    private TableColumn<MaterialIdentifier, Integer> tcAmount;
-    @FXML
     private TableView<MaterialIdentifier> tvIdentifiers;
 
     //</editor-fold>
@@ -107,8 +97,6 @@ public class MaterialController extends VBox {
     private Material material;
     private SimpleObjectProperty<Visibility> defaultVisibility;
     private ObservableList<MaterialIdentifier> identifiers;
-    private List<MaterialIdentifier> identifiersMaterial;
-
     private Path imagePath;
     //</editor-fold>
 
@@ -119,7 +107,6 @@ public class MaterialController extends VBox {
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
         this.identifiers = FXCollections.observableArrayList();
-        this.identifiersMaterial = material.getIdentifiers();
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
@@ -139,20 +126,11 @@ public class MaterialController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-//        System.out.println(this.identifiersMaterial);
-//        System.out.println("zonder duplicates: ");
-//        System.out.println(removeDuplicates(this.identifiersMaterial));
-      this.tvIdentifiers.setItems(removeDuplicates(this.identifiersMaterial));
-        
-        
-        tcId.setVisible(false);
+        this.tvIdentifiers.setItems(this.identifiers);
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
         tcLocation.setOnEditCommit(event -> event.getRowValue().setPlace(event.getNewValue()));
-        
-        tcAvailable.setVisible(false);
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
         tcAvailable.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Visibility>, TableCell<MaterialIdentifier, Visibility>>() {
             @Override
@@ -188,7 +166,6 @@ public class MaterialController extends VBox {
         });
         tcActions.setCellValueFactory(new PropertyValueFactory<>("NONEXISTENT"));
         tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
-        
 
             @Override
             public TableCell<MaterialIdentifier, Boolean> call(TableColumn<MaterialIdentifier, Boolean> param) {
@@ -223,7 +200,6 @@ public class MaterialController extends VBox {
                 };
             }
         });
-  
         this.cboCurricular.getItems().addAll(dc.getCurricular());
         this.cboCurricular.setConverter(new StringConverter<Curricular>() {
             @Override
@@ -429,32 +405,4 @@ public class MaterialController extends VBox {
         this.tfAmount.requestFocus();
     }
     //</editor-fold>
-    
-    private ObservableList<MaterialIdentifier> removeDuplicates(List<MaterialIdentifier> listWithDuplicates) {
-    /* Set of all attributes seen so far */
-    Set<String> attributes = new HashSet<String>();
-    /* All confirmed duplicates go in here */
-    //List duplicates = new ArrayList<MaterialIdentifier>(listWithDuplicates);
-    ObservableList<MaterialIdentifier> noDuplicates  = FXCollections.observableArrayList();
-    for(MaterialIdentifier x : listWithDuplicates) {
-        if(!attributes.contains(x.getPlace())) {
-            noDuplicates.add(x);
-        }
-        attributes.add(x.getPlace());
-    }
-    /* Clean list without any dups */
-    //listWithDuplicates.removeAll(duplicates);
-    return noDuplicates;
-//    HashSet<MaterialIdentifier> set = new HashSet<MaterialIdentifier>();
-//    Map<String, Integer> uniqueIdent = new HashMap<>();
-//    int value;
-//        for (MaterialIdentifier arrayElement : listWithDuplicates)
-//        {
-//            if(!uniqueIdent.containsKey(arrayElement.getPlace()))
-//            {
-//                value= uniqueIdent.get(arrayElement.getPlace())==null?0: uniqueIdent.get(arrayElement.getPlace());
-//                uniqueIdent.put(arrayElement.getPlace(), value+1);
-//            }
-//        }
-    }
 }
