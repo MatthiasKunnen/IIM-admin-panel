@@ -1,10 +1,7 @@
 package gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -94,9 +91,9 @@ public class TempController<E> extends AnchorPane {
         this.vbNodes.getChildren().add(managedCustomTextField);
     }
 
-    public void setOnDelete(Function<E, Boolean> deleteEvent) {
+    public void setOnDelete(Predicate<E> deleteEvent) {
         btnDelete.setOnAction(event -> {
-            if (deleteEvent.apply(lvItems.getSelectionModel().getSelectedItem()))
+            if (deleteEvent.test(lvItems.getSelectionModel().getSelectedItem()))
                 clear();
         });
     }
@@ -119,6 +116,10 @@ public class TempController<E> extends AnchorPane {
 
     public ReadOnlyDoubleProperty getListViewHeightProperty() {
         return this.lvItems.heightProperty();
+    }
+
+    public boolean statusIsSaving(){
+        return !this.lvItems.getSelectionModel().isEmpty();
     }
 
     //</editor-fold>
@@ -219,9 +220,11 @@ class ManagedCustomTextField<E> extends CustomTextField {
                 return false;
             }
         }
-        warnings.stream()
+        Optional<Validation> validation = warnings.stream()
                 .filter(v -> !v.getPredicate().test(getText()))
-                .forEach(v -> GuiHelper.showWarning(this, v.getMessage()));
+                .findAny();
+        if (validation.isPresent())
+            GuiHelper.showWarning(this, validation.get().getMessage());
         return true;
     }
 }
