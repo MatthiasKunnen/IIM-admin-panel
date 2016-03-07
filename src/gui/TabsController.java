@@ -108,12 +108,13 @@ public class TabsController extends TabPane {
                 .setConverter(Firm::getName)
                 .setPromptText("Naam")
                 .addErrorPredicate(name -> !name.isEmpty(), "Naam moet ingevuld worden!")
+                .addErrorPredicate(name -> dc.getFirms().stream().anyMatch(f -> f.getName().equalsIgnoreCase(name)), "Firmanaam bestaat al!")
                 .get());
         tcFirm.addManagedCustomTextField("email", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getEmail)
                 .setPromptText("E-mail")
                 .addErrorPredicate(email -> !email.isEmpty(), "E-mail moet ingevuld worden!")
-                .addErrorPredicate(email -> EmailValidator.getInstance().isValid(email), "E-mail is niet correct.")
+                .addErrorPredicate(email -> EmailValidator.getInstance().isValid(email), "E-mail is niet in een correct formaat.")
                 .get());
         tcFirm.addManagedCustomTextField("phone_number", new ManagedCustomTextFieldBuilder<Firm>()
                 .setConverter(Firm::getPhoneNumber)
@@ -139,8 +140,10 @@ public class TabsController extends TabPane {
             if (willSave) {
                 dc.addFirm(newFirm);
             }
+            
             return willSave;
         });
+
         return tcFirm;
     }
 }
