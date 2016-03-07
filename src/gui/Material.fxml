@@ -106,6 +106,8 @@
                         <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
                         <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center"
                                      text="Beschikbaarheid"/>
+                        <TableColumn fx:id="tcAmount" prefWidth="75.0" style="-fx-alignment: center" text="Aantal"/>
+
                         <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties"/>
                     </columns>
                     <columnResizePolicy>
