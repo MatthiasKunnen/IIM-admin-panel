@@ -1,6 +1,5 @@
 package gui;
 
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,7 +20,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.CustomTextField;
-
 
 public class TempController<E> extends AnchorPane {
 
@@ -55,6 +53,7 @@ public class TempController<E> extends AnchorPane {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("Temp.fxml"));
         loader.setRoot(this);
         loader.setController(this);
+
         try {
             loader.load();
             this.getStylesheets().add("/gui/style/form.css");
@@ -80,7 +79,7 @@ public class TempController<E> extends AnchorPane {
             btnDelete.setDisable(b);
             btnDelete.setVisible(!b);
             if (!b) { //Something is selected
-                for(ManagedCustomTextField<E> tf: this.managedCustomTextFields.values()){
+                for (ManagedCustomTextField<E> tf : this.managedCustomTextFields.values()) {
                     tf.setText(tf.convert(newValue));
                 }
             }
@@ -147,14 +146,14 @@ public class TempController<E> extends AnchorPane {
     }
 
     @FXML
-    private void cancel(ActionEvent event){
+    private void cancel(ActionEvent event) {
         clear();
     }
     //</editor-fold>
 }
 
 //<editor-fold desc="Classes" defaultstate="collapsed">
-class ManagedCustomTextFieldBuilder  <E>  {
+class ManagedCustomTextFieldBuilder<E> {
     private ManagedCustomTextField<E> ctf = new ManagedCustomTextField<>();
 
     public ManagedCustomTextFieldBuilder<E> addWarningPredicate(Predicate<String> p, String warning) {
