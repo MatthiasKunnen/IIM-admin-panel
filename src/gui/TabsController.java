@@ -5,6 +5,7 @@ import domain.DomainController;
 import domain.Firm;
 import domain.TargetGroup;
 import exceptions.InvalidEmailException;
+import gui.calendar.CalendarController;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
@@ -64,6 +65,8 @@ public class TabsController extends TabPane {
         overview.getChildren().add(tcCurricular);
         overview.getChildren().add(tcTargetGroup);
 
+        CalendarController cc =new CalendarController();
+        tOptions.setContent(cc);
         tAdd.setContent(overview);
     }
 

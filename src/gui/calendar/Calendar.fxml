@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="311.0" prefWidth="420.0" type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <AnchorPane maxHeight="-Infinity" minHeight="-Infinity" prefHeight="42.0">
+         <children>
+            <HBox alignment="CENTER" layoutX="196.0" layoutY="18.0" AnchorPane.bottomAnchor="7.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="18.0">
+               <children>
+                  <Label fx:id="lblMaand" layoutX="196.0" layoutY="18.0" text="Label" AnchorPane.bottomAnchor="6.0" AnchorPane.topAnchor="18.0" />
+               </children>
+            </HBox>
+            <SVGPath fx:id="svgLeft" content="M15.68 4.03L8.57 11.14 15.68 18.25Q15.94 18.51 15.94 18.86T15.68 19.46L13.46 21.68Q13.21 21.94 12.86 21.94T12.25 21.68L2.32 11.75Q2.06 11.49 2.06 11.14T2.32 10.54L12.25 0.6Q12.51 0.35 12.86 0.35T13.46 0.6L15.68 2.83Q15.94 3.08 15.94 3.43T15.68 4.03Z" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <Rectangle fx:id="rectLeft" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="-86.0" layoutY="-82.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <SVGPath fx:id="svgRight" content="M15.68 4.03L8.57 11.14 15.68 18.25Q15.94 18.51 15.94 18.86T15.68 19.46L13.46 21.68Q13.21 21.94 12.86 21.94T12.25 21.68L2.32 11.75Q2.06 11.49 2.06 11.14T2.32 10.54L12.25 0.6Q12.51 0.35 12.86 0.35T13.46 0.6L15.68 2.83Q15.94 3.08 15.94 3.43T15.68 4.03Z" rotate="180.0" AnchorPane.bottomAnchor="5.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+            <Rectangle fx:id="rectRight" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="25.0" layoutX="-76.0" layoutY="-72.0" opacity="0.0" stroke="BLACK" strokeType="INSIDE" width="25.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0" />
+         </children>
+      </AnchorPane>
+      <GridPane fx:id="gpDates" alignment="BASELINE_RIGHT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+      </GridPane>
+   </children>
+</fx:root>
