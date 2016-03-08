@@ -5,8 +5,6 @@
  */
 package gui.calendar;
 
-import java.io.IOException;
-import java.time.LocalDate;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -18,9 +16,11 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.SVGPath;
+
+import java.io.IOException;
+import java.time.LocalDate;
 
 /**
  * FXML Controller class

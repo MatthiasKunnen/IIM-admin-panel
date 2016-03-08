@@ -1,16 +1,10 @@
 package domain;
 
-import repository.ReservationRepository;
 import exceptions.AzureException;
 import exceptions.LoginException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
-import repository.AdministratorRepository;
-import repository.CurricularRepository;
-import repository.FirmRepository;
-import repository.MaterialRepository;
-import repository.TargetGroupRepository;
-import repository.UserRepository;
+import repository.*;
 
 public class DomainController {
 

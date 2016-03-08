@@ -1,11 +1,5 @@
 package gui;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.function.BooleanSupplier;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.ObservableList;
@@ -16,6 +10,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.CustomTextField;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class TempController<E> extends AnchorPane {
 

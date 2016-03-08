@@ -1,17 +1,16 @@
 package domain;
 
-import static com.google.common.base.MoreObjects.toStringHelper;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import persistence.LocalDateTimeConverter;
+import util.ImmutabilityHelper;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import javax.persistence.*;
-
-import persistence.LocalDateTimeConverter;
-import util.ImmutabilityHelper;
+import static com.google.common.base.MoreObjects.toStringHelper;
 
 @Entity
 @Access(AccessType.PROPERTY)

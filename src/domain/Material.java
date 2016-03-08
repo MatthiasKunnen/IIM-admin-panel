@@ -4,12 +4,13 @@ import exceptions.InvalidPriceException;
 import util.ImmutabilityHelper;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
-
-import java.io.Serializable;
 
 @Entity
 public class Material implements Serializable, IEntity {

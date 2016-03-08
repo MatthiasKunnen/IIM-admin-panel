@@ -1,12 +1,8 @@
 package repository;
 
 import domain.User;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import persistence.PersistenceEnforcer;
 import util.ImmutabilityHelper;
-
-import java.util.List;
 
 public class UserRepository extends LoadedRepository<User>{
     

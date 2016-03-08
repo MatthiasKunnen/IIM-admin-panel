@@ -4,15 +4,16 @@ import domain.DomainController;
 import domain.Material;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -21,9 +22,6 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
-import javafx.application.Platform;
-import javafx.scene.control.TextField;
-import javafx.scene.input.KeyEvent;
 
 /**
  * FXML Controller class
