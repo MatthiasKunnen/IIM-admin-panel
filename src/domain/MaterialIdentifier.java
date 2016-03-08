@@ -24,6 +24,8 @@ public class MaterialIdentifier implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Getters and setters" defaultstate="collapsed">
+    @Override
+    @Transient
     public int getId() {
         return id;
     }
