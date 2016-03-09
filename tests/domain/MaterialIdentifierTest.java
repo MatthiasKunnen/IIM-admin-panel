@@ -1,25 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
-import java.util.ArrayList;
-import java.util.List;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.property.SimpleStringProperty;
 import org.junit.Assert;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
-/**
- *
- * @author Pieter
- */
 public class MaterialIdentifierTest {
 
     public MaterialIdentifierTest() {
@@ -44,7 +28,7 @@ public class MaterialIdentifierTest {
     @Test
     public void testSetPlace() {
         matID.setPlace("kitchen");
-        Assert.assertEquals(matID.getPlace(), "kitchen");
+        Assert.assertEquals("kitchen", matID.getPlace());
     }
 
     @Test
