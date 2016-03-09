@@ -2,13 +2,10 @@ package domain;
 
 import com.google.common.base.MoreObjects;
 import exceptions.InvalidEmailException;
-import java.io.Serializable;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import org.apache.commons.validator.routines.EmailValidator;
+
+import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 public class Firm implements IEntity, Serializable {

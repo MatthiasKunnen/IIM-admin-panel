@@ -1,16 +1,10 @@
 package domain;
 
-import repository.ReservationRepository;
 import exceptions.AzureException;
 import exceptions.LoginException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
-import repository.AdministratorRepository;
-import repository.CurricularRepository;
-import repository.FirmRepository;
-import repository.MaterialRepository;
-import repository.TargetGroupRepository;
-import repository.UserRepository;
+import repository.*;
 
 public class DomainController {
 
@@ -48,15 +42,15 @@ public class DomainController {
     }   
 
     public ObservableList<Firm> getFirms() {
-        return firmRepository.getExistingFirms();
+        return firmRepository.getObservableItems();
     }
 
     public ObservableList<TargetGroup> getTargetGroups() {
-        return targetGroupRepository.getOptions();
+        return targetGroupRepository.getObservableItems();
     }
 
     public ObservableList<Curricular> getCurricular() {
-        return curricularRepository.getOptions();
+        return curricularRepository.getObservableItems();
     }
 
     public User getUserByEmail(String email){
@@ -230,7 +224,7 @@ public class DomainController {
     }
 
     public ObservableList<Reservation> getReservations(){
-       return this.reservationRepository.getReservations();
+       return this.reservationRepository.getObservableItems();
     }
 
     public boolean doesReservationExist(Reservation reservation){

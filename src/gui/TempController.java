@@ -1,22 +1,21 @@
 package gui;
 
-import java.io.IOException;
-import java.util.*;
-import java.util.function.BooleanSupplier;
-import java.util.function.Function;
-import java.util.function.Predicate;
-
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import org.controlsfx.control.textfield.CustomTextField;
+
+import java.io.IOException;
+import java.util.*;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 public class TempController<E> extends AnchorPane {
 
@@ -49,9 +48,10 @@ public class TempController<E> extends AnchorPane {
 
     /**
      * Creates a new TempController.
-     * @param title the text to display on top of the control.
+     *
+     * @param title              the text to display on top of the control.
      * @param stringPresentation a {@link Function} defining how {@link E} is displayed in the {@link ListView}.
-     * @param items the items to add to the {@link ListView}.
+     * @param items              the items to add to the {@link ListView}.
      */
     public TempController(String title, Function<E, String> stringPresentation, ObservableList<E> items) {
         try {
@@ -79,7 +79,7 @@ public class TempController<E> extends AnchorPane {
             btnDelete.setDisable(b);
             btnDelete.setVisible(!b);
             if (!b) { //Something is selected
-                this.managedCustomTextFields.values().forEach(tf->tf.setText(tf.convert(newValue)));
+                this.managedCustomTextFields.values().forEach(tf -> tf.setText(tf.convert(newValue)));
             }
         });
     }
@@ -120,7 +120,7 @@ public class TempController<E> extends AnchorPane {
         return this.lvItems.heightProperty();
     }
 
-    public boolean statusIsSaving(){
+    public boolean statusIsSaving() {
         return !this.lvItems.getSelectionModel().isEmpty();
     }
 
@@ -162,7 +162,8 @@ class ManagedCustomTextFieldBuilder<E> {
 
     /**
      * Adds a validation to the control that will warn the user upon submission if the predicate evaluates to true.
-     * @param p predicate to test.
+     *
+     * @param p       predicate to test.
      * @param warning the warning message to display when the predicate evaluates to true.
      * @return this.
      */
@@ -173,7 +174,8 @@ class ManagedCustomTextFieldBuilder<E> {
 
     /**
      * Adds a validation to the control that will stop submission if the predicate evaluates to true.
-     * @param p predicate to test.
+     *
+     * @param p     predicate to test.
      * @param error the error message to display when the predicate evaluates to true.
      * @return this.
      */

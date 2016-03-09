@@ -1,12 +1,6 @@
 package gui;
 
-import domain.Curricular;
-import domain.DomainController;
-import domain.Firm;
-import domain.Material;
-import domain.MaterialIdentifier;
-import domain.TargetGroup;
-import domain.Visibility;
+import domain.*;
 import exceptions.AzureException;
 import exceptions.InvalidPriceException;
 import javafx.application.Platform;
@@ -15,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
@@ -28,8 +21,8 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import org.controlsfx.control.textfield.CustomTextField;
 import org.controlsfx.control.CheckComboBox;
+import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,10 +32,6 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-import javafx.beans.property.SimpleIntegerProperty;
 
 /**
  * FXML Controller class

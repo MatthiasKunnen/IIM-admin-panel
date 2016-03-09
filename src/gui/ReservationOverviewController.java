@@ -2,11 +2,8 @@ package gui;
 
 import domain.DomainController;
 import domain.Reservation;
-
-import java.io.IOException;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListCell;
@@ -15,7 +12,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import javafx.util.Callback;
+
+import java.io.IOException;
 
 
 public class ReservationOverviewController extends AnchorPane {
