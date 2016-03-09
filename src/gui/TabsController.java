@@ -7,7 +7,6 @@ import domain.TargetGroup;
 import exceptions.InvalidEmailException;
 import gui.calendar.CalendarController;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.HBox;
@@ -15,6 +14,7 @@ import javafx.stage.Stage;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
+import javafx.scene.control.SplitPane;
 
 /**
  * FXML Controller class
@@ -53,7 +53,7 @@ public class TabsController extends TabPane {
         ReservationOverviewController rc = new ReservationOverviewController(dc);
         tReservations.setContent(rc);
 
-        HBox overview = new HBox();
+        SplitPane overview = new SplitPane();
         TempController<Firm> tcFirm = createFirmOverview();
         TempController<Curricular> tcCurricular = createCurricularOverview();
         TempController<TargetGroup> tcTargetGroup = createTargetGroupOverview();
@@ -61,9 +61,9 @@ public class TabsController extends TabPane {
         tcCurricular.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
         tcTargetGroup.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
 
-        overview.getChildren().add(tcFirm);
-        overview.getChildren().add(tcCurricular);
-        overview.getChildren().add(tcTargetGroup);
+        
+        overview.getItems().addAll(tcFirm,tcCurricular,tcTargetGroup);
+        
 
         CalendarController cc =new CalendarController();
         tOptions.setContent(cc);

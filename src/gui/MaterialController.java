@@ -39,6 +39,9 @@ import java.nio.file.InvalidPathException;
 import java.nio.file.Path;
 
 import static gui.GuiHelper.*;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import javafx.beans.property.SimpleIntegerProperty;
 
 /**
@@ -93,7 +96,7 @@ public class MaterialController extends VBox {
     private TableView<MaterialIdentifier> tvIdentifiers;
 
     //</editor-fold>
-
+    
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private Stage theStage;
     private DomainController dc;
@@ -109,7 +112,7 @@ public class MaterialController extends VBox {
     }
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
-        this.identifiers= FXCollections.observableArrayList(material.getIdentifiers());
+        this.identifiers = FXCollections.observableArrayList(material.getIdentifiers());
         this.theStage = stage;
         this.dc = dc;
         this.defaultVisibility = new SimpleObjectProperty<>();
@@ -132,8 +135,11 @@ public class MaterialController extends VBox {
         tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
         tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
         tcLocation.setOnEditCommit(event -> event.getRowValue().setPlace(event.getNewValue()));
-        tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) ->
-                new SimpleIntegerProperty((int)param.getValue().getIdentifiers().stream().map(MaterialIdentifier::getPlace).distinct().count()).asObject());
+        //tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) -> {
+            //Map temporaryMap = param.getValue().getIdentifiers().stream().collect(Collectors.groupingBy(MaterialIdentifier::getPlace));
+            
+            
+        //});
         tcAvailable.setVisible(false);
         tcAvailable.setCellValueFactory(new PropertyValueFactory<>("visibility"));
         tcAvailable.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Visibility>, TableCell<MaterialIdentifier, Visibility>>() {
@@ -281,8 +287,7 @@ public class MaterialController extends VBox {
             String price = ((String) createMethodBuilder(this.tfPrice)
                     .addMethods("getText")
                     .setDefaultValue("")
-                    .run()
-            ).replace(',', '.');
+                    .run()).replace(',', '.');
             material.setPrice(price.equals("") ? null : new BigDecimal(price));
             hideError(this.tfPrice);
         } catch (InvalidPriceException e) {
@@ -308,7 +313,9 @@ public class MaterialController extends VBox {
         material.setTargetGroups(cboTargetAudience.getCheckModel().getCheckedItems());
         material.setFirm(cboFirm.getValue());
         material.setCurricular(cboCurricular.getCheckModel().getCheckedItems());
-        if (abort) return;
+        if (abort) {
+            return;
+        }
 
         material.setIdentifiers(this.identifiers);
         if (dc.doesMaterialExist(material)) {
