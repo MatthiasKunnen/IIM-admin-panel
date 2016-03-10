@@ -72,7 +72,7 @@ public class ReservationController extends AnchorPane {
 
         dpStartDate.setValue(reservation.getStartDate().toLocalDate());
         dpEndDate.setValue(reservation.getEndDate().toLocalDate());
-        tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getDateTimeFormatter()));
+        tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
 
         this.tv.setItems(FXCollections.observableList(reservation.getMaterialIdentifiersList()));
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));

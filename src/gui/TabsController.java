@@ -60,11 +60,11 @@ public class TabsController extends TabPane {
         tcCurricular.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
         tcTargetGroup.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
 
+        overview.getItems().addAll(tcFirm, tcCurricular, tcTargetGroup);
+        overview.setDividerPosition(0,0.33);
+        overview.setDividerPosition(1,0.66);
         
-        overview.getItems().addAll(tcFirm,tcCurricular,tcTargetGroup);
-        
-
-        CalendarController cc =new CalendarController();
+        CalendarController cc = new CalendarController();
         tOptions.setContent(cc);
         tAdd.setContent(overview);
     }
