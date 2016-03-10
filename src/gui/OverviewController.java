@@ -2,6 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.Material;
+import domain.Settings;
 import domain.Visibility;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -21,7 +22,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
-import domain.Settings;
 
 import java.io.IOException;
 

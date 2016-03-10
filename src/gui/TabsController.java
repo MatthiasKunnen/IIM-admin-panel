@@ -7,14 +7,13 @@ import domain.TargetGroup;
 import exceptions.InvalidEmailException;
 import gui.calendar.CalendarController;
 import javafx.fxml.FXML;
+import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import org.apache.commons.validator.routines.EmailValidator;
 
 import java.io.IOException;
-import javafx.scene.control.SplitPane;
 
 /**
  * FXML Controller class
