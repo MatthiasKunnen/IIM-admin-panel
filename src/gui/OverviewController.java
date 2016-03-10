@@ -2,6 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.Material;
+import domain.Visibility;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
@@ -20,6 +21,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import domain.Settings;
 
 import java.io.IOException;
 
@@ -79,7 +81,10 @@ public class OverviewController extends VBox {
         tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
         tcDescription.setCellValueFactory(new PropertyValueFactory<>("description"));
         tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) ->
-                new SimpleIntegerProperty(param.getValue().getIdentifiers().size()).asObject());
+                new SimpleIntegerProperty((int) param.getValue().getIdentifiers()
+                        .stream()
+                        .filter(mi -> ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) || !mi.getVisibility().equals(Visibility.Administrator))
+                        .count()).asObject());
         tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
 
             @Override
