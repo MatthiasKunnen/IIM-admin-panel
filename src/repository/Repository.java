@@ -25,7 +25,7 @@ public abstract class Repository<E extends IEntity> {
     public Repository(PersistenceEnforcer persistence) {
         this.persistence = persistence;
         this.eList = new ArrayList<>();
-        this.eObservableList = FXCollections.observableList((List<E>) copyCollectionDefensively(this.eList));
+        this.eObservableList = FXCollections.observableList(eList);
     }
     //</editor-fold>
 
