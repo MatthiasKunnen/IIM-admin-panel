@@ -12,12 +12,15 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Group;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
@@ -211,9 +214,8 @@ public class MaterialController extends VBox {
             tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
             tcLocation.setOnEditCommit(event -> event.getRowValue().setPlace(event.getNewValue()));
         } else {
-            this.pnVisibilityPicker.setVisible(false);
-            this.tvIdentifiers.setVisible(false);
-            this.tfAmount.setVisible(false);
+            ((HBox) this.pnVisibilityPicker.getParent()).getChildren().removeAll(pnVisibilityPicker, tfAmount);
+            ((AnchorPane) this.tvIdentifiers.getParent()).getChildren().removeAll(this.tvIdentifiers);
             this.tvSimplifiedIdentifiers.setVisible(true);
             this.updateSimplifiedIdentifiersFromIdentifiers();
             this.tvSimplifiedIdentifiers.setItems(this.simplifiedIdentifiers);
@@ -246,6 +248,7 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
+        this.cboCurricular.prefWidthProperty().bind(this.cboTargetAudience.widthProperty());
 
         this.cboTargetAudience.getItems().addAll(dc.getTargetGroups());
         this.cboTargetAudience.setConverter(new StringConverter<TargetGroup>() {
@@ -262,6 +265,7 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
+        this.cboTargetAudience.prefWidthProperty().bind(this.cboFirm.widthProperty());
 
         this.cboFirm.setItems(dc.getFirms());
         this.cboFirm.setConverter(new StringConverter<Firm>() {
@@ -278,6 +282,7 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
+        this.cboFirm.prefWidthProperty().bind(this.cboCurricular.widthProperty());
 
         setMaterial(material);
 
