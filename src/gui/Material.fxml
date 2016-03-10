@@ -95,11 +95,21 @@
                         <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
                                      style="-fx-alignment: center" text="#"/>
                         <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
-                        <TableColumn fx:id="tcAmount" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Aantal"/>
-
                         <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center"
                                      text="Beschikbaarheid"/>
                         <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties"/>
+                    </columns>
+                    <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                    </columnResizePolicy>
+                </TableView>
+                <TableView fx:id="tvSimplifiedIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
+                           visible="false" style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="10.0"
+                           AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
+                    <columns>
+                        <TableColumn fx:id="tcSimplifiedLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
+                        <TableColumn fx:id="tcForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Ontleenbaar"/>
+                        <TableColumn fx:id="tcNotForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Niet ontleenbaar"/>
                     </columns>
                     <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>

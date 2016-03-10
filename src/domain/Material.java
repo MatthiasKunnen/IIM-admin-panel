@@ -7,7 +7,6 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
@@ -177,7 +176,7 @@ public class Material implements Serializable, IEntity {
     }
 
     public List<MaterialIdentifier> getIdentifiers() {
-        return Collections.unmodifiableList(items);
+        return items;
     }
 
     public void setIdentifiers(List<MaterialIdentifier> identifiers) {
@@ -202,7 +201,7 @@ public class Material implements Serializable, IEntity {
                 .add("Encoding", encoding)
                 .add("Firm", firm)
                 .add("Curricular", curricular)
-                .add("TargetGroups", targetGroups)
+                .add("Target groups", targetGroups)
                 .add("Identifiers", items)
                 .toString();
     }

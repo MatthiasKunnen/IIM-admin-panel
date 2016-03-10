@@ -101,7 +101,7 @@ public class MaterialRepository extends Repository<Material> {
     @Override
     public void update(Material material) {
         Material original = getItemByIdForced(material.getId(), "Cannot update a record that does not appear in the database.");
-        for (MaterialIdentifier mi : material.getIdentifiers()) {
+        for (MaterialIdentifier mi : copyCollectionDefensively(material.getIdentifiers())) {
             if (mi.getId() == 0) {
                 persistence.persist(mi);
             } else {

@@ -91,8 +91,8 @@ public class MaterialIdentifier implements Serializable, IEntity {
     public MaterialIdentifier(MaterialIdentifier identifier, Material info) {
         this.id = identifier.id;
         this.info = info;
-        this.place.setValue(identifier.place.getValue());
-        this.visibility.setValue(identifier.visibility.getValue());
+        this.place.setValue(identifier.place == null ? null : identifier.place.getValue());
+        this.visibility.setValue(identifier.visibility == null ? null : identifier.visibility.getValue());
     }
     //</editor-fold>
 

@@ -5,7 +5,7 @@
   <tabs>
     <Tab fx:id="tMaterial" closable="false" text="Material" />
       <Tab fx:id="tReservations" closable="false" text="Reservaties" />
-    <Tab fx:id="tAdd" text="Toevoegen" />
+    <Tab fx:id="tAdd" text="Categorieën" />
       <Tab fx:id="tOptions" text="Opties" />
   </tabs>
 </fx:root>
