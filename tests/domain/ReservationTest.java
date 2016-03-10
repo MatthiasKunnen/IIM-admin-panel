@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
 import java.time.LocalDateTime;
@@ -13,72 +8,58 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.Assert;
 
-/**
- *
- * @author Pieter
- */
 public class ReservationTest {
 
-    private Reservation res;
+    private Reservation reservation;
     private User user = new User();
-    private List<MaterialIdentifier> resList;
-    private MaterialIdentifier matId;
-    private Material mat;
+    private List<MaterialIdentifier> reservationList;
+    private MaterialIdentifier materialId;
+    private Material material;
     private LocalDateTime pickUp = LocalDateTime.of(2016, Month.FEBRUARY, 1, 16, 0);
     private LocalDateTime bringBack = LocalDateTime.of(2016, Month.FEBRUARY, 14, 7, 0);
-    private LocalDateTime resDate = LocalDateTime.of(2016, Month.JANUARY, 14, 2, 15);
-    
-    
-    
+    private LocalDateTime reservationDate = LocalDateTime.of(2016, Month.JANUARY, 14, 2, 15);
+
     @Before
-    public void init(){
-        res = new Reservation();
-        mat = new Material("Tool");
-        matId = new MaterialIdentifier(mat, Visibility.Student);
-        resList = new ArrayList<>();
-        resList.add(matId);
-        
-     }
-    
-    
-    @Test
-    public void testSetMaterialIdentifierList(){
-        res.setMaterialIdentifiersList(resList);
-        Assert.assertEquals(resList, res.getMaterialIdentifiersList());
+    public void init() {
+        reservation = new Reservation();
+        material = new Material("Tool");
+        materialId = new MaterialIdentifier(material, Visibility.Student);
+        reservationList = new ArrayList<>();
+        reservationList.add(materialId);
+
     }
-    
+
     @Test
-    public void testSetReservationDate(){
-        res.setCreationDate(resDate);
-        Assert.assertEquals(resDate, res.getCreationDate());
+    public void testSetMaterialIdentifierList() {
+        reservation.setMaterialIdentifiersList(reservationList);
+        Assert.assertEquals(reservationList, reservation.getMaterialIdentifiersList());
     }
-    
+
     @Test
-    public void testSetPickUpDate(){
-        res.setStartDate(pickUp);
-        Assert.assertEquals(pickUp, res.getStartDate());
+    public void testSetReservationDate() {
+        reservation.setCreationDate(reservationDate);
+        Assert.assertEquals(reservationDate, reservation.getCreationDate());
     }
-    
+
     @Test
-    public void testSetBringBackDate(){
-        res.setStartDate(pickUp);
-        res.setEndDate(bringBack);
-        Assert.assertEquals(bringBack, res.getEndDate());
+    public void testSetPickUpDate() {
+        reservation.setStartDate(pickUp);
+        Assert.assertEquals(pickUp, reservation.getStartDate());
     }
-    
-    
-    //When bringBack is befor pickUp, bringBack should be standard value (4 days after pickUp)
+
     @Test
-    public void testSetBringBackDateBeforePickup(){
-        res.setStartDate(pickUp);
-        res.setEndDate(resDate);
-        
-        Assert.assertEquals(pickUp.plusDays(4), res.getEndDate());
+    public void testSetBringBackDate() {
+        reservation.setStartDate(pickUp);
+        reservation.setEndDate(bringBack);
+        Assert.assertEquals(bringBack, reservation.getEndDate());
     }
-    
-    
-    
-    
-    
-    
+
+    //When bringBack is before pickUp, bringBack should be standard value (4 days after pickUp)
+    @Test
+    public void testSetBringBackDateBeforePickup() {
+        reservation.setStartDate(pickUp);
+        reservation.setEndDate(reservationDate);
+
+        Assert.assertEquals(pickUp.plusDays(4), reservation.getEndDate());
+    }
 }
