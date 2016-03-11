@@ -44,6 +44,9 @@ import java.util.stream.Collectors;
 
 import static gui.GuiHelper.*;
 import static java.util.stream.Collectors.groupingBy;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.scene.layout.StackPane;
 
 public class MaterialController extends VBox {
 
@@ -78,6 +81,14 @@ public class MaterialController extends VBox {
     private CustomTextField tfName;
     @FXML
     private Label LbAvailable;
+    @FXML
+    private Label lblCurricularBox;
+    @FXML
+    private Label lblTargetAudienceBox;
+    @FXML
+    private StackPane spTargetAudience;
+    @FXML
+    private StackPane spCurricular;
     @FXML
     private TableColumn<MaterialIdentifier, Visibility> tcAvailable;
     @FXML
@@ -248,8 +259,11 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
-        this.cboCurricular.prefWidthProperty().bind(this.cboTargetAudience.widthProperty());
-
+        this.spCurricular.prefWidthProperty().bind(this.spTargetAudience.widthProperty());
+        this.cboCurricular.getCheckModel().getCheckedItems().addListener((Observable event) -> {
+            lblCurricularBox.setVisible(cboCurricular.getCheckModel().getCheckedItems().isEmpty());
+        });
+        
         this.cboTargetAudience.getItems().addAll(dc.getTargetGroups());
         this.cboTargetAudience.setConverter(new StringConverter<TargetGroup>() {
             @Override
@@ -265,8 +279,11 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
-        this.cboTargetAudience.prefWidthProperty().bind(this.cboFirm.widthProperty());
-
+        this.spTargetAudience.prefWidthProperty().bind(this.cboFirm.widthProperty());
+        this.cboTargetAudience.getCheckModel().getCheckedItems().addListener((Observable event) -> {
+            lblTargetAudienceBox.setVisible(cboTargetAudience.getCheckModel().getCheckedItems().isEmpty());
+        });
+        
         this.cboFirm.setItems(dc.getFirms());
         this.cboFirm.setConverter(new StringConverter<Firm>() {
             @Override
@@ -282,7 +299,7 @@ public class MaterialController extends VBox {
                         .orElse(null);
             }
         });
-        this.cboFirm.prefWidthProperty().bind(this.cboCurricular.widthProperty());
+        this.cboFirm.prefWidthProperty().bind(this.spCurricular.widthProperty());
 
         setMaterial(material);
 
@@ -407,7 +424,7 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    private void updateSimplifiedIdentifiersFromIdentifiers(){
+    private void updateSimplifiedIdentifiersFromIdentifiers() {
         simplifiedIdentifiers.clear();
         identifiers.stream()
                 .collect(groupingBy(MaterialIdentifier::getPlace))
@@ -446,14 +463,14 @@ public class MaterialController extends VBox {
     }
 
     private void addIdentifier() {
-        if ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)){
+        if ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) {
             for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
                 MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
                 id.setPlace(tfLocation.getText());
                 material.addIdentifier(id);
                 identifiers.add(id);
             }
-        }else {
+        } else {
             simplifiedIdentifiers.add(new SimplifiedMaterialIdentifier(this.tfLocation.getText()));
         }
         this.tfAmount.setText("");
@@ -463,13 +480,14 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     public class SimplifiedMaterialIdentifier {
+
         private ObservableList<MaterialIdentifier> identifiers;
         private SimpleStringProperty place;
         private SimpleIntegerProperty studentAmount, docentAmount;
         private final Comparator<MaterialIdentifier> miComparator = (o1, o2) -> Integer.compare(o1.getId(), o2.getId());
         private boolean isUpdating = false;
 
-        public SimplifiedMaterialIdentifier(String place){
+        public SimplifiedMaterialIdentifier(String place) {
             this(place, new ArrayList<>());
         }
 
@@ -490,7 +508,7 @@ public class MaterialController extends VBox {
             this.docentAmount.addListener((observable, oldValue, newValue) -> change(oldValue.intValue(), newValue.intValue(), Visibility.Docent));
         }
 
-        private void change(int oldValue, int newValue, Visibility visibility){
+        private void change(int oldValue, int newValue, Visibility visibility) {
             isUpdating = true;
             if (oldValue > newValue) {
                 for (int i = oldValue - newValue; i > 0; i--) {
@@ -565,4 +583,3 @@ public class MaterialController extends VBox {
         }
     }
 }
-

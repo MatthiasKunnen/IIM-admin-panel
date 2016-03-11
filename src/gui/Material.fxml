@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.*?>
+<?import org.controlsfx.control.textfield.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
@@ -9,75 +14,84 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import org.controlsfx.control.CheckComboBox?>
 <?import org.controlsfx.control.textfield.CustomTextField?>
-<fx:root minHeight="463.0" minWidth="615.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65"
-         xmlns:fx="http://javafx.com/fxml/1">
+
+<fx:root minHeight="463.0" minWidth="615.0" type="VBox" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <HBox alignment="CENTER_LEFT">
             <children>
-                <ImageView fx:id="ivPhoto" fitHeight="200.0" onMouseClicked="#selectImage" pickOnBounds="true"
-                           preserveRatio="true" smooth="false">
+                <ImageView fx:id="ivPhoto" fitHeight="200.0" onMouseClicked="#selectImage" pickOnBounds="true" preserveRatio="true" smooth="false">
                     <cursor>
-                        <Cursor fx:constant="HAND"/>
+                        <Cursor fx:constant="HAND" />
                     </cursor>
                     <image>
-                        <Image url="@images/placeholder.png"/>
+                        <Image url="@images/placeholder.png" />
                     </image>
                     <HBox.margin>
-                        <Insets left="14.0" right="10.0"/>
+                        <Insets left="14.0" right="10.0" />
                     </HBox.margin>
                 </ImageView>
-                <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0"
-                            HBox.hgrow="ALWAYS">
+                <AnchorPane id="AnchorPane" minHeight="-Infinity" minWidth="-Infinity" prefHeight="224.0" HBox.hgrow="ALWAYS">
                     <children>
-                        <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0"
-                                  promptText="Omschrijving" wrapText="true" AnchorPane.leftAnchor="10.0"
-                                  AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0"/>
-                        <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0"
-                              AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
+                        <TextArea fx:id="tfDescription" layoutX="214.0" layoutY="58.0" prefHeight="130.0" promptText="Omschrijving" wrapText="true" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="49.0" />
+                        <HBox layoutX="224.0" layoutY="14.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="14.0">
                             <children>
-                                <CustomTextField fx:id="tfName" maxHeight="1.7976931348623157E308"
-                                                 maxWidth="1.7976931348623157E308" promptText="Naam"
-                                                 HBox.hgrow="ALWAYS">
+                                <CustomTextField fx:id="tfName" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="Naam" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
-                                        <Insets right="5.0"/>
+                                        <Insets right="5.0" />
                                     </HBox.margin>
                                 </CustomTextField>
-                                <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308"
-                                           maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                           promptText="Artikelnummer" HBox.hgrow="ALWAYS">
+                                <TextField fx:id="tfArticleNumber" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Artikelnummer" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
-                                        <Insets left="5.0" right="5.0"/>
+                                        <Insets left="5.0" right="5.0" />
                                     </HBox.margin>
                                 </TextField>
-                                <CustomTextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity"
-                                                 minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0"
-                                                 promptText="Prijs" HBox.hgrow="NEVER">
+                                <CustomTextField fx:id="tfPrice" maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="100.0" promptText="Prijs" HBox.hgrow="NEVER">
                                     <HBox.margin>
-                                        <Insets left="5.0"/>
+                                        <Insets left="6.0" />
                                     </HBox.margin>
                                 </CustomTextField>
                             </children>
                         </HBox>
-                        <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                              prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0"
-                              AnchorPane.topAnchor="189.0">
+                        <HBox layoutX="198.0" layoutY="202.0" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="200.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="189.0">
                             <children>
-                                <org.controlsfx.control.CheckComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                          prefWidth="0.0" HBox.hgrow="ALWAYS">
+                                <StackPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" fx:id="spTargetAudience">
+                                    <children>
+                                        <org.controlsfx.control.CheckComboBox fx:id="cboTargetAudience" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                                            <HBox.margin>
+                                                <Insets right="5.0" />
+                                            </HBox.margin>
+                                            <StackPane.margin>
+                                                <Insets right="5.0" />
+                                            </StackPane.margin>
+                                       
+                                        </org.controlsfx.control.CheckComboBox>
+                                        <Label fx:id="lblTargetAudienceBox" text="Doelgroep">
+                                            <StackPane.margin>
+                                                <Insets left="6.0" top="2.0" />
+                                            </StackPane.margin>
+                                        </Label>
+                                    </children>
+                                </StackPane>
+                                <StackPane alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" fx:id="spCurricular">
+                                    <children>
+                                        <org.controlsfx.control.CheckComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0" prefWidth="0.0" HBox.hgrow="ALWAYS">
+                                            <HBox.margin>
+                                                <Insets left="5.0" right="5.0" />
+                                            </HBox.margin>
+                                        </org.controlsfx.control.CheckComboBox>
+                                        <Label fx:id="lblCurricularBox" text="Leergebied">
+                                            <StackPane.margin>
+                                                <Insets left="5.0" top="2.0" />
+                                            </StackPane.margin>
+                                        </Label>
+                                    </children>
                                     <HBox.margin>
-                                        <Insets right="5.0"/>
+                                        <Insets left="5.0" right="5.0" />
                                     </HBox.margin>
-                                </org.controlsfx.control.CheckComboBox>
-                                <org.controlsfx.control.CheckComboBox fx:id="cboCurricular" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                          prefWidth="0.0" HBox.hgrow="ALWAYS">
+                                </StackPane>
+                                <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0" promptText="Firma" HBox.hgrow="ALWAYS">
                                     <HBox.margin>
-                                        <Insets left="5.0" right="5.0"/>
-                                    </HBox.margin>
-                                </org.controlsfx.control.CheckComboBox>
-                                <ComboBox fx:id="cboFirm" maxWidth="1.7976931348623157E308" prefHeight="25.0"
-                                          promptText="Firma" HBox.hgrow="ALWAYS">
-                                    <HBox.margin>
-                                        <Insets left="5.0"/>
+                                        <Insets left="5.0" />
                                     </HBox.margin>
                                 </ComboBox>
                             </children>
@@ -88,62 +102,53 @@
         </HBox>
         <AnchorPane prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
             <children>
-                <TableView fx:id="tvIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
-                           style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="10.0"
-                           AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
+                <TableView fx:id="tvIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0" style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
                     <columns>
-                        <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0"
-                                     style="-fx-alignment: center" text="#"/>
-                        <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
-                        <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center"
-                                     text="Beschikbaarheid"/>
-                        <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties"/>
+                        <TableColumn fx:id="tcId" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" style="-fx-alignment: center" text="#" />
+                        <TableColumn fx:id="tcLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats" />
+                        <TableColumn fx:id="tcAvailable" prefWidth="116.0" style="-fx-alignment: center" text="Beschikbaarheid" />
+                        <TableColumn fx:id="tcActions" prefWidth="75.0" style="-fx-alignment: center" text="Acties" />
                     </columns>
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-                <TableView fx:id="tvSimplifiedIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0"
-                           visible="false" style="-fx-focus-color: transparent" AnchorPane.bottomAnchor="10.0"
-                           AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
+                <TableView fx:id="tvSimplifiedIdentifiers" editable="true" layoutX="25.0" prefHeight="200.0" prefWidth="200.0" style="-fx-focus-color: transparent" visible="false" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="45.0">
                     <columns>
-                        <TableColumn fx:id="tcSimplifiedLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats"/>
-                        <TableColumn fx:id="tcForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Ontleenbaar"/>
-                        <TableColumn fx:id="tcNotForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Niet ontleenbaar"/>
+                        <TableColumn fx:id="tcSimplifiedLocation" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Plaats" />
+                        <TableColumn fx:id="tcForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Ontleenbaar" />
+                        <TableColumn fx:id="tcNotForLoan" editable="true" prefWidth="75.0" style="-fx-alignment: center" text="Niet ontleenbaar" />
                     </columns>
                     <columnResizePolicy>
-                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                     </columnResizePolicy>
                 </TableView>
-                <HBox layoutY="-26.0" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0"
-                      AnchorPane.topAnchor="10.0">
+                <HBox layoutY="-26.0" prefHeight="25.0" AnchorPane.leftAnchor="14.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="10.0">
                     <children>
-                        <TextField fx:id="tfAmount" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="75.0"
-                                   promptText="Aantal" HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfAmount" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="75.0" promptText="Aantal" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets right="5.0"/>
+                                <Insets right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <TextField fx:id="tfLocation" onAction="#tfLocationAction" promptText="Locatie"
-                                   HBox.hgrow="ALWAYS">
+                        <TextField fx:id="tfLocation" onAction="#tfLocationAction" promptText="Locatie" HBox.hgrow="ALWAYS">
                             <HBox.margin>
-                                <Insets left="5.0" right="5.0"/>
+                                <Insets left="5.0" right="5.0" />
                             </HBox.margin>
                         </TextField>
-                        <Pane fx:id="pnVisibilityPicker"/>
+                        <Pane fx:id="pnVisibilityPicker" />
                         <StackPane prefWidth="25.0">
                             <HBox.margin>
-                                <Insets left="5.0"/>
+                                <Insets left="5.0" />
                             </HBox.margin>
                             <children>
                                 <ImageView fitHeight="25.0" fitWidth="25.0" HBox.hgrow="NEVER">
                                     <image>
-                                        <Image url="@images/plus.png"/>
+                                        <Image url="@images/plus.png" />
                                     </image>
                                 </ImageView>
                                 <Rectangle height="25.0" onMouseClicked="#addIdentifier" opacity="0.0" width="25.0">
                                     <cursor>
-                                        <Cursor fx:constant="HAND"/>
+                                        <Cursor fx:constant="HAND" />
                                     </cursor>
                                 </Rectangle>
                             </children>
@@ -156,12 +161,12 @@
             <children>
                 <Button fx:id="btnSave" mnemonicParsing="false" onAction="#saveMaterial" text="Opslaan">
                     <HBox.margin>
-                        <Insets bottom="14.0" left="5.0" right="14.0"/>
+                        <Insets bottom="14.0" left="5.0" right="14.0" />
                     </HBox.margin>
                 </Button>
                 <Button fx:id="btnCancel" mnemonicParsing="false" onAction="#cancel" text="Sluiten">
                     <HBox.margin>
-                        <Insets bottom="14.0" right="5.0"/>
+                        <Insets bottom="14.0" right="5.0" />
                     </HBox.margin>
                 </Button>
             </children>

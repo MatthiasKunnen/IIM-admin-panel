@@ -155,8 +155,7 @@ public class LoginScreenController extends AnchorPane {
                                 TabsController chooseActionScreen = new TabsController(dc,currentStage);
                                 Scene scene = new Scene(chooseActionScreen);
                                 currentStage.setScene(scene);
-                                currentStage.setMinWidth(620);
-                                currentStage.setMinHeight(463);
+                                
                                 currentStage.setTitle("Overzicht - IIM");
                                 currentStage.setResizable(true);
                                 currentStage.show();

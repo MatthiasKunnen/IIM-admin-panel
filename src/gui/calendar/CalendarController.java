@@ -5,6 +5,7 @@
  */
 package gui.calendar;
 
+import gui.GuiHelper;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
@@ -48,11 +49,9 @@ public class CalendarController extends VBox {
     private DatePane selectedField;
 
     public CalendarController() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("Calendar.fxml"));
-        loader.setRoot(this);
-        loader.setController(this);
+        
         try {
-            loader.load();
+            GuiHelper.loadFXML("Calendar.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
