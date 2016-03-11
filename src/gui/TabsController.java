@@ -34,6 +34,9 @@ public class TabsController extends TabPane {
     @FXML
     private Tab tOptions;
 
+    @FXML
+    private Tab tabAdministratorManagement;
+
     private DomainController dc;
     private Stage stage;
 
@@ -46,6 +49,8 @@ public class TabsController extends TabPane {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        this.tabAdministratorManagement.setContent(new AdministratorManagementScene(dc, theStage));
 
         OverviewController mc = new OverviewController(dc);
         tMaterial.setContent(mc);

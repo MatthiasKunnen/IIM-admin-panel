@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
-<fx:root maxHeight="Infinity" maxWidth="Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-  <tabs>
-    <Tab fx:id="tMaterial" closable="false" text="Material" />
-      <Tab fx:id="tReservations" closable="false" text="Reservaties" />
-    <Tab fx:id="tAdd" text="Categorieën" />
-      <Tab fx:id="tOptions" text="Opties" />
-  </tabs>
+<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0"
+         prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <tabs>
+        <Tab fx:id="tMaterial" closable="false" text="Materialen"/>
+        <Tab fx:id="tReservations" closable="false" text="Reservaties"/>
+        <Tab fx:id="tAdd" text="Categorieën"/>
+        <Tab fx:id="tabAdministratorManagement" text="Administrators beheren"/>
+        <Tab fx:id="tOptions" text="Opties"/>
+    </tabs>
 </fx:root>
