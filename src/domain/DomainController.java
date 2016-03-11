@@ -2,9 +2,11 @@ package domain;
 
 import exceptions.AzureException;
 import exceptions.LoginException;
+import exceptions.UnauthorizedException;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.*;
+import util.ImmutabilityHelper;
 
 public class DomainController {
 
@@ -28,7 +30,7 @@ public class DomainController {
         this.firmRepository = new FirmRepository(PersistenceController.getEnforcer());
         this.targetGroupRepository = new TargetGroupRepository(PersistenceController.getEnforcer());
         this.curricularRepository = new CurricularRepository(PersistenceController.getEnforcer());
-        this.userRepository= new UserRepository(PersistenceController.getEnforcer());
+        this.userRepository = new UserRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
 
@@ -39,7 +41,7 @@ public class DomainController {
 
     public ObservableList<MaterialIdentifier> getMaterialIdentifiers() {
         return materialRepository.getMaterialIdentifiers();
-    }   
+    }
 
     public ObservableList<Firm> getFirms() {
         return firmRepository.getObservableItems();
@@ -53,13 +55,23 @@ public class DomainController {
         return curricularRepository.getObservableItems();
     }
 
-    public User getUserByEmail(String email){
+    public User getUserByEmail(String email) {
         return this.userRepository.getUserByEmail(email);
-     }
+    }
+
+    public ObservableList<Administrator> getAdministrators() {
+        if (this.activeAdministrator == null) {
+            throw new UnauthorizedException("Er is geen gebruiker ingelogd!", Administrator.Permission.MANAGE_USERS);
+        } else if (this.activeAdministrator.hasPermission(Administrator.Permission.MANAGE_USERS)) {
+            throw new UnauthorizedException("Gebruiker heeft niet de nodige rechten.", ImmutabilityHelper.copyDefensively(activeAdministrator), Administrator.Permission.MANAGE_USERS);
+        }
+        return this.administratorRepository.getObservableItems();
+    }
     //</editor-fold>
-    
+
     //<editor-fold desc="Actions" defaultstate="collapsed">
     //<editor-fold desc="Material" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Material} in the database.
      *
@@ -91,7 +103,7 @@ public class DomainController {
     /**
      * Updates the photo of a material.
      *
-     * @param material the material.
+     * @param material  the material.
      * @param imagePath the path of the image.
      * @throws AzureException
      */
@@ -119,6 +131,7 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Firm" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Firm} in the database.
      *
@@ -223,11 +236,11 @@ public class DomainController {
         this.reservationRepository.update(reservation);
     }
 
-    public ObservableList<Reservation> getReservations(){
-       return this.reservationRepository.getObservableItems();
+    public ObservableList<Reservation> getReservations() {
+        return this.reservationRepository.getObservableItems();
     }
 
-    public boolean doesReservationExist(Reservation reservation){
+    public boolean doesReservationExist(Reservation reservation) {
         return this.reservationRepository.doesReservationExist(reservation);
     }
     //</editor-fold>
@@ -250,6 +263,8 @@ public class DomainController {
     }
 
     public boolean hasPermission(Administrator.Permission permission) {
+        if (this.activeAdministrator == null)
+            throw new UnauthorizedException("Er is geen gebruiker ingelogd!");
         return activeAdministrator.hasPermission(permission);
     }
     //</editor-fold>
