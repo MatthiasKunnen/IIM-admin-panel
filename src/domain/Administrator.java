@@ -109,7 +109,7 @@ public class Administrator implements Serializable, IEntity {
     /**
      * Protected empty JPA constructor.
      */
-    protected Administrator() {
+    public Administrator() {
 
     }
 
