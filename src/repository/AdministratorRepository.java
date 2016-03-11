@@ -6,12 +6,12 @@ import persistence.PersistenceEnforcer;
 
 import static util.ImmutabilityHelper.copyDefensively;
 
-public class AdministratorRepository extends Repository<Administrator>{
+public class AdministratorRepository extends LoadedRepository<Administrator>{
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public AdministratorRepository(PersistenceEnforcer persistence) {
-        super(persistence);
+        super(persistence, Administrator.class);
     }
     //</editor-fold>
 
