@@ -15,7 +15,6 @@ import javax.persistence.Converter;
 public class PermissionsConverter implements AttributeConverter<Administrator.Permission, Integer> {
     private static BiMap<Administrator.Permission, Integer> converter = ImmutableBiMap.of(
             Administrator.Permission.MANAGE_MATERIALS, 0,
-            Administrator.Permission.VIEW_RESERVATIONS, 1,
             Administrator.Permission.MANAGE_RESERVATIONS, 2,
             Administrator.Permission.MANAGE_USERS, 3
     );

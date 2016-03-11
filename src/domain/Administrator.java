@@ -4,6 +4,7 @@ import persistence.PermissionsConverter;
 import util.BCrypt;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -14,7 +15,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  */
 @Entity(name = "Administrator")
 @NamedQuery(name = "Administrator.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
-public class Administrator implements IEntity {
+public class Administrator implements Serializable, IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     @Id
@@ -35,7 +36,7 @@ public class Administrator implements IEntity {
     private boolean suspended;
 
     public enum Permission {
-        MANAGE_MATERIALS, VIEW_RESERVATIONS, MANAGE_RESERVATIONS, MANAGE_USERS
+        MANAGE_MATERIALS, MANAGE_RESERVATIONS, MANAGE_USERS
     }
     //</editor-fold>
 
