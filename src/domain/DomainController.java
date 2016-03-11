@@ -62,7 +62,7 @@ public class DomainController {
     public ObservableList<Administrator> getAdministrators() {
         if (this.activeAdministrator == null) {
             throw new UnauthorizedException("Er is geen gebruiker ingelogd!", Administrator.Permission.MANAGE_USERS);
-        } else if (this.activeAdministrator.hasPermission(Administrator.Permission.MANAGE_USERS)) {
+        } else if (!this.activeAdministrator.hasPermission(Administrator.Permission.MANAGE_USERS)) {
             throw new UnauthorizedException("Gebruiker heeft niet de nodige rechten.", ImmutabilityHelper.copyDefensively(activeAdministrator), Administrator.Permission.MANAGE_USERS);
         }
         return this.administratorRepository.getObservableItems();
@@ -266,6 +266,10 @@ public class DomainController {
         if (this.activeAdministrator == null)
             throw new UnauthorizedException("Er is geen gebruiker ingelogd!");
         return activeAdministrator.hasPermission(permission);
+    }
+
+    public Administrator getActiveAdministrator(){
+        return ImmutabilityHelper.copyDefensively(this.activeAdministrator);
     }
     //</editor-fold>
     //</editor-fold>
