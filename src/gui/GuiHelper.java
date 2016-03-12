@@ -368,7 +368,7 @@ class ValidatedCustomPasswordField<E> extends CustomPasswordField implements Val
     @Override
     public void updateItem(E item) {
         this.setText(getValidationManager().convert(item));
-        GuiHelper.hideError(this);
+        getValidationManager().validate();
     }
 }
 
