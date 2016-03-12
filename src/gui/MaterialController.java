@@ -146,7 +146,7 @@ public class MaterialController extends VBox {
             throw new RuntimeException(ex);
         }
 
-        if ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) {
+        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
             this.tvIdentifiers.setItems(this.identifiers);
 
             tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -260,9 +260,8 @@ public class MaterialController extends VBox {
             }
         });
         this.spCurricular.prefWidthProperty().bind(this.spTargetAudience.widthProperty());
-        this.cboCurricular.getCheckModel().getCheckedItems().addListener((Observable event) -> {
-            lblCurricularBox.setVisible(cboCurricular.getCheckModel().getCheckedItems().isEmpty());
-        });
+        this.cboCurricular.getCheckModel().getCheckedItems().addListener((Observable event) ->
+                lblCurricularBox.setVisible(cboCurricular.getCheckModel().getCheckedItems().isEmpty()));
         
         this.cboTargetAudience.getItems().addAll(dc.getTargetGroups());
         this.cboTargetAudience.setConverter(new StringConverter<TargetGroup>() {
@@ -280,9 +279,8 @@ public class MaterialController extends VBox {
             }
         });
         this.spTargetAudience.prefWidthProperty().bind(this.cboFirm.widthProperty());
-        this.cboTargetAudience.getCheckModel().getCheckedItems().addListener((Observable event) -> {
-            lblTargetAudienceBox.setVisible(cboTargetAudience.getCheckModel().getCheckedItems().isEmpty());
-        });
+        this.cboTargetAudience.getCheckModel().getCheckedItems().addListener((Observable event) ->
+                lblTargetAudienceBox.setVisible(cboTargetAudience.getCheckModel().getCheckedItems().isEmpty()));
         
         this.cboFirm.setItems(dc.getFirms());
         this.cboFirm.setConverter(new StringConverter<Firm>() {
@@ -362,7 +360,7 @@ public class MaterialController extends VBox {
             return;
         }
 
-        if ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) {
+        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
             material.setIdentifiers(this.identifiers);
         } else {
             material.setIdentifiers(this.simplifiedIdentifiers.stream().flatMap(smi -> smi.getIdentifiers().stream()).collect(Collectors.toList()));
@@ -372,8 +370,8 @@ public class MaterialController extends VBox {
             dc.update(material);
         } else {
             material = dc.addMaterial(material);
-            theStage.setTitle(String.format("%s - IIM", material.getName()));
         }
+        theStage.setTitle(String.format("%s - IIM", material.getName()));
         this.identifiers.clear();
         this.identifiers.addAll(material.getIdentifiers());
         updateSimplifiedIdentifiersFromIdentifiers();
@@ -463,7 +461,7 @@ public class MaterialController extends VBox {
     }
 
     private void addIdentifier() {
-        if ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) {
+        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
             for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
                 MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
                 id.setPlace(tfLocation.getText());

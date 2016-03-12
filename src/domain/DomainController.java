@@ -8,16 +8,19 @@ import persistence.PersistenceController;
 import repository.*;
 import util.ImmutabilityHelper;
 
+import java.io.Serializable;
+
 public class DomainController {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-    private MaterialRepository materialRepository;
-    private ReservationRepository reservationRepository;
-    private AdministratorRepository administratorRepository;
     private Administrator activeAdministrator;
-    private TargetGroupRepository targetGroupRepository;
+    private AdministratorRepository administratorRepository;
     private CurricularRepository curricularRepository;
     private FirmRepository firmRepository;
+    private MaterialRepository materialRepository;
+    private ReservationRepository reservationRepository;
+    private SettingRepository settingRepository;
+    private TargetGroupRepository targetGroupRepository;
     private UserRepository userRepository;
     //</editor-fold>
 
@@ -25,11 +28,12 @@ public class DomainController {
     public DomainController() {
         PersistenceController.start();
         this.administratorRepository = new AdministratorRepository(PersistenceController.getEnforcer());
+        this.curricularRepository = new CurricularRepository(PersistenceController.getEnforcer());
+        this.firmRepository = new FirmRepository(PersistenceController.getEnforcer());
         this.materialRepository = new MaterialRepository(PersistenceController.getEnforcer());
         this.reservationRepository = new ReservationRepository(PersistenceController.getEnforcer());
-        this.firmRepository = new FirmRepository(PersistenceController.getEnforcer());
+        this.settingRepository = new SettingRepository(PersistenceController.getEnforcer());
         this.targetGroupRepository = new TargetGroupRepository(PersistenceController.getEnforcer());
-        this.curricularRepository = new CurricularRepository(PersistenceController.getEnforcer());
         this.userRepository = new UserRepository(PersistenceController.getEnforcer());
     }
     //</editor-fold>
@@ -66,6 +70,10 @@ public class DomainController {
             throw new UnauthorizedException("Gebruiker heeft niet de nodige rechten.", ImmutabilityHelper.copyDefensively(activeAdministrator), Administrator.Permission.MANAGE_USERS);
         }
         return this.administratorRepository.getObservableItems();
+    }
+
+    public ObservableList<Setting> getSettings(){
+        return this.settingRepository.getObservableItems();
     }
     //</editor-fold>
 
@@ -268,13 +276,33 @@ public class DomainController {
         return activeAdministrator.hasPermission(permission);
     }
 
-    public Administrator getActiveAdministrator(){
+    public Administrator getActiveAdministrator() {
         return ImmutabilityHelper.copyDefensively(this.activeAdministrator);
     }
 
-    public boolean isUsernameInUse(String username){
+    public boolean isUsernameInUse(String username) {
         return this.administratorRepository.isUsernameInUse(username);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Settings" defaultstate="collapsed">
+    public Setting getSetting(Setting.Key key) {
+        return this.settingRepository.getSetting(key);
+    }
+
+    public Setting getSetting(Setting.Key key, Setting defaultValue) {
+        return this.settingRepository.getSetting(key, defaultValue);
+    }
+
+    public Object getSettingData(Setting.Key key) {
+        return getSettingData(key, null);
+    }
+
+    public Object getSettingData(Setting.Key key, Object defaultValue) {
+        Setting setting = this.settingRepository.getSetting(key);
+        return setting == null ? defaultValue : setting.getData();
+    }
+
     //</editor-fold>
     //</editor-fold>
 }

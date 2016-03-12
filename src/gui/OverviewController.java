@@ -2,7 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.Material;
-import domain.Settings;
+import domain.Setting;
 import domain.Visibility;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
@@ -83,7 +83,7 @@ public class OverviewController extends VBox {
         tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) ->
                 new SimpleIntegerProperty((int) param.getValue().getIdentifiers()
                         .stream()
-                        .filter(mi -> ((boolean) Settings.getInstance().getProperty(Settings.Key.KEEP_HISTORY, false)) || !mi.getVisibility().equals(Visibility.Administrator))
+                        .filter(mi -> ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) || !mi.getVisibility().equals(Visibility.Administrator))
                         .count()).asObject());
         tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
 

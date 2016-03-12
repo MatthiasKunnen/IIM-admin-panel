@@ -1,28 +1,55 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package domain;
 
-import domain.Settings.Key;
+import persistence.KeyConverter;
+
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
 
+/**
+ * This class holds the settings of the application.
+ *
+ * @param <E> the type of the setting.
+ * @author Matthias Kunnen
+ */
 @Entity
-public class Setting implements Serializable, IEntity {
+public class Setting<E extends Serializable> implements Serializable, IEntity {
 
-    @Id
-    private int id;
-    private Key key;
-    private Object data;
-
-    public Setting() {
+    public enum Key {
+        KEEP_HISTORY
     }
 
-    
-    public Setting(Setting setting) {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    @Column(nullable = false, unique = true, name = "name")
+    @Convert(converter = KeyConverter.class)
+    private Key key;
+
+    private E data;
+
+    /**
+     * JPA constructor.
+     */
+    protected Setting() {
+    }
+
+    /**
+     * Default constructor.
+     * @param key the key used to refer to this setting.
+     * @param data the data of this setting.
+     */
+    public Setting(Key key, E data) {
+        this.key = key;
+        this.data = data;
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param setting the setting to copy.
+     */
+    public Setting(Setting<E> setting) {
         this.id = setting.id;
         this.key = setting.key;
         this.data = setting.data;
@@ -32,11 +59,11 @@ public class Setting implements Serializable, IEntity {
         return key;
     }
 
-    public Object getData() {
+    public E getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(E data) {
         this.data = data;
     }
 
@@ -44,5 +71,4 @@ public class Setting implements Serializable, IEntity {
     public int getId() {
         return this.id;
     }
-
 }

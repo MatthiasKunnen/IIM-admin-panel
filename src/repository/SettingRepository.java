@@ -1,26 +1,37 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package repository;
 
 import domain.Setting;
-import domain.Settings.Key;
-import java.util.HashMap;
-import java.util.Map;
+import exceptions.RepositoryItemAlreadyExistsException;
 import persistence.PersistenceEnforcer;
+import util.ImmutabilityHelper;
 
-
+/**
+ * Repository managing all the settings of the application.
+ *
+ * @author Matthias Kunnen
+ */
 public class SettingRepository extends LoadedRepository<Setting> {
 
-    private Map<Key, Setting> settings = new HashMap<>();
-
-    public SettingRepository(PersistenceEnforcer persistence, Class<Setting> eClass) {
-        super(persistence, eClass);
+    public SettingRepository(PersistenceEnforcer persistence) {
+        super(persistence, Setting.class);
     }
-    
-    public Setting get(Setting setting){
-        return (Setting) this.eList.stream().filter(s->s.getKey()==setting.getKey());
+
+    @Override
+    public Setting add(Setting add) {
+        if (getSetting(add.getKey()) != null)
+            throw new RepositoryItemAlreadyExistsException("Deze instelling komt al voor.", add);
+        return super.add(add);
+    }
+
+    public Setting getSetting(Setting.Key key) {
+        return getSetting(key, null);
+    }
+
+    public Setting getSetting(Setting.Key key, Setting defaultValue) {
+        load();
+        return ImmutabilityHelper.copyDefensively(this.eList.stream()
+                .filter(s -> s.getKey() == key)
+                .findAny()
+                .orElse(defaultValue));
     }
 }
