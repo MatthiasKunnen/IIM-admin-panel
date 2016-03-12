@@ -2,6 +2,7 @@ package gui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -129,6 +130,7 @@ public class TempController<E> extends AnchorPane {
     private void clear() {
         managedCustomTextFields.values().forEach(mtf -> mtf.getNode().clear());
         this.lvItems.getSelectionModel().clearSelection();
+        this.managedCustomTextFields.values().stream().forEach(tf -> GuiHelper.hideError(tf.getNode()));
     }
 
     //</editor-fold>
