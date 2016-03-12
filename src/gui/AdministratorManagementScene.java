@@ -5,9 +5,6 @@ import com.google.common.collect.ImmutableBiMap;
 import domain.Administrator;
 import domain.DomainController;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import javafx.util.Callback;
-import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.IOException;
@@ -30,15 +25,6 @@ public class AdministratorManagementScene extends HBox {
 
     @FXML
     private ListView<Administrator> lvAdministrators;
-
-    @FXML
-    private CustomTextField ctfUsername;
-
-    @FXML
-    private CustomPasswordField cpfPassword;
-
-    @FXML
-    private CustomPasswordField cpfPasswordRepeat;
 
     @FXML
     private HBox hbOptions;
@@ -57,6 +43,9 @@ public class AdministratorManagementScene extends HBox {
 
     @FXML
     private VBox vbAdministratorsWrapper;
+
+    @FXML
+    private VBox vbCurrentAdministratorProperties;
     //</editor-fold>
 
     //<editor-fold desc="Declarations" defaultstate="collapsed">
@@ -68,6 +57,8 @@ public class AdministratorManagementScene extends HBox {
             Administrator.Permission.MANAGE_USERS, "Administratoren beheren",
             Administrator.Permission.MANAGE_RESERVATIONS, "Reservaties beheren"
     );
+    private ValidatedFieldInterface<Administrator> tfUsername, tfPassword, tfPasswordRepeat;
+    private Administrator selectedAdministrator;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -78,9 +69,34 @@ public class AdministratorManagementScene extends HBox {
 
         try {
             GuiHelper.loadFXML("AdministratorManagementScene.fxml", this);
+            this.getStylesheets().add("/gui/style/form.css");
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        this.tfUsername = new ValidatedFieldBuilder<Administrator>(CustomTextField.class)
+                .setPromptText("Gebruikersnaam")
+                .setConverter(Administrator::getName)
+                .setDisabled(true)
+                .addErrorPredicate(String::isEmpty, "De naam moet ingevuld worden.")
+                .addErrorPredicate(a -> selectedAdministrator.getId() == 0 && this.dc.isUsernameInUse(a), "Deze gebruikersnaam is al in gebruik!")
+                .build();
+        this.tfPassword = new ValidatedFieldBuilder<Administrator>(CustomTextField.class)
+                .setPromptText("Wachtwoord")
+                .setDisabled(true)
+                .addErrorPredicate(String::isEmpty, "Het wachtwoord moet ingevuld worden.")
+                .addErrorPredicate(s -> s.length() < 6, "Het wachtwoord moet minimum 6 karakters bevatten.")
+                .addWarningPredicate(s -> !s.matches(".*\\d+.*"), "Een wachtwoord zonder numbers is in het algemeen niet veilig.")
+                .addWarningPredicate(s -> !s.matches(".*[^a-zA-Z0-9]+.*"), "Een wachtwoord zonder speciale karakters is in het algemeen niet veilig.")
+                .build();
+        this.tfPasswordRepeat = new ValidatedFieldBuilder<Administrator>(CustomTextField.class)
+                .setPromptText("Wachtwoord herhalen")
+                .setDisabled(true)
+                .addErrorPredicate(String::isEmpty, "Het wachtwoord moet ingevuld worden.")
+                .addErrorPredicate(s -> !s.equals(this.tfPassword.getNode().getText()), "De ingegeven wachtwoorden komen niet overeen.")
+                .build();
+
+        this.vbCurrentAdministratorProperties.getChildren().addAll(this.tfUsername.getNode(), this.tfPassword.getNode(), this.tfPasswordRepeat.getNode());
 
         if (this.dc.hasPermission(Administrator.Permission.MANAGE_USERS)) {
             this.administratorObservableList = this.dc.getAdministrators();
@@ -95,7 +111,9 @@ public class AdministratorManagementScene extends HBox {
                 }
             });
             this.lvAdministrators.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateSelectedAdministrator(newValue));
+            //Now move all children into a SplitPane
             SplitPane splitPane = new SplitPane();
+            splitPane.setStyle("-fx-box-border: transparent;");
             for (Iterator<Node> iterator = getChildren().iterator(); iterator.hasNext(); ) {
                 Node node = iterator.next();
                 splitPane.getItems().add(node);
@@ -131,14 +149,19 @@ public class AdministratorManagementScene extends HBox {
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
     private void updateSelectedAdministrator(Administrator administrator) {
-        if (administrator == null) {
+        this.selectedAdministrator = administrator;
+        boolean isNull = administrator == null;
+        if (isNull) {
             this.vbPermissions.getChildren().clear();
-            this.ctfUsername.setText("");
+            this.tfUsername.getNode().setText("");
         } else {
-            this.ctfUsername.setText(administrator.getName());
+            this.tfUsername.getNode().setText(administrator.getName());
             updatePermissions(administrator);
         }
-        this.btnSave.setDisable(administrator == null);
+        this.btnSave.setDisable(isNull);
+        this.tfUsername.getNode().setDisable(isNull);
+        this.tfPassword.getNode().setDisable(isNull);
+        this.tfPasswordRepeat.getNode().setDisable(isNull);
     }
 
     private void updatePermissions(Administrator administrator) {
@@ -157,13 +180,24 @@ public class AdministratorManagementScene extends HBox {
             this.vbPermissions.getChildren().add(checkBox);
         }
     }
+
+    private void save() {
+        if (this.tfUsername.getValidationManager().validate() &
+                this.tfPassword.getValidationManager().validate() &
+                this.tfPasswordRepeat.getValidationManager().validate()){
+            System.out.println("Saving Administrator");
+        }
+    }
     //</editor-fold>
 
     //<editor-fold desc="FXML Actions" defaultstate="collapsed">
 
     @FXML
     private void btnAddAdministrator_Clicked(ActionEvent event) {
-
+        this.lvAdministrators.getSelectionModel().clearSelection();
+        this.selectedAdministrator = new Administrator();
+        this.updateSelectedAdministrator(this.selectedAdministrator);
+        this.tfUsername.getNode().requestFocus();
     }
 
     @FXML
@@ -177,11 +211,5 @@ public class AdministratorManagementScene extends HBox {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Private actions" defaultstate="collapsed">
-    private void save() {
-
-    }
-
-    //</editor-fold>
 }
 

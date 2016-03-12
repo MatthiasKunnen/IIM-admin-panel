@@ -7,8 +7,6 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
-<?import org.controlsfx.control.textfield.CustomPasswordField?>
-<?import org.controlsfx.control.textfield.CustomTextField?>
 
 <fx:root type="HBox" prefHeight="252.0" prefWidth="728.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.65"
          xmlns:fx="http://javafx.com/fxml/1">
@@ -29,7 +27,7 @@
                 <Insets left="5.0" right="5.0"/>
             </padding>
         </VBox>
-        <VBox alignment="TOP_CENTER" prefHeight="316.0" prefWidth="224.0" spacing="10.0" HBox.hgrow="ALWAYS">
+        <VBox fx:id="vbCurrentAdministratorProperties" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="224.0" spacing="10.0" HBox.hgrow="ALWAYS">
             <children>
                 <Label text="Eigenschappen">
                     <font>
@@ -44,12 +42,6 @@
                         <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSave_Clicked" text="Opslaan"/>
                     </children>
                 </HBox>
-                <CustomTextField fx:id="ctfUsername" onAction="#propertyfields_onAction" promptText="Gebruikersnaam"
-                                 VBox.vgrow="ALWAYS"/>
-                <CustomPasswordField fx:id="cpfPassword" onAction="#propertyfields_onAction" promptText="Wachtwoord"
-                                     VBox.vgrow="ALWAYS"/>
-                <CustomPasswordField fx:id="cpfPasswordRepeat" onAction="#propertyfields_onAction"
-                                     promptText="Wachtwoord herhalen" VBox.vgrow="ALWAYS"/>
             </children>
             <padding>
                 <Insets left="5.0" right="5.0"/>
