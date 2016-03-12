@@ -28,9 +28,9 @@ public class LoadedRepository <E extends IEntity> extends Repository<E> {
     }
     //</editor-fold>
 
-    //<editor-fold desc="Private actions" defaultstate="collapsed">
+    //<editor-fold desc="Protected actions" defaultstate="collapsed">
 
-    private void load(){
+    protected void load(){
         if (!isLoaded){
             eList = persistence.retrieve(eClass);
             eObservableList = FXCollections.observableList((List<E>) ImmutabilityHelper.copyCollectionDefensively(eList));
