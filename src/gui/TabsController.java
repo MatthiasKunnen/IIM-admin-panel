@@ -71,6 +71,7 @@ public class TabsController extends TabPane {
         overview.setDividerPosition(1, 0.66);
 
         CalendarController cc = new CalendarController();
+               
         tOptions.setContent(cc);
         tAdd.setContent(overview);
     }
