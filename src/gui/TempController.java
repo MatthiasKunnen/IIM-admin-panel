@@ -2,6 +2,7 @@ package gui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -9,7 +10,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.IOException;
 import java.util.*;
@@ -38,7 +38,7 @@ public class TempController<E> extends AnchorPane {
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
-    private Map<String, ManagedCustomTextField<E>> managedCustomTextFields = new HashMap<>();
+    private Map<String, ValidatedFieldInterface<E>> managedCustomTextFields = new HashMap<>();
     private Predicate<E> saveEvent;
     private BooleanSupplier addEvent;
 
@@ -79,7 +79,7 @@ public class TempController<E> extends AnchorPane {
             btnDelete.setDisable(b);
             btnDelete.setVisible(!b);
             if (!b) { //Something is selected
-                this.managedCustomTextFields.values().forEach(tf -> tf.setText(tf.convert(newValue)));
+                this.managedCustomTextFields.values().forEach(tf -> tf.updateItem(newValue));
             }
         });
     }
@@ -88,9 +88,9 @@ public class TempController<E> extends AnchorPane {
 
     //<editor-fold desc="Public actions" defaultstate="collapsed">
 
-    public void addManagedCustomTextField(String key, ManagedCustomTextField<E> managedCustomTextField) {
+    public void addManagedCustomTextField(String key, ValidatedFieldInterface<E> managedCustomTextField) {
         this.managedCustomTextFields.put(key, managedCustomTextField);
-        this.vbNodes.getChildren().add(managedCustomTextField);
+        this.vbNodes.getChildren().add(managedCustomTextField.getNode());
     }
 
     public void setOnDelete(Predicate<E> deleteEvent) {
@@ -109,7 +109,7 @@ public class TempController<E> extends AnchorPane {
     }
 
     public String getValue(String key) {
-        return managedCustomTextFields.get(key).getText();
+        return managedCustomTextFields.get(key).getNode().getText();
     }
 
     public DoubleProperty getListViewMaxHeightProperty() {
@@ -128,8 +128,9 @@ public class TempController<E> extends AnchorPane {
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
     private void clear() {
-        managedCustomTextFields.values().forEach(TextInputControl::clear);
+        managedCustomTextFields.values().forEach(mtf -> mtf.getNode().clear());
         this.lvItems.getSelectionModel().clearSelection();
+        this.managedCustomTextFields.values().stream().forEach(tf -> GuiHelper.hideError(tf.getNode()));
     }
 
     //</editor-fold>
@@ -138,8 +139,8 @@ public class TempController<E> extends AnchorPane {
     @FXML
     private void save(ActionEvent event) {
         boolean exit = false;
-        for (ManagedCustomTextField tf : this.managedCustomTextFields.values()) {
-            if (!tf.validate())
+        for (ValidatedFieldInterface<E> tf : this.managedCustomTextFields.values()) {
+            if (!tf.getValidationManager().validate())
                 exit = true;
         }
         if (exit) return;
@@ -156,111 +157,4 @@ public class TempController<E> extends AnchorPane {
     //</editor-fold>
 }
 
-//<editor-fold desc="Classes" defaultstate="collapsed">
-class ManagedCustomTextFieldBuilder<E> {
-    private ManagedCustomTextField<E> ctf = new ManagedCustomTextField<>();
 
-    /**
-     * Adds a validation to the control that will warn the user upon submission if the predicate evaluates to true.
-     *
-     * @param p       predicate to test.
-     * @param warning the warning message to display when the predicate evaluates to true.
-     * @return this.
-     */
-    public ManagedCustomTextFieldBuilder<E> addWarningPredicate(Predicate<String> p, String warning) {
-        ctf.addWarningPredicate(p, warning);
-        return this;
-    }
-
-    /**
-     * Adds a validation to the control that will stop submission if the predicate evaluates to true.
-     *
-     * @param p     predicate to test.
-     * @param error the error message to display when the predicate evaluates to true.
-     * @return this.
-     */
-    public ManagedCustomTextFieldBuilder<E> addErrorPredicate(Predicate<String> p, String error) {
-        ctf.addErrorPredicate(p, error);
-        return this;
-    }
-
-    public ManagedCustomTextFieldBuilder<E> setPromptText(String text) {
-        ctf.setPromptText(text);
-        return this;
-    }
-
-    public ManagedCustomTextFieldBuilder<E> setConverter(Function<E, String> converter) {
-        ctf.setConverter(converter);
-        return this;
-    }
-
-    public ManagedCustomTextField<E> get() {
-        return ctf;
-    }
-}
-
-class ManagedCustomTextField<E> extends CustomTextField {
-    private final List<Validation> warnings, errors;
-    private Function<E, String> converter;
-
-    public ManagedCustomTextField() {
-        this.warnings = new ArrayList<>();
-        this.errors = new ArrayList<>();
-    }
-
-    public void addWarningPredicate(Predicate<String> p, String message) {
-        warnings.add(new Validation(p, message));
-    }
-
-    public void addErrorPredicate(Predicate<String> p, String message) {
-        errors.add(new Validation(p, message));
-    }
-
-    public void setConverter(Function<E, String> converter) {
-        this.converter = converter;
-    }
-
-    public String convert(E e) {
-        return hasConverter() ? null : this.converter.apply(e);
-    }
-
-    public boolean hasConverter() {
-        return this.converter == null;
-    }
-
-    public boolean validate() {
-        GuiHelper.hideError(this);
-        for (Validation v : errors) {
-            if (v.getPredicate().test(getText())) {
-                GuiHelper.showError(this, v.getMessage());
-                return false;
-            }
-        }
-        Optional<Validation> validation = warnings.stream()
-                .filter(v -> !v.getPredicate().test(getText()))
-                .findAny();
-        if (validation.isPresent())
-            GuiHelper.showWarning(this, validation.get().getMessage());
-        return true;
-    }
-}
-
-class Validation {
-    private Predicate<String> p;
-    private String message;
-
-    public Validation(Predicate<String> p, String message) {
-        this.p = p;
-        this.message = message;
-    }
-
-    public Predicate<String> getPredicate() {
-        return p;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-}
-
-//</editor-fold>

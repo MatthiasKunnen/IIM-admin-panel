@@ -2,7 +2,6 @@ package main;
 
 import domain.DomainController;
 import gui.LoginScreenController;
-import gui.TabsController;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;

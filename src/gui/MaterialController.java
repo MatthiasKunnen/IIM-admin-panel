@@ -312,7 +312,7 @@ public class MaterialController extends VBox {
     private void saveMaterial(ActionEvent event) {
         boolean abort = false;
         String name = (String) createMethodBuilder(tfName).addMethods("getText", "trim").run();
-        if (name != null) {
+        if (name != null && !name.isEmpty()) {
             material.setName(name);
             hideError(tfName);
             Material matchingMaterial = dc.getMaterialByName(name);

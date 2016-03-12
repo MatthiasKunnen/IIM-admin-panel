@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<fx:root type="HBox" prefHeight="252.0" prefWidth="728.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.65"
+         xmlns:fx="http://javafx.com/fxml/1">
+    <children>
+        <VBox fx:id="vbAdministratorsWrapper" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="191.0"
+              spacing="10.0">
+            <children>
+                <Label text="Beheerder">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <Button fx:id="btnAddAdministrator" mnemonicParsing="false"
+                        onAction="#btnAddAdministrator_Clicked" text="Voeg administrator toe"/>
+                <ListView fx:id="lvAdministrators" prefHeight="293.0" prefWidth="61.0" VBox.vgrow="ALWAYS"/>
+            </children>
+            <padding>
+                <Insets left="5.0" right="5.0"/>
+            </padding>
+        </VBox>
+        <VBox fx:id="vbCurrentAdministratorProperties" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="224.0" spacing="10.0" HBox.hgrow="ALWAYS">
+            <children>
+                <Label text="Eigenschappen">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <HBox fx:id="hbOptions" alignment="CENTER" prefHeight="36.0" prefWidth="173.0" spacing="10.0">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                    <children>
+                        <Button fx:id="btnSave" mnemonicParsing="false" onAction="#btnSave_Clicked" text="Opslaan"/>
+                    </children>
+                </HBox>
+            </children>
+            <padding>
+                <Insets left="5.0" right="5.0"/>
+            </padding>
+        </VBox>
+        <VBox fx:id="vbPermissionsWrapper" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="214.0" spacing="10.0">
+            <children>
+                <Label contentDisplay="TOP" text="Rechten">
+                    <font>
+                        <Font size="16.0"/>
+                    </font>
+                </Label>
+                <VBox fx:id="vbPermissions" prefHeight="261.0" prefWidth="140.0" spacing="10.0">
+                    <padding>
+                        <Insets left="5.0" right="5.0"/>
+                    </padding>
+                </VBox>
+            </children>
+            <padding>
+                <Insets left="5.0" right="5.0"/>
+            </padding>
+        </VBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</fx:root>

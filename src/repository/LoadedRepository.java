@@ -34,6 +34,7 @@ public class LoadedRepository <E extends IEntity> extends Repository<E> {
         if (!isLoaded){
             eList = persistence.retrieve(eClass);
             eObservableList = FXCollections.observableList((List<E>) ImmutabilityHelper.copyCollectionDefensively(eList));
+            isLoaded = true;
         }
     }
     //</editor-fold>
