@@ -14,7 +14,10 @@ import static com.google.common.base.MoreObjects.toStringHelper;
  * An entity class for System Administrators
  */
 @Entity(name = "Administrator")
-@NamedQuery(name = "Administrator.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)")
+@NamedQueries({
+        @NamedQuery(name = "Administrator.findByName", query = "SELECT a FROM Administrator a WHERE lower(a.name) = lower(:name)"),
+        @NamedQuery(name = "Administrator.countUsernameAppearances", query = "SELECT count(a.name) FROM Administrator a WHERE lower(a.name) = lower(:name)")
+})
 public class Administrator implements Serializable, IEntity {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">

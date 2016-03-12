@@ -6,7 +6,7 @@ import persistence.PersistenceEnforcer;
 
 import static util.ImmutabilityHelper.copyDefensively;
 
-public class AdministratorRepository extends LoadedRepository<Administrator>{
+public class AdministratorRepository extends LoadedRepository<Administrator> {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
@@ -40,5 +40,10 @@ public class AdministratorRepository extends LoadedRepository<Administrator>{
             return copyDefensively(administrator);
         }
     }
+
+    public boolean isUsernameInUse(String username) {
+        return ((int) persistence.getNamedQuery(Administrator.class.getSimpleName() + ".countUsernameAppearances").setParameter("name", username).getResultList().get(0)) == 0;
+    }
+
     //</editor-fold>
 }

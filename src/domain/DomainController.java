@@ -271,6 +271,10 @@ public class DomainController {
     public Administrator getActiveAdministrator(){
         return ImmutabilityHelper.copyDefensively(this.activeAdministrator);
     }
+
+    public boolean isUsernameInUse(String username){
+        return this.administratorRepository.isUsernameInUse(username);
+    }
     //</editor-fold>
     //</editor-fold>
 }
