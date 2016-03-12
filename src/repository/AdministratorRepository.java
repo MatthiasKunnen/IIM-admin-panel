@@ -42,7 +42,7 @@ public class AdministratorRepository extends LoadedRepository<Administrator> {
     }
 
     public boolean isUsernameInUse(String username) {
-        return ((int) persistence.getNamedQuery(Administrator.class.getSimpleName() + ".countUsernameAppearances").setParameter("name", username).getResultList().get(0)) == 0;
+        return Math.toIntExact((Long) persistence.getNamedQuery(Administrator.class.getSimpleName() + ".countUsernameAppearances").setParameter("name", username).getResultList().get(0)) > 0;
     }
 
     //</editor-fold>
