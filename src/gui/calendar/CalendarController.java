@@ -1,20 +1,13 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui.calendar;
 
 import gui.GuiHelper;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -22,12 +15,11 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.Optional;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import static javafx.scene.layout.Priority.ALWAYS;
 
-/**
- * FXML Controller class
- *
- * @author Evert
- */
 public class CalendarController extends VBox {
 
     @FXML
@@ -44,17 +36,35 @@ public class CalendarController extends VBox {
     private GridPane gpDates;
 
     private LocalDate currentDate;
+    private LocalDate selectedMonth;
     private LocalDate selectedDate;
 
-    private DatePane selectedField;
+    private DateLayout standardLayout;
+    private DateLayout currentDateLayout;
+    private DateLayout otherMonthLayout;
 
     public CalendarController() {
-        
+
         try {
             GuiHelper.loadFXML("Calendar.fxml", this);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        standardLayout = new DateLayout();
+        standardLayout.setStandardLayout(Color.BLACK, null);
+        standardLayout.setSelectedLayout(Color.WHITE, Color.GRAY);
+        standardLayout.setHoverLayout(Color.BLACK, Color.LIGHTGRAY);
+
+        currentDateLayout = new DateLayout();
+        currentDateLayout.setStandardLayout(Color.BLACK, Color.LIGHTBLUE);
+        currentDateLayout.setSelectedLayout(Color.WHITE, Color.GRAY);
+        currentDateLayout.setHoverLayout(Color.BLACK, Color.LIGHTGRAY);
+
+        otherMonthLayout = new DateLayout();
+        otherMonthLayout.setStandardLayout(Color.GRAY, null);
+        otherMonthLayout.setSelectedLayout(Color.WHITE, Color.GRAY);
+        otherMonthLayout.setHoverLayout(Color.BLACK, Color.LIGHTGRAY);
 
         svgRight.boundsInParentProperty().addListener((observable, oldValue, newValue) -> {
             rectRight.setHeight(newValue.getHeight());
@@ -66,68 +76,74 @@ public class CalendarController extends VBox {
         });
 
         rectRight.setOnMouseClicked(event -> {
-            selectedDate = selectedDate.plusMonths(1);
+            selectedMonth = selectedMonth.plusMonths(1);
             updateDateLabel();
             setDates();
         });
         rectLeft.setOnMouseClicked(event -> {
-            selectedDate = selectedDate.minusMonths(1);
+            selectedMonth = selectedMonth.minusMonths(1);
             updateDateLabel();
             setDates();
+
         });
 
         rectRight.setCursor(Cursor.HAND);
         rectLeft.setCursor(Cursor.HAND);
 
         currentDate = LocalDate.now();
-        selectedDate = LocalDate.now();
+        selectedMonth = LocalDate.now();
         updateDateLabel();
 
         initializeCalendar();
     }
-    
-    public LocalDate getSelectedDate(){
-        return selectedField.getDate();
-    }
 
-    private void updateDateLabel() {
-        lblMaand.setText(String.format("%s - %s", selectedDate.getMonth().toString(), selectedDate.getYear()));
+    public CalendarController(CalendarAddOn addOn){
+        this();
+        addOn.getNodes().keySet().forEach(k-> ((DatePane)findDatePane(k)).getChildren().add(addOn.getNodes().get(k)));
+    }
+    
+    public LocalDate getSelectedDate() {
+        return selectedDate;
     }
 
     private void initializeCalendar() {
         String[] days = new String[]{"ma", "di", "wo", "do", "vr", "za", "zo"};
 
         for (int x = 0; x < 7; x++) {
+
             Label lbl = new Label(days[x]);
-            gpDates.add(lbl, x, 0);
+            HBox hb = new HBox(lbl);
+            hb.setAlignment(Pos.CENTER);
+            VBox vb = new VBox(hb);
+            vb.setAlignment(Pos.CENTER);
+            gpDates.add(vb, x, 0);
             GridPane.setHalignment(lbl, HPos.CENTER);
             GridPane.setValignment(lbl, VPos.CENTER);
         }
 
         for (int y = 1; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
-                Label lbl = new Label("00");
-                Rectangle rect = new Rectangle();
 
-                DatePane sp = new DatePane(rect, lbl);
-
-                rect.heightProperty().bind(sp.heightProperty());
-                rect.widthProperty().bind(sp.widthProperty());
-                rect.setOpacity(0);
-                rect.setStroke(Color.GRAY);
+                DatePane sp = new DatePane();
 
                 sp.setOnMouseClicked(event -> {
-                    if (selectedField != null) {
-                        selectedField.getrect().setOpacity(0);
-                        selectedField.getLabel().setTextFill( selectedField.getDate().getMonth() != selectedDate.getMonth() ? Color.GRAY : Color.BLACK);
-                    }
-                    rect.setOpacity(1);
-                    lbl.setTextFill(Color.WHITE);
-                    selectedField = sp;
+                    setSelection(sp.getDate());
                 });
 
-                sp.getChildren().add(rect);
-                sp.getChildren().add(lbl);
+                sp.setOnMouseEntered(event -> {
+                    if (!sp.getDate().equals(this.selectedDate)) {
+                        sp.hover();
+                    }
+                });
+
+                sp.setOnMouseExited(event -> {
+                    if (!sp.getDate().equals(this.selectedDate)) {
+                        sp.clear();
+                    }
+                });
+
+                GridPane.setHgrow(sp, ALWAYS);
+                GridPane.setVgrow(sp, ALWAYS);
 
                 gpDates.add(sp, x, y);
             }
@@ -136,53 +152,174 @@ public class CalendarController extends VBox {
         setDates();
     }
 
+    private void updateDateLabel() {
+        lblMaand.setText(String.format("%s - %s", selectedMonth.getMonth().toString(), selectedMonth.getYear()));
+    }
+
     private void setDates() {
-        LocalDate tempDate = selectedDate.minusDays(selectedDate.getDayOfMonth()).minusDays(selectedDate.getDayOfWeek().getValue() - 1);
+        LocalDate tempDate = selectedMonth.minusDays(selectedMonth.getDayOfMonth()).minusDays(selectedMonth.getDayOfWeek().getValue() + 1);
 
         for (int y = 1; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
                 DatePane p = getNodeFromGridPane(x, y);
                 p.getLabel().setText(String.format("%2d", tempDate.getDayOfMonth()));
-                p.getLabel().setTextFill(tempDate.getMonth() != selectedDate.getMonth()? Color.GRAY : Color.BLACK);
+                p.setLayout(tempDate.getMonth() != selectedMonth.getMonth() ? otherMonthLayout : standardLayout);
+                if (tempDate.atStartOfDay().equals(currentDate.atStartOfDay())) {
+                    p.setLayout(currentDateLayout);
+                }
+                p.clear();
                 p.setDate(tempDate);
                 tempDate = tempDate.plusDays(1);
             }
         }
+
+        setSelection(this.selectedDate);
     }
 
-    private DatePane getNodeFromGridPane( int col, int row) {
-    for (Node node : gpDates.getChildren()) {
-        if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-            return (DatePane)node;
+    private void setSelection(LocalDate ld) {
+        DatePane newPane = findDatePane(ld);
+        DatePane oldPane = findDatePane(this.selectedDate);
+
+        if (oldPane != null) {
+            oldPane.clear();
         }
-    }
-    return null;
-}
-    
-    class DatePane extends StackPane {
+        if (newPane != null) {
+            newPane.select();
+            this.selectedDate = newPane.getDate();
+        }
 
-        private Rectangle rect;
+    }
+
+    private DatePane findDatePane(LocalDate ld) {
+        Optional o = gpDates.getChildren().stream().filter(p -> p.getClass() == DatePane.class).filter(p -> ((DatePane) p).getDate().equals(ld)).findFirst();
+        return (o.isPresent() ? (DatePane) o.get() : null);
+    }
+
+    private DatePane getNodeFromGridPane(int col, int row) {
+        for (Node node : gpDates.getChildren()) {
+            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
+                return (DatePane) node;
+            }
+        }
+        return null;
+    }
+
+    class DatePane extends VBox {
+
         private Label lbl;
+        private HBox hb;
         private LocalDate date;
 
-        public DatePane(Rectangle rect, Label lbl) {
-            this.rect = rect;
-            this.lbl = lbl;
+        private DateLayout dl;
+
+        public DatePane() {
+            lbl = new Label("00");
+            hb = new HBox(lbl);
+            hb.setAlignment(Pos.CENTER);
+            this.getChildren().add(hb);
+            this.setAlignment(Pos.CENTER);
+        }
+
+        public void select() {
+            if (dl != null) {
+                dl.giveSelectedLayout(this);
+            }
+        }
+
+        public void clear() {
+            if (dl != null) {
+                dl.giveStandardLayout(this);
+            }
+        }
+
+        public void hover() {
+            if (dl != null) {
+                dl.giveHoverLayout(this);
+            }
+        }
+
+        public void setLayout(DateLayout dl) {
+            this.dl = dl;
         }
 
         public Label getLabel() {
             return this.lbl;
         }
 
-        public Rectangle getrect() {
-            return this.rect;
-        }
-        
-        public void setDate(LocalDate date){
+        public void setDate(LocalDate date) {
             this.date = date;
         }
+
         public LocalDate getDate() {
             return this.date;
+        }
+    }
+
+    class DateLayout {
+
+        private Color textColor;
+        private Color backgroundColor;
+
+        private Color textColorSelected;
+        private Color backgroundColorSelected;
+
+        private Color textColorHover;
+        private Color backgroundColorHover;
+
+        public DateLayout() {
+            textColor = Color.BLACK;
+            textColorHover = Color.BLACK;
+            textColorSelected = Color.BLACK;
+        }
+
+        public void giveStandardLayout(DatePane dp) {
+            dp.getLabel().setTextFill(textColor);
+            if (backgroundColor != null) {
+                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColor));
+            } else {
+                dp.setStyle("-fx-background-color: none");
+            }
+
+        }
+
+        public void giveSelectedLayout(DatePane dp) {
+            dp.getLabel().setTextFill(textColorSelected);
+            if (backgroundColorSelected != null) {
+                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColorSelected));
+            } else {
+                dp.setStyle("-fx-background-color: none");
+            }
+        }
+
+        public void giveHoverLayout(DatePane dp) {
+            dp.getLabel().setTextFill(textColorHover);
+            if (backgroundColorSelected != null) {
+                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColorHover));
+            } else {
+                dp.setStyle("-fx-background-color: none");
+            }
+        }
+
+        public void setStandardLayout(Color textColor, Color backgroundColor) {
+            this.textColor = textColor;
+            this.backgroundColor = backgroundColor;
+        }
+
+        public void setSelectedLayout(Color textColor, Color backgroundColor) {
+            this.textColorSelected = textColor;
+            this.backgroundColorSelected = backgroundColor;
+        }
+
+        public void setHoverLayout(Color textColor, Color backgroundColor) {
+            this.textColorHover = textColor;
+            this.backgroundColorHover = backgroundColor;
+        }
+
+        private String colortoHex(Color p) {
+            return String.format("#%02X%02X%02X",
+                    (int) (p.getRed() * 255),
+                    (int) (p.getGreen() * 255),
+                    (int) (p.getBlue() * 255));
         }
     }
 

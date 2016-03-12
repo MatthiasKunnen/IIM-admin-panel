@@ -68,7 +68,7 @@ public class ReservationOverviewController extends AnchorPane {
             }
         });
         lvReservaties.setOnMouseClicked(event -> {
-            if (event.getClickCount() > 2) {
+            if (event.getClickCount() >= 2) {
                 openReservation(lvReservaties.getSelectionModel().getSelectedItem());
             }
         });
