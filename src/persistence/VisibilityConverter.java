@@ -13,7 +13,7 @@ import javax.persistence.Converter;
  * @author Matthias Kunnen
  */
 @Converter(autoApply = true)
-public class VisibilityConverter extends EnumConverter<Visibility> {
+public class VisibilityConverter implements AttributeConverter<Visibility, Integer> {
     private static BiMap<Visibility, Integer> dictionary = ImmutableBiMap.of(
             Visibility.Administrator, 0,
             Visibility.Docent, 1,
@@ -21,7 +21,12 @@ public class VisibilityConverter extends EnumConverter<Visibility> {
     );
 
     @Override
-    protected BiMap<Visibility, Integer> getConverter() {
-        return dictionary;
+    public Integer convertToDatabaseColumn(Visibility visibility) {
+        return dictionary.get(visibility);
+    }
+
+    @Override
+    public Visibility convertToEntityAttribute(Integer integer) {
+        return dictionary.inverse().get(integer);
     }
 }

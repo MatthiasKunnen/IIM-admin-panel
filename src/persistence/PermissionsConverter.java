@@ -4,6 +4,7 @@ import com.google.common.collect.BiMap;
 import com.google.common.collect.ImmutableBiMap;
 import domain.Administrator;
 
+import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
 /**
@@ -12,7 +13,7 @@ import javax.persistence.Converter;
  * @author Matthias Kunnen
  */
 @Converter(autoApply = true)
-public class PermissionsConverter extends EnumConverter<Administrator.Permission> {
+public class PermissionsConverter implements AttributeConverter<Administrator.Permission, Integer> {
     private static BiMap<Administrator.Permission, Integer> dictionary = ImmutableBiMap.of(
             Administrator.Permission.MANAGE_MATERIALS, 0,
             Administrator.Permission.MANAGE_RESERVATIONS, 2,
@@ -20,7 +21,12 @@ public class PermissionsConverter extends EnumConverter<Administrator.Permission
     );
 
     @Override
-    protected BiMap<Administrator.Permission, Integer> getConverter() {
-        return dictionary;
+    public Integer convertToDatabaseColumn(Administrator.Permission permission) {
+        return dictionary.get(permission);
+    }
+
+    @Override
+    public Administrator.Permission convertToEntityAttribute(Integer integer) {
+        return dictionary.inverse().get(integer);
     }
 }
