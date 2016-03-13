@@ -228,7 +228,7 @@ public class MaterialController extends VBox {
             ((HBox) this.pnVisibilityPicker.getParent()).getChildren().removeAll(pnVisibilityPicker, tfAmount);
             ((AnchorPane) this.tvIdentifiers.getParent()).getChildren().removeAll(this.tvIdentifiers);
             this.tvSimplifiedIdentifiers.setVisible(true);
-            this.updateSimplifiedIdentifiersFromIdentifiers();
+            this.updateSimplifiedIdentifiersFromIdentifiers(material.getIdentifiers());
             this.tvSimplifiedIdentifiers.setItems(this.simplifiedIdentifiers);
 
             tcSimplifiedLocation.setCellFactory(TextFieldTableCell.<SimplifiedMaterialIdentifier>forTableColumn());
@@ -374,7 +374,7 @@ public class MaterialController extends VBox {
         theStage.setTitle(String.format("%s - IIM", material.getName()));
         this.identifiers.clear();
         this.identifiers.addAll(material.getIdentifiers());
-        updateSimplifiedIdentifiersFromIdentifiers();
+        updateSimplifiedIdentifiersFromIdentifiers(material.getIdentifiers());
         try {
             if (imagePath != null) {
                 dc.updatePhoto(material, imagePath.toString());
@@ -422,10 +422,11 @@ public class MaterialController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    private void updateSimplifiedIdentifiersFromIdentifiers() {
+    private void updateSimplifiedIdentifiersFromIdentifiers(List<MaterialIdentifier> identifiers) {
         if (!Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
             simplifiedIdentifiers.clear();
             identifiers.stream()
+                    .filter(mi -> mi.getVisibility() != Visibility.Administrator)
                     .collect(groupingBy(MaterialIdentifier::getPlace))
                     .forEach((place, materialIdentifiers) -> simplifiedIdentifiers.add(new SimplifiedMaterialIdentifier(place, materialIdentifiers)));
         }
@@ -498,7 +499,6 @@ public class MaterialController extends VBox {
             this.docentAmount = new SimpleIntegerProperty(getDocentCount());
             this.place = new SimpleStringProperty(place);
             this.identifiers.forEach(mi -> mi.getPlaceProperty().bind(this.place));
-
             this.identifiers.addListener((ListChangeListener<MaterialIdentifier>) c -> {
                 if (!isUpdating) {
                     studentAmount.setValue(getStudentCount());
