@@ -8,11 +8,10 @@ import javax.persistence.*;
 /**
  * This class holds the settings of the application.
  *
- * @param <E> the type of the setting.
  * @author Matthias Kunnen
  */
 @Entity
-public class Setting<E extends Serializable> implements Serializable, IEntity {
+public class Setting implements Serializable, IEntity {
 
     public enum Key {
         KEEP_HISTORY
@@ -26,7 +25,7 @@ public class Setting<E extends Serializable> implements Serializable, IEntity {
     @Convert(converter = KeyConverter.class)
     private Key key;
 
-    private E data;
+    private String data;
 
     /**
      * JPA constructor.
@@ -39,7 +38,7 @@ public class Setting<E extends Serializable> implements Serializable, IEntity {
      * @param key the key used to refer to this setting.
      * @param data the data of this setting.
      */
-    public Setting(Key key, E data) {
+    public Setting(Key key, String data) {
         this.key = key;
         this.data = data;
     }
@@ -49,7 +48,7 @@ public class Setting<E extends Serializable> implements Serializable, IEntity {
      *
      * @param setting the setting to copy.
      */
-    public Setting(Setting<E> setting) {
+    public Setting(Setting setting) {
         this.id = setting.id;
         this.key = setting.key;
         this.data = setting.data;
@@ -59,11 +58,11 @@ public class Setting<E extends Serializable> implements Serializable, IEntity {
         return key;
     }
 
-    public E getData() {
+    public String getData() {
         return data;
     }
 
-    public void setData(E data) {
+    public void setData(String data) {
         this.data = data;
     }
 

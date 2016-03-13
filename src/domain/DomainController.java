@@ -294,11 +294,11 @@ public class DomainController {
         return this.settingRepository.getSetting(key, defaultValue);
     }
 
-    public Object getSettingData(Setting.Key key) {
+    public String getSettingData(Setting.Key key) {
         return getSettingData(key, null);
     }
 
-    public Object getSettingData(Setting.Key key, Object defaultValue) {
+    public String getSettingData(Setting.Key key, String defaultValue) {
         Setting setting = this.settingRepository.getSetting(key);
         return setting == null ? defaultValue : setting.getData();
     }

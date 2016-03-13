@@ -83,7 +83,7 @@ public class OverviewController extends VBox {
         tcAmount.setCellValueFactory((TableColumn.CellDataFeatures<Material, Integer> param) ->
                 new SimpleIntegerProperty((int) param.getValue().getIdentifiers()
                         .stream()
-                        .filter(mi -> ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) || !mi.getVisibility().equals(Visibility.Administrator))
+                        .filter(mi -> Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false")) || !mi.getVisibility().equals(Visibility.Administrator))
                         .count()).asObject());
         tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
 
