@@ -110,21 +110,23 @@ public class PersistenceEnforcer {
     //</editor-fold>
 
     private void startTransaction() {
-        manager.getTransaction().begin();
+        if (!manager.getTransaction().isActive())
+            manager.getTransaction().begin();
     }
 
     private void commitTransaction() {
         manager.getTransaction().commit();
     }
 
-    public Query getNamedQuery(String queryName){
+    public Query getNamedQuery(String queryName) {
         return manager.createNamedQuery(queryName);
     }
 
     /**
      * Get all entities of type T from the database.
+     *
      * @param aClass the EntityClass to retrieve.
-     * @param <T> the type of the EntityClass.
+     * @param <T>    the type of the EntityClass.
      * @return list of type Entity&lt;T&gt;
      */
     public <T> List<T> retrieve(Class<T> aClass) {
