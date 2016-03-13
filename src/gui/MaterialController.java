@@ -494,6 +494,7 @@ public class MaterialController extends VBox {
             this.studentAmount = new SimpleIntegerProperty(getStudentCount());
             this.docentAmount = new SimpleIntegerProperty(getDocentCount());
             this.place = new SimpleStringProperty(place);
+            this.identifiers.forEach(mi -> mi.getPlaceProperty().bind(this.place));
 
             this.identifiers.addListener((ListChangeListener<MaterialIdentifier>) c -> {
                 if (!isUpdating) {
