@@ -2,7 +2,6 @@ package gui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -67,7 +66,10 @@ public class TempController<E> extends AnchorPane {
             @Override
             protected void updateItem(E item, boolean empty) {
                 super.updateItem(item, empty);
-                if (item != null) {
+                if (empty) {
+                    setText(null);
+                    setGraphic(null);
+                }else{
                     setText(stringPresentation.apply(item));
                 }
             }
