@@ -127,7 +127,7 @@ public class MaterialController extends VBox {
     }
 
     public MaterialController(DomainController dc, Stage stage, Material material) {
-        this.identifiers = FXCollections.observableArrayList(material.getIdentifiers());
+        this.identifiers = FXCollections.observableArrayList();
         this.simplifiedIdentifiers = FXCollections.observableArrayList();
         this.theStage = stage;
         this.dc = dc;
@@ -146,7 +146,7 @@ public class MaterialController extends VBox {
             throw new RuntimeException(ex);
         }
 
-        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
+        if (Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
             this.tvIdentifiers.setItems(this.identifiers);
 
             tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -360,7 +360,7 @@ public class MaterialController extends VBox {
             return;
         }
 
-        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
+        if (Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
             material.setIdentifiers(this.identifiers);
         } else {
             material.setIdentifiers(this.simplifiedIdentifiers.stream().flatMap(smi -> smi.getIdentifiers().stream()).collect(Collectors.toList()));
@@ -423,10 +423,12 @@ public class MaterialController extends VBox {
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
     private void updateSimplifiedIdentifiersFromIdentifiers() {
-        simplifiedIdentifiers.clear();
-        identifiers.stream()
-                .collect(groupingBy(MaterialIdentifier::getPlace))
-                .forEach((place, materialIdentifiers) -> simplifiedIdentifiers.add(new SimplifiedMaterialIdentifier(place, materialIdentifiers)));
+        if (!Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
+            simplifiedIdentifiers.clear();
+            identifiers.stream()
+                    .collect(groupingBy(MaterialIdentifier::getPlace))
+                    .forEach((place, materialIdentifiers) -> simplifiedIdentifiers.add(new SimplifiedMaterialIdentifier(place, materialIdentifiers)));
+        }
     }
 
     private void setMaterialProperty(TextInputControl input, String setter) {
@@ -456,12 +458,13 @@ public class MaterialController extends VBox {
             cboCurricular.getItems().stream().filter(c -> material.getCurricular().contains(c)).forEach(c -> cboCurricular.getCheckModel().check(c));
             cboTargetAudience.getItems().stream().filter(t -> material.getTargetGroups().contains(t)).forEach(t -> cboTargetAudience.getCheckModel().check(t));
             this.cboFirm.getSelectionModel().select(material.getFirm());
+            this.identifiers.clear();
             this.identifiers.addAll(this.material.getIdentifiers());
         }
     }
 
     private void addIdentifier() {
-        if ((boolean) dc.getSettingData(Setting.Key.KEEP_HISTORY, false)) {
+        if (Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
             for (int i = 0; i < Integer.parseInt(tfAmount.getText()); i++) {
                 MaterialIdentifier id = new MaterialIdentifier(material, defaultVisibility.getValue());
                 id.setPlace(tfLocation.getText());
