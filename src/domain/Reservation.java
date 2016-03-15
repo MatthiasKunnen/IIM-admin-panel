@@ -22,7 +22,7 @@ public class Reservation implements Serializable, IEntity {
     @Access(AccessType.FIELD)
     private int id;
     private User user;
-    private List<MaterialIdentifier> materialIdentifiersList;
+    private List<ReservationDetail> reservationDetails;
     private ObjectProperty<LocalDateTime>
             creationDate = new SimpleObjectProperty<>(),
             startDate = new SimpleObjectProperty<>(),
@@ -45,7 +45,7 @@ public class Reservation implements Serializable, IEntity {
     public Reservation(Reservation reservation) {
         this.id = reservation.id;
         this.user = reservation.user;
-        this.materialIdentifiersList = (List<MaterialIdentifier>) ImmutabilityHelper.copyCollectionDefensively(reservation.materialIdentifiersList);
+        this.reservationDetails = (List<ReservationDetail>) ImmutabilityHelper.copyCollectionDefensively(reservation.reservationDetails);
         this.creationDate = reservation.creationDate;
         this.startDate = reservation.startDate;
         this.endDate = reservation.endDate;
@@ -69,13 +69,13 @@ public class Reservation implements Serializable, IEntity {
         this.user = user;
     }
 
-    @ManyToMany
-    public List<MaterialIdentifier> getMaterialIdentifiersList() {
-        return materialIdentifiersList;
+    @OneToMany(mappedBy = "reservation")
+    public List<ReservationDetail> getReservationDetails() {
+        return reservationDetails;
     }
 
-    public void setMaterialIdentifiersList(List<MaterialIdentifier> materialIdentifiersList) {
-        this.materialIdentifiersList = materialIdentifiersList;
+    public void setReservationDetails(List<ReservationDetail> materialIdentifiersList) {
+        this.reservationDetails = materialIdentifiersList;
     }
 
     @Column(nullable = false)
@@ -133,7 +133,7 @@ public class Reservation implements Serializable, IEntity {
                 .omitNullValues()
                 .add("ID", id)
                 .add("User", user)
-                .add("Identifiers", materialIdentifiersList)
+                .add("Identifiers", reservationDetails)
                 .add("Reservation date", creationDate)
                 .add("Start date", startDate)
                 .add("End date", endDate)

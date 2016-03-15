@@ -12,8 +12,8 @@ public class ReservationTest {
 
     private Reservation reservation;
     private User user = new User();
-    private List<MaterialIdentifier> reservationList;
-    private MaterialIdentifier materialId;
+    private List<ReservationDetail> reservationList;
+    private ReservationDetail materialId;
     private Material material;
     private LocalDateTime pickUp = LocalDateTime.of(2016, Month.FEBRUARY, 1, 16, 0);
     private LocalDateTime bringBack = LocalDateTime.of(2016, Month.FEBRUARY, 14, 7, 0);
@@ -23,7 +23,7 @@ public class ReservationTest {
     public void init() {
         reservation = new Reservation();
         material = new Material("Tool");
-        materialId = new MaterialIdentifier(material, Visibility.Student);
+        materialId = new ReservationDetail(new MaterialIdentifier(material, Visibility.Student), reservation);
         reservationList = new ArrayList<>();
         reservationList.add(materialId);
 
@@ -31,8 +31,8 @@ public class ReservationTest {
 
     @Test
     public void testSetMaterialIdentifierList() {
-        reservation.setMaterialIdentifiersList(reservationList);
-        Assert.assertEquals(reservationList, reservation.getMaterialIdentifiersList());
+        reservation.setReservationDetails(reservationList);
+        Assert.assertEquals(reservationList, reservation.getReservationDetails());
     }
 
     @Test

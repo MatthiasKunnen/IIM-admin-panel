@@ -8,6 +8,7 @@
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
         <class>domain.Reservation</class>
+        <class>domain.ReservationDetail</class>
         <class>domain.Setting</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
@@ -32,6 +33,7 @@
         <class>domain.Material</class>
         <class>domain.MaterialIdentifier</class>
         <class>domain.Reservation</class>
+        <class>domain.ReservationDetail</class>
         <class>domain.Setting</class>
         <class>domain.TargetGroup</class>
         <class>domain.User</class>
