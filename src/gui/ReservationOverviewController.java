@@ -72,17 +72,14 @@ public class ReservationOverviewController extends AnchorPane {
                 openReservation(lvReservaties.getSelectionModel().getSelectedItem());
             }
         });
-
     }
 
     private void filterDate() {
-
         if (dpEndDate.getValue() == null) {
             reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isBefore(dpStartDate.getValue().atStartOfDay()));
         } else {
             reservationsList = new FilteredList<>(dc.getReservations(), r -> r.getStartDate().minusDays(1).isAfter(dpStartDate.getValue().atStartOfDay()) && r.getEndDate().plusDays(1).isAfter(dpEndDate.getValue().atStartOfDay()));
         }
-
         filterName();
     }
 
@@ -94,11 +91,9 @@ public class ReservationOverviewController extends AnchorPane {
 
     private void openReservation(Reservation selectedItem) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle(selectedItem.getUser().getEmail() + " " + selectedItem.getStartDate().format(GuiHelper.getDateTimeFormatter()) + " - IIM");
+        newStage.setTitle(String.format("%s %s - IIM", selectedItem.getUser().getEmail(), selectedItem.getStartDate().format(GuiHelper.getDateTimeFormatter())));
         Scene scene = new Scene(new ReservationController(dc, newStage, selectedItem));
         newStage.setScene(scene);
         newStage.show();
-
-
     }
 }
