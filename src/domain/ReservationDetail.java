@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 public class ReservationDetail implements Serializable, IEntity {
+
     //<editor-fold desc="Declarations" defaultstate="collapsed">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +23,7 @@ public class ReservationDetail implements Serializable, IEntity {
     private Reservation reservation;
 
     @Convert(converter = LocalDateTimeConverter.class)
-    private LocalDateTime broughtBackDate;
+    private LocalDateTime pickUpDate, broughtBackDate;
 
     //</editor-fold>
 
@@ -38,6 +39,7 @@ public class ReservationDetail implements Serializable, IEntity {
     public ReservationDetail(ReservationDetail rd, Reservation r){
         this.id = rd.id;
         this.broughtBackDate = rd.broughtBackDate;
+        this.pickUpDate = rd.pickUpDate;
         this.materialIdentifier = ImmutabilityHelper.copyDefensively(rd.materialIdentifier);
         this.reservation = r;
     }
@@ -82,6 +84,15 @@ public class ReservationDetail implements Serializable, IEntity {
     public boolean isBroughtBack(){
         return this.broughtBackDate != null;
     }
+
+    public LocalDateTime getPickUpDate() {
+        return pickUpDate;
+    }
+
+    public void setPickUpDate(LocalDateTime pickUpDate) {
+        this.pickUpDate = pickUpDate;
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
