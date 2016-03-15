@@ -45,7 +45,7 @@ public class Reservation implements Serializable, IEntity {
     public Reservation(Reservation reservation) {
         this.id = reservation.id;
         this.user = reservation.user;
-        this.reservationDetails = (List<ReservationDetail>) ImmutabilityHelper.copyCollectionDefensively(reservation.reservationDetails);
+        this.reservationDetails = (List<ReservationDetail>) ImmutabilityHelper.copyCollectionDefensively(reservation.reservationDetails, this);
         this.creationDate = reservation.creationDate;
         this.startDate = reservation.startDate;
         this.endDate = reservation.endDate;

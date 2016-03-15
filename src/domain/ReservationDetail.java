@@ -1,6 +1,7 @@
 package domain;
 
 import persistence.LocalDateTimeConverter;
+import util.ImmutabilityHelper;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,6 +29,17 @@ public class ReservationDetail implements Serializable, IEntity {
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public ReservationDetail() {
+    }
+
+    public ReservationDetail(ReservationDetail rd){
+        this(rd, ImmutabilityHelper.copyDefensively(rd.reservation));
+    }
+
+    public ReservationDetail(ReservationDetail rd, Reservation r){
+        this.id = rd.id;
+        this.broughtBackDate = rd.broughtBackDate;
+        this.materialIdentifier = ImmutabilityHelper.copyDefensively(rd.materialIdentifier);
+        this.reservation = r;
     }
 
     public ReservationDetail(MaterialIdentifier materialIdentifier, Reservation reservation) {
