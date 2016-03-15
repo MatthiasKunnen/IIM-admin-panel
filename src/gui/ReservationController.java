@@ -25,10 +25,10 @@ public class ReservationController extends AnchorPane {
     private TextField tfEndTime;
 
     @FXML
-    private TableColumn<MaterialIdentifier, String> tcName;
+    private TableColumn<ReservationDetail, String> tcName;
 
     @FXML
-    private TableColumn<MaterialIdentifier, Boolean> tcActions;
+    private TableColumn<ReservationDetail, Boolean> tcActions;
 
     @FXML
     private TableView<ReservationDetail> tv;
@@ -40,10 +40,10 @@ public class ReservationController extends AnchorPane {
     private TextField tfStartTime;
 
     @FXML
-    private TableColumn<MaterialController, Integer> tcId;
+    private TableColumn<ReservationDetail, Integer> tcId;
 
     @FXML
-    private TableColumn<MaterialIdentifier, String> tcLocation;
+    private TableColumn<ReservationDetail, String> tcLocation;
 
     @FXML
     private DatePicker dpEndDate;
@@ -74,19 +74,19 @@ public class ReservationController extends AnchorPane {
         dpStartDate.setValue(reservation.getStartDate().toLocalDate());
         dpEndDate.setValue(reservation.getEndDate().toLocalDate());
         tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
+        tfEndTime.setText(reservation.getEndDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
 
         this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tcName.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getInfo().getName()));
-        tcName.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
-        tcLocation.setCellValueFactory(new PropertyValueFactory<>("place"));
-        tcLocation.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
-        tcActions.setCellValueFactory(new PropertyValueFactory<>("NONEXISTENT"));
-        tcActions.setCellFactory(new Callback<TableColumn<MaterialIdentifier, Boolean>, TableCell<MaterialIdentifier, Boolean>>() {
+        tcName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMaterialIdentifier().getInfo().getName()));
+        tcName.setCellFactory(TextFieldTableCell.<ReservationDetail>forTableColumn());
+        tcLocation.setCellValueFactory(cellData -> cellData.getValue().getMaterialIdentifier().getPlaceProperty());
+        tcLocation.setCellFactory(TextFieldTableCell.<ReservationDetail>forTableColumn());
+        tcActions.setCellFactory(new Callback<TableColumn<ReservationDetail, Boolean>, TableCell<ReservationDetail, Boolean>>() {
 
             @Override
-            public TableCell<MaterialIdentifier, Boolean> call(TableColumn<MaterialIdentifier, Boolean> param) {
-                return new TableCell<MaterialIdentifier, Boolean>() {
+            public TableCell<ReservationDetail, Boolean> call(TableColumn<ReservationDetail, Boolean> param) {
+                return new TableCell<ReservationDetail, Boolean>() {
                     private final CustomOptionsController coc = new CustomOptionsController();
 
                     {
@@ -94,7 +94,7 @@ public class ReservationController extends AnchorPane {
                         coc.addExistingSVG("delete");
                         coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
                             if (getTableRow().getItem() != null) {
-                                getTableView().getItems().remove((MaterialIdentifier) getTableRow().getItem());
+                                getTableView().getItems().remove((ReservationDetail) getTableRow().getItem());
                             }
                         });
                     }
