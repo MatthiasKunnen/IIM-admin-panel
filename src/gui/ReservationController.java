@@ -3,6 +3,7 @@ package gui;
 import domain.DomainController;
 import domain.MaterialIdentifier;
 import domain.Reservation;
+import domain.ReservationDetail;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -30,7 +31,7 @@ public class ReservationController extends AnchorPane {
     private TableColumn<MaterialIdentifier, Boolean> tcActions;
 
     @FXML
-    private TableView<MaterialIdentifier> tv;
+    private TableView<ReservationDetail> tv;
 
     @FXML
     private DatePicker dpStartDate;
@@ -74,7 +75,7 @@ public class ReservationController extends AnchorPane {
         dpEndDate.setValue(reservation.getEndDate().toLocalDate());
         tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
 
-        this.tv.setItems(FXCollections.observableList(reservation.getMaterialIdentifiersList()));
+        this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
         tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
         tcName.setCellValueFactory(cellData-> new SimpleStringProperty(cellData.getValue().getInfo().getName()));
         tcName.setCellFactory(TextFieldTableCell.<MaterialIdentifier>forTableColumn());
