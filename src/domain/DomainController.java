@@ -8,8 +8,6 @@ import persistence.PersistenceController;
 import repository.*;
 import util.ImmutabilityHelper;
 
-import java.io.Serializable;
-
 public class DomainController {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
@@ -263,7 +261,7 @@ public class DomainController {
     }
 
     public void updateAdministrator(Administrator administrator) {
-        administratorRepository.remove(administrator);
+        administratorRepository.update(administrator);
     }
 
     public void removeAdministrator(Administrator administrator) {
