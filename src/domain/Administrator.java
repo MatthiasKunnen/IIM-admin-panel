@@ -109,9 +109,6 @@ public class Administrator implements Serializable, IEntity {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
-    /**
-     * Protected empty JPA constructor.
-     */
     public Administrator() {
 
     }
