@@ -8,6 +8,8 @@ import util.ImmutabilityHelper;
 
 import java.util.List;
 
+import static util.ImmutabilityHelper.copyDefensively;
+
 public class LoadedRepository <E extends IEntity> extends Repository<E> {
 
     private boolean isLoaded = false;
@@ -26,6 +28,39 @@ public class LoadedRepository <E extends IEntity> extends Repository<E> {
         load();
         return FXCollections.unmodifiableObservableList(eObservableList);
     }
+    //</editor-fold>
+
+    //<editor-fold desc="Actions" defaultstate="collapsed">
+
+    @Override
+    public E add(E add) {
+        if (isLoaded){
+            return super.add(add);
+        }else{
+            E toSave = copyDefensively(add);
+            persistence.persist(toSave);
+            return copyDefensively(toSave);
+        }
+    }
+
+    @Override
+    public void update(E update) {
+        if (isLoaded){
+            super.update(update);
+        }else{
+            persistence.merge(copyDefensively(update));
+        }
+    }
+
+    @Override
+    public void remove(E e) {
+        if (isLoaded){
+            super.remove(e);
+        }else{
+            persistence.remove(copyDefensively(e));
+        }
+    }
+
     //</editor-fold>
 
     //<editor-fold desc="Protected actions" defaultstate="collapsed">
