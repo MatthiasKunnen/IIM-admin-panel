@@ -10,7 +10,7 @@ import java.util.List;
 
 import static util.ImmutabilityHelper.copyDefensively;
 
-public class LoadedRepository <E extends IEntity> extends Repository<E> {
+public abstract class LoadedRepository <E extends IEntity> extends Repository<E> {
 
     private boolean isLoaded = false;
     private Class<E> eClass;
