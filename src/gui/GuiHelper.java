@@ -116,15 +116,17 @@ public class GuiHelper {
         ctf.setTooltip(new Tooltip(message));
     }
 
-    public static void hideError(TextField ctf) {
-        Node set = new Pane();
-        if (ctf instanceof CustomTextField) {
-            ((CustomTextField) ctf).setRight(set);
-        } else if (ctf instanceof CustomPasswordField) {
-            ((CustomPasswordField) ctf).setRight(set);
+    public static void hideError(TextField... ctf) {
+        for(TextField tf:ctf){
+            Node set = new Pane();
+            if (tf instanceof CustomTextField) {
+                ((CustomTextField) tf).setRight(set);
+            } else if (tf instanceof CustomPasswordField) {
+                ((CustomPasswordField) tf).setRight(set);
+            }
+            resetTextfieldColorCss(tf);
+            tf.setTooltip(null);
         }
-        resetTextfieldColorCss(ctf);
-        ctf.setTooltip(null);
     }
 
     private static void resetTextfieldColorCss(TextField tf) {
