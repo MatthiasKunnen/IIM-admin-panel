@@ -91,6 +91,7 @@ public class TempController<E> extends AnchorPane {
     //<editor-fold desc="Public actions" defaultstate="collapsed">
 
     public void addManagedCustomTextField(String key, ValidatedFieldInterface<E> managedCustomTextField) {
+        managedCustomTextField.getNode().setOnAction(this::save);
         this.managedCustomTextFields.put(key, managedCustomTextField);
         this.vbNodes.getChildren().add(managedCustomTextField.getNode());
     }
