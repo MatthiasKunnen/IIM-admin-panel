@@ -32,7 +32,7 @@ public class MaterialRepository extends Repository<Material> {
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
     public MaterialRepository(PersistenceEnforcer persistence) {
-        super(persistence);
+        super(persistence, Material.class);
         List<Material> initialize = persistence.retrieve(Material.class);
         this.eList = new ArrayList<>(initialize);
         this.materialIdentifiers = new ArrayList<>(initialize

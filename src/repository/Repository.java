@@ -14,15 +14,18 @@ import static util.ImmutabilityHelper.copyCollectionDefensively;
 import static util.ImmutabilityHelper.copyDefensively;
 
 public abstract class Repository<E extends IEntity> {
+
     //<editor-fold desc="Declarations" defaultstate="collapsed">
     protected PersistenceEnforcer persistence;
     protected List<E> eList;
     protected ObservableList<E> eObservableList;
+    private Class<E> eClass;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
-    public Repository(PersistenceEnforcer persistence) {
+    public Repository(PersistenceEnforcer persistence, Class<E> eClass) {
+        this.eClass = eClass;
         this.persistence = persistence;
         this.eList = new ArrayList<>();
         this.eObservableList = FXCollections.observableList(eList);
@@ -66,7 +69,7 @@ public abstract class Repository<E extends IEntity> {
      */
     public void remove(E e) {
         E remove = getItemByIdForced(e.getId(), String.format("Cannot remove a nonexistent %s.", getClass().getSimpleName()));
-        persistence.remove(remove);
+        persistence.remove(persistence.getReference(eClass, e.getId()));
         removeItem(remove);
     }
     //</editor-fold>
@@ -109,6 +112,10 @@ public abstract class Repository<E extends IEntity> {
     protected void removeItem(E remove) {
         this.eList.removeIf(e-> e.getId() == remove.getId());
         this.eObservableList.removeIf(e-> e.getId() == remove.getId());
+    }
+
+    protected Class<E> getRepoItemClass(){
+        return this.eClass;
     }
     //</editor-fold>
 }

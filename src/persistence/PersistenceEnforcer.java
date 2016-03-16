@@ -109,6 +109,10 @@ public class PersistenceEnforcer {
     }
     //</editor-fold>
 
+    public <T> T getReference(Class<T> aClass, Object id){
+        return manager.getReference(aClass, id);
+    }
+
     private void startTransaction() {
         if (!manager.getTransaction().isActive())
             manager.getTransaction().begin();

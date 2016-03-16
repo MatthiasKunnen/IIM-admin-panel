@@ -12,13 +12,13 @@ import static util.ImmutabilityHelper.copyDefensively;
 
 public abstract class LoadedRepository <E extends IEntity> extends Repository<E> {
 
+    //<editor-fold desc="Declarations" defaultstate="collapsed">
     private boolean isLoaded = false;
-    private Class<E> eClass;
+    //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public LoadedRepository(PersistenceEnforcer persistence, Class<E> eClass) {
-        super(persistence);
-        this.eClass = eClass;
+        super(persistence, eClass);
     }
     //</editor-fold>
 
@@ -67,7 +67,7 @@ public abstract class LoadedRepository <E extends IEntity> extends Repository<E>
 
     protected void load(){
         if (!isLoaded){
-            eList = persistence.retrieve(eClass);
+            eList = persistence.retrieve(getRepoItemClass());
             eObservableList = FXCollections.observableList((List<E>) ImmutabilityHelper.copyCollectionDefensively(eList));
             isLoaded = true;
         }
