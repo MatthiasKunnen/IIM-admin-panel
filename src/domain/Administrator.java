@@ -126,6 +126,7 @@ public class Administrator implements Serializable, IEntity {
         this.hash = administrator.hash;
         this.setName(administrator.name);
         this.permissions = new HashSet<>(administrator.getPermissions());
+        this.suspended = administrator.suspended;
     }
     //</editor-fold>
 }
