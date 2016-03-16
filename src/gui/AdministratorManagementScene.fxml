@@ -2,13 +2,14 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<fx:root type="HBox" prefHeight="252.0" prefWidth="728.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.65"
+<fx:root prefHeight="252.0" prefWidth="728.0" spacing="10.0" type="HBox" xmlns="http://javafx.com/javafx/8.0.65"
          xmlns:fx="http://javafx.com/fxml/1">
     <children>
         <VBox fx:id="vbAdministratorsWrapper" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="191.0"
@@ -19,15 +20,16 @@
                         <Font size="16.0"/>
                     </font>
                 </Label>
-                <Button fx:id="btnAddAdministrator" mnemonicParsing="false"
-                        onAction="#btnAddAdministrator_Clicked" text="Voeg administrator toe"/>
+                <Button fx:id="btnAddAdministrator" mnemonicParsing="false" onAction="#btnAddAdministrator_Clicked"
+                        text="Voeg administrator toe"/>
                 <ListView fx:id="lvAdministrators" prefHeight="293.0" prefWidth="61.0" VBox.vgrow="ALWAYS"/>
             </children>
             <padding>
                 <Insets left="5.0" right="5.0"/>
             </padding>
         </VBox>
-        <VBox fx:id="vbCurrentAdministratorProperties" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="224.0" spacing="10.0" HBox.hgrow="ALWAYS">
+        <VBox fx:id="vbCurrentAdministratorProperties" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="224.0"
+              spacing="10.0" HBox.hgrow="ALWAYS">
             <children>
                 <Label text="Eigenschappen">
                     <font>
@@ -47,13 +49,22 @@
                 <Insets left="5.0" right="5.0"/>
             </padding>
         </VBox>
-        <VBox fx:id="vbPermissionsWrapper" alignment="TOP_CENTER" prefHeight="316.0" prefWidth="214.0" spacing="10.0">
+        <VBox fx:id="vbPermissionsWrapper" prefHeight="316.0" prefWidth="214.0" spacing="10.0">
             <children>
-                <Label contentDisplay="TOP" text="Rechten">
-                    <font>
-                        <Font size="16.0"/>
-                    </font>
-                </Label>
+                <HBox alignment="CENTER">
+                    <children>
+                        <Label contentDisplay="TOP" text="Rechten">
+                            <font>
+                                <Font size="16.0"/>
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <CheckBox fx:id="cbIsActive" visible="false" mnemonicParsing="false" text="Gebruiker actief">
+                    <VBox.margin>
+                        <Insets left="5.0" right="5.0"/>
+                    </VBox.margin>
+                </CheckBox>
                 <VBox fx:id="vbPermissions" prefHeight="261.0" prefWidth="140.0" spacing="10.0">
                     <padding>
                         <Insets left="5.0" right="5.0"/>
