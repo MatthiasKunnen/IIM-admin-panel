@@ -29,7 +29,10 @@ public class ReservationDetail implements Serializable, IEntity {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
-    public ReservationDetail() {
+    /**
+     * Empty JPA constructor
+     */
+    protected ReservationDetail() {
     }
 
     public ReservationDetail(ReservationDetail rd){
