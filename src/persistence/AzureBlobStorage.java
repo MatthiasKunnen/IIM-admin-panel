@@ -2,9 +2,7 @@ package persistence;
 
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.*;
 import exceptions.AzureException;
 import exceptions.CouldNotAccesContainer;
 import exceptions.CouldNotDeleteFileException;
@@ -67,7 +65,13 @@ public class AzureBlobStorage {
             CloudBlobClient serviceClient = account.createCloudBlobClient();
 
             CloudBlobContainer container = serviceClient.getContainerReference(containerName);
-            container.createIfNotExists();
+
+            if (container.createIfNotExists()){
+                BlobContainerPermissions bcp = new BlobContainerPermissions();
+                bcp.setPublicAccess(BlobContainerPublicAccessType.BLOB);
+                container.uploadPermissions(bcp);
+            }
+
             return container;
         } catch (URISyntaxException | InvalidKeyException | StorageException e) {
             throw new CouldNotAccesContainer(String.format("Could not access container: %s", containerName), e);
