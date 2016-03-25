@@ -134,6 +134,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     //</editor-fold>
+
     //<editor-fold desc="Actions" defaultstate="collapsed">
     @Override
     public String toString() {
@@ -151,7 +152,6 @@ public class Reservation implements Serializable, IEntity {
     public void addAllReservationsDetails(List<ReservationDetail> theDetails) {
         theDetails.forEach(d -> ((ReservationDetail) d).setReservation(this));
         this.reservationDetails.addAll(theDetails);
-
     }
 
     public void addReservationDetail(ReservationDetail detail) {
@@ -161,13 +161,20 @@ public class Reservation implements Serializable, IEntity {
 
     public void removeAllReservationsDetails(List<ReservationDetail> details) {
         this.reservationDetails.removeAll(details);
-
     }
 
     public void removerReservationDetail(ReservationDetail detail) {
         this.reservationDetails.remove(detail);
-
     }
 
+    @Transient
+    public boolean isCompleted(){
+        return reservationDetails.stream().allMatch(ReservationDetail::isBroughtBack);
+    }
+
+    @Transient
+    public boolean isRentedOutCompletely(){
+        return reservationDetails.stream().allMatch(ReservationDetail::isPickedUp);
+    }
     //</editor-fold>
 }

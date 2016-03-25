@@ -101,9 +101,9 @@ public class ReservationDetail implements Serializable, IEntity {
         this.pickUpDate = pickUpDate;
     }
 
-    //</editor-fold>
-
-    //<editor-fold desc="Actions" defaultstate="collapsed">
+    public boolean isPickedUp(){
+        return this.pickUpDate != null;
+    }
 
     //</editor-fold>
 
