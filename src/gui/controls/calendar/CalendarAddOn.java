@@ -5,9 +5,10 @@
  */
 package gui.controls.calendar;
 
+import javafx.scene.Node;
+
 import java.time.LocalDate;
 import java.util.HashMap;
-import javafx.scene.Node;
 
 /**
  *

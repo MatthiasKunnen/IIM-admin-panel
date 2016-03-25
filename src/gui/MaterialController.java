@@ -6,6 +6,7 @@ import exceptions.InvalidPriceException;
 import gui.controls.GuiHelper;
 import gui.controls.options.CustomOptionsController;
 import javafx.application.Platform;
+import javafx.beans.Observable;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -20,10 +21,7 @@ import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -45,9 +43,6 @@ import java.util.stream.Collectors;
 
 import static gui.controls.GuiHelper.*;
 import static java.util.stream.Collectors.groupingBy;
-
-import javafx.beans.Observable;
-import javafx.scene.layout.StackPane;
 
 public class MaterialController extends VBox {
 
