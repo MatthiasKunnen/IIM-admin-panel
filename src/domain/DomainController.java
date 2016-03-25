@@ -240,6 +240,10 @@ public class DomainController {
         return res;
     }
     
+    private MaterialIdentifier findfreeIdentiiers(Material m, Reservation res){
+        
+    }
+    
 
     public Reservation addReservation(Reservation reservation) {
         return this.reservationRepository.add(reservation);
