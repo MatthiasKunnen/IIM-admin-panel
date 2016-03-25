@@ -4,6 +4,8 @@ import domain.DomainController;
 import domain.MaterialIdentifier;
 import domain.Reservation;
 import domain.ReservationDetail;
+import gui.controls.GuiHelper;
+import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

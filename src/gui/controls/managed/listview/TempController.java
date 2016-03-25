@@ -1,6 +1,7 @@
 package gui.controls.managed.listview;
 
 import gui.controls.GuiHelper;
+import gui.controls.managed.textfield.ValidatedFieldInterface;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.collections.ObservableList;
@@ -16,6 +17,7 @@ import javafx.scene.layout.VBox;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BooleanSupplier;
 import java.util.function.Function;
 import java.util.function.Predicate;

@@ -1,7 +1,7 @@
 package gui.controls.options;
 
 import exceptions.NodeAlreadyExistsException;
-import gui.GuiHelper;
+import gui.controls.GuiHelper;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.event.EventHandler;
