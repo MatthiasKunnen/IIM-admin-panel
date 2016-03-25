@@ -11,9 +11,13 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import static com.google.common.base.MoreObjects.toStringHelper;
+import java.util.ArrayList;
 
 @Entity
 @Access(AccessType.PROPERTY)
+//@NamedQueries({
+//    @NamedQuery(name = "Reservation.getByDate", query = "SELECT r FROM Reservation r WHERE lower(r.) = lower(:name)")
+//})
 public class Reservation implements Serializable, IEntity {
 
     //<editor-fold desc="Declarations" defaultstate="collapsed">
@@ -23,18 +27,24 @@ public class Reservation implements Serializable, IEntity {
     private int id;
     private User user;
     private List<ReservationDetail> reservationDetails;
-    private ObjectProperty<LocalDateTime>
-            creationDate = new SimpleObjectProperty<>(),
+    private ObjectProperty<LocalDateTime> creationDate = new SimpleObjectProperty<>(),
             startDate = new SimpleObjectProperty<>(),
             endDate = new SimpleObjectProperty<>();
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-
     /**
      * JPA-constructor
      */
     public Reservation() {
+    }
+
+    public Reservation(User user, LocalDateTime startDate, LocalDateTime endDate) {
+        this.user = user;
+        this.creationDate.set(LocalDateTime.now());
+        this.startDate.set(startDate);
+        this.endDate.set(endDate);
+        this.reservationDetails = new ArrayList<>();
     }
 
     /**
@@ -124,9 +134,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     //</editor-fold>
-
     //<editor-fold desc="Actions" defaultstate="collapsed">
-
     @Override
     public String toString() {
         return toStringHelper(this)
@@ -139,5 +147,27 @@ public class Reservation implements Serializable, IEntity {
                 .add("End date", endDate)
                 .toString();
     }
+
+    public void addAllReservationsDetails(List<ReservationDetail> theDetails) {
+        theDetails.forEach(d -> ((ReservationDetail) d).setReservation(this));
+        this.reservationDetails.addAll(theDetails);
+
+    }
+
+    public void addReservationDetail(ReservationDetail detail) {
+        this.reservationDetails.add(detail);
+        detail.setReservation(this);
+    }
+
+    public void removeAllReservationsDetails(List<ReservationDetail> details) {
+        this.reservationDetails.removeAll(details);
+
+    }
+
+    public void removerReservationDetail(ReservationDetail detail) {
+        this.reservationDetails.remove(detail);
+
+    }
+
     //</editor-fold>
 }

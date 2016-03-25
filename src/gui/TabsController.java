@@ -6,6 +6,7 @@ import domain.Firm;
 import domain.TargetGroup;
 import exceptions.InvalidEmailException;
 import gui.calendar.CalendarController;
+import gui.calendar.ReservationAddOn;
 import javafx.fxml.FXML;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -70,8 +71,10 @@ public class TabsController extends TabPane {
         overview.setDividerPosition(0, 0.33);
         overview.setDividerPosition(1, 0.66);
 
-        CalendarController cc = new CalendarController();
+        ReservationAddOn rao = new ReservationAddOn(dc, dc.getReservations());
+        CalendarController cc = new CalendarController(rao);
                
+        
         tOptions.setContent(cc);
         tAdd.setContent(overview);
     }

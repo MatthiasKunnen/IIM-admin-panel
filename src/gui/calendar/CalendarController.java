@@ -97,11 +97,16 @@ public class CalendarController extends VBox {
         initializeCalendar();
     }
 
-    public CalendarController(CalendarAddOn addOn){
+    public CalendarController(CalendarAddOn addOn) {
         this();
-        addOn.getNodes().keySet().forEach(k-> ((DatePane)findDatePane(k)).getChildren().add(addOn.getNodes().get(k)));
+        addOn.getNodes().keySet().forEach(k -> {
+            DatePane dp = (DatePane) findDatePane(k.toLocalDate());
+            if (dp != null) {
+                dp.getChildren().add(addOn.getNodes().get(k));
+            }
+        });
     }
-    
+
     public LocalDate getSelectedDate() {
         return selectedDate;
     }

@@ -89,5 +89,9 @@ public class User implements Serializable, IEntity {
                 .add("Telephone number", telNumber)
                 .toString();
     }
+    
+    public void sendEmail(String title, String text){
+        
+    }
     //</editor-fold>
 }

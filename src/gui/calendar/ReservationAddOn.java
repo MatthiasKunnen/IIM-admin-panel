@@ -1,86 +1,91 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gui.calendar;
 
 import domain.DomainController;
 import domain.Reservation;
-import gui.GuiHelper;
-import gui.ReservationController;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Iterator;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
-import javafx.geometry.Insets;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import javafx.stage.StageStyle;
+import org.eclipse.persistence.jpa.jpql.tools.model.ListChangeEvent;
 
-/**
- *
- * @author Evert
- */
 public class ReservationAddOn implements CalendarAddOn {
 
-    private HashMap<LocalDate, Node> theNodes;
+    private DomainController dc;
+    private Map<LocalDateTime, Node> theNodes;
 
-    public ReservationAddOn(DomainController dc, List<Reservation> reservations) {
-        HashMap<LocalDate,List<Reservation>> temp;
-        //temp = reservations.stream().collect(Collectors.groupingBy()));
+    public ReservationAddOn(DomainController dc, ObservableList<Reservation> reservations) {
+        this.dc = dc;
+
+        Map<LocalDateTime, List<Reservation>> temp = reservations.stream().collect(Collectors.groupingBy(r -> r.getStartDate()));
+        this.theNodes = temp.keySet().stream().collect(Collectors.toMap(k -> k, ke -> new ProgressBar(temp.get(ke))));
+        reservations.addListener(new ListChangeListener(){
+
+            @Override
+            public void onChanged(ListChangeListener.Change c) {
+                theNodes.entrySet().forEach(n-> ((ProgressBar)n).updateLabels());
+            }
+            
+        });
     }
 
     @Override
-    public HashMap<LocalDate, Node> getNodes() {
+    public Map<LocalDateTime, Node> getNodes() {
         return theNodes;
     }
 
-    class ReservationList extends VBox {
+    class ProgressBar extends HBox {
 
-        private DomainController dc;
+        private HBox green, red;
+        private Label lblGreen, lblRed;
 
-        public ReservationList(DomainController dc, List<Reservation> reservation) {
-            this.dc = dc;
+        List<Reservation> theList;
 
-            int counter = 0;
-            HBox hb = new HBox();
-            Iterator<Reservation> it = reservation.iterator();
+        public ProgressBar(List<Reservation> res) {
+            theList = res;
 
-            while (it.hasNext()) {
-                if (counter == 5) {
-                    this.getChildren().add(hb);
-                    hb = new HBox();
-                }
-                
-            }
+            lblGreen = new Label();
+            lblRed = new Label();
 
-            Node square = createNewsquare(it.next());
-            HBox.setMargin(square, new Insets(2, 2, 2, 2));
+            green = new HBox(lblGreen);
+            red = new HBox(lblRed);
 
-            hb.getChildren().add(square);
+            green.setAlignment(Pos.CENTER);
+            green.setStyle("-fx-background-color: #00AC00");
+            red.setAlignment(Pos.CENTER);
+            red.setStyle("-fx-background-color: #DC0004");
+
+            this.getChildren().addAll(green, red);
+            this.lookupAll(".split-pane-divider").stream().forEach(div -> div.setMouseTransparent(true));
+            updateLabels();
+
+            this.widthProperty().addListener(event -> {
+                updateLabels();
+            });
+            
+        }
+
+        private void updateLabels() {
+            double totalReservations = theList.size(),
+                    finished = Math.toIntExact(theList.stream().filter(r -> r.getReservationDetails().stream().allMatch(i -> i.isBroughtBack())).count()),
+                    notFinished = totalReservations - finished;
+
+            lblGreen.setText(String.format("%.0f", finished));
+            lblRed.setText(String.format("%.0f", notFinished));
+            green.maxWidthProperty().set(this.getWidth() * (finished / totalReservations));
+
         }
     }
 
-    private Node createNewsquare(Reservation r) {
-        AnchorPane pane = new AnchorPane();
-        pane.setStyle("-fx-background-color : #3DFF3A");
-
-        pane.setOnMouseClicked(event -> {
-//            Stage newStage = new Stage(StageStyle.DECORATED);
-//            newStage.setTitle(r.getUser().getEmail() + " " + r.getStartDate().format(GuiHelper.getDateTimeFormatter()) + " - IIM");
-//            Scene scene = new Scene(new ReservationController(dc, newStage, r));
-//            newStage.setScene(scene);
-//            newStage.show();
-        });
-
-        return pane;
-    }
 }
-
-
