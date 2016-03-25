@@ -4,6 +4,8 @@ import domain.DomainController;
 import domain.Material;
 import domain.Setting;
 import domain.Visibility;
+import gui.controls.GuiHelper;
+import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;

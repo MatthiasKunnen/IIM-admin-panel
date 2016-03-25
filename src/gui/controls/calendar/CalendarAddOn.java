@@ -1,4 +1,4 @@
-package gui.calendar;
+package gui.controls.calendar;
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -6,5 +6,5 @@ import javafx.scene.Node;
 
 public interface CalendarAddOn {
     
-    public Map<LocalDateTime,Node> getNodes();
+    Map<LocalDateTime,Node> getNodes();
 }

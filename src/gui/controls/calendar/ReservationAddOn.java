@@ -1,25 +1,22 @@
-package gui.calendar;
+package gui.controls.calendar;
 
 import domain.DomainController;
 import domain.Reservation;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
+import domain.ReservationDetail;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.SplitPane;
 import javafx.scene.layout.HBox;
-import org.eclipse.persistence.jpa.jpql.tools.model.ListChangeEvent;
 
+/**
+ * @author Evert
+ */
 public class ReservationAddOn implements CalendarAddOn {
 
     private DomainController dc;
@@ -27,17 +24,9 @@ public class ReservationAddOn implements CalendarAddOn {
 
     public ReservationAddOn(DomainController dc, ObservableList<Reservation> reservations) {
         this.dc = dc;
-
-        Map<LocalDateTime, List<Reservation>> temp = reservations.stream().collect(Collectors.groupingBy(r -> r.getStartDate()));
+        Map<LocalDateTime, List<Reservation>> temp = reservations.stream().collect(Collectors.groupingBy(Reservation::getStartDate));
         this.theNodes = temp.keySet().stream().collect(Collectors.toMap(k -> k, ke -> new ProgressBar(temp.get(ke))));
-        reservations.addListener(new ListChangeListener(){
-
-            @Override
-            public void onChanged(ListChangeListener.Change c) {
-                theNodes.entrySet().forEach(n-> ((ProgressBar)n).updateLabels());
-            }
-            
-        });
+        reservations.addListener((ListChangeListener<Reservation>) c -> theNodes.entrySet().forEach(n -> ((ProgressBar) n).updateLabels()));
     }
 
     @Override
@@ -73,12 +62,12 @@ public class ReservationAddOn implements CalendarAddOn {
             this.widthProperty().addListener(event -> {
                 updateLabels();
             });
-            
+
         }
 
         private void updateLabels() {
             double totalReservations = theList.size(),
-                    finished = Math.toIntExact(theList.stream().filter(r -> r.getReservationDetails().stream().allMatch(i -> i.isBroughtBack())).count()),
+                    finished = Math.toIntExact(theList.stream().filter(r -> r.getReservationDetails().stream().allMatch(ReservationDetail::isBroughtBack)).count()),
                     notFinished = totalReservations - finished;
 
             lblGreen.setText(String.format("%.0f", finished));

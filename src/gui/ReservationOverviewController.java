@@ -2,6 +2,7 @@ package gui;
 
 import domain.DomainController;
 import domain.Reservation;
+import gui.controls.GuiHelper;
 import javafx.collections.transformation.FilteredList;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;

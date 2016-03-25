@@ -3,6 +3,7 @@ package gui;
 
 import domain.DomainController;
 import exceptions.LoginException;
+import gui.controls.GuiHelper;
 import javafx.application.Platform;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;

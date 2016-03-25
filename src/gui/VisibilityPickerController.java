@@ -6,6 +6,7 @@
 package gui;
 
 import domain.Visibility;
+import gui.controls.GuiHelper;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;

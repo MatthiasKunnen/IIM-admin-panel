@@ -1,13 +1,15 @@
-package gui.calendar;
+package gui.controls.calendar;
 
-import gui.GuiHelper;
+import gui.controls.GuiHelper;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -16,8 +18,7 @@ import javafx.scene.shape.SVGPath;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.Optional;
-import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
+
 import static javafx.scene.layout.Priority.ALWAYS;
 
 public class CalendarController extends VBox {
