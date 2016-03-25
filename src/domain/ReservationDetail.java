@@ -47,9 +47,14 @@ public class ReservationDetail implements Serializable, IEntity {
         this.reservation = r;
     }
 
+        
     public ReservationDetail(MaterialIdentifier materialIdentifier, Reservation reservation) {
         this.materialIdentifier = materialIdentifier;
         this.reservation = reservation;
+    }
+    
+    public ReservationDetail(MaterialIdentifier identifier){
+        this.materialIdentifier = identifier;
     }
 
     //</editor-fold>
@@ -103,6 +108,6 @@ public class ReservationDetail implements Serializable, IEntity {
     //</editor-fold>
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
-
+    
     //</editor-fold>
 }

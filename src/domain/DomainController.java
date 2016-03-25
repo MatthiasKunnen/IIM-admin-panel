@@ -3,6 +3,9 @@ package domain;
 import exceptions.AzureException;
 import exceptions.LoginException;
 import exceptions.UnauthorizedException;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.*;
@@ -70,14 +73,13 @@ public class DomainController {
         return this.administratorRepository.getObservableItems();
     }
 
-    public ObservableList<Setting> getSettings(){
+    public ObservableList<Setting> getSettings() {
         return this.settingRepository.getObservableItems();
     }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
     //<editor-fold desc="Material" defaultstate="collapsed">
-
     /**
      * Saves a new {@link domain.Material} in the database.
      *
@@ -109,7 +111,7 @@ public class DomainController {
     /**
      * Updates the photo of a material.
      *
-     * @param material  the material.
+     * @param material the material.
      * @param imagePath the path of the image.
      * @throws AzureException
      */
@@ -137,7 +139,6 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Firm" defaultstate="collapsed">
-
     /**
      * Saves a new {@link domain.Firm} in the database.
      *
@@ -168,7 +169,6 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Curricular" defaultstate="collapsed">
-
     /**
      * Saves a new {@link domain.Curricular} in the database.
      *
@@ -199,7 +199,6 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="TargetGroup" defaultstate="collapsed">
-
     /**
      * Saves a new {@link domain.TargetGroup} in the database.
      *
@@ -230,6 +229,18 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Reservation" defaultstate="collapsed">
+    public Reservation createReservation(User user, LocalDateTime startDate, LocalDateTime endDate, List<Material> theMaterials) {
+        Reservation res = new Reservation(user, startDate, endDate);
+        List<ReservationDetail> details = new ArrayList<>();
+        theMaterials.forEach(m -> {
+
+        });
+        res.addAllReservationsDetails(details);
+        addReservation(res);
+        return res;
+    }
+    
+
     public Reservation addReservation(Reservation reservation) {
         return this.reservationRepository.add(reservation);
     }
@@ -269,8 +280,9 @@ public class DomainController {
     }
 
     public boolean hasPermission(Administrator.Permission permission) {
-        if (this.activeAdministrator == null)
+        if (this.activeAdministrator == null) {
             throw new UnauthorizedException("Er is geen gebruiker ingelogd!");
+        }
         return activeAdministrator.hasPermission(permission);
     }
 
