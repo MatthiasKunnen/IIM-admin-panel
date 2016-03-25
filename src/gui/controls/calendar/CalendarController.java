@@ -1,6 +1,6 @@
-package gui.calendar;
+package gui.controls.calendar;
 
-import gui.GuiHelper;
+import gui.controls.GuiHelper;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
