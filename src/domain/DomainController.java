@@ -3,9 +3,12 @@ package domain;
 import exceptions.AzureException;
 import exceptions.LoginException;
 import exceptions.UnauthorizedException;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javafx.collections.ObservableList;
 import persistence.PersistenceController;
 import repository.*;
@@ -80,6 +83,7 @@ public class DomainController {
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
     //<editor-fold desc="Material" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Material} in the database.
      *
@@ -111,7 +115,7 @@ public class DomainController {
     /**
      * Updates the photo of a material.
      *
-     * @param material the material.
+     * @param material  the material.
      * @param imagePath the path of the image.
      * @throws AzureException
      */
@@ -139,6 +143,7 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Firm" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Firm} in the database.
      *
@@ -169,6 +174,7 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Curricular" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.Curricular} in the database.
      *
@@ -199,6 +205,7 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="TargetGroup" defaultstate="collapsed">
+
     /**
      * Saves a new {@link domain.TargetGroup} in the database.
      *
@@ -239,11 +246,19 @@ public class DomainController {
         addReservation(res);
         return res;
     }
-    
-    private MaterialIdentifier findfreeIdentiiers(Material m, Reservation res){
-        
+
+    private List<MaterialIdentifier> findFreeIdentifiers(Material m, Reservation res) {
+        return m.getIdentifiers() //For all identifiers
+                .stream()
+                .filter(mi -> !reservationRepository.getObservableItems()
+                        .stream()
+                        .filter(r -> r.getStartDate().isBefore(res.getStartDate()) && !r.getEndDate().isBefore(res.getStartDate())) //Where the start date of the iterated reservation is before the new reservation and the end date is not before the start of the new reservation
+                        .anyMatch(r -> r.getReservationDetails()
+                                .stream()
+                                .anyMatch(rd -> rd.getMaterialIdentifier().equals(mi) && !rd.isBroughtBack()))) //Where the iterated identifier is equal to the identifier that is being checked upon AND the item is not brought back
+                .collect(Collectors.toList());
     }
-    
+
 
     public Reservation addReservation(Reservation reservation) {
         return this.reservationRepository.add(reservation);

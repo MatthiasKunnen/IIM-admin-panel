@@ -150,7 +150,7 @@ public class Reservation implements Serializable, IEntity {
     }
 
     public void addAllReservationsDetails(List<ReservationDetail> theDetails) {
-        theDetails.forEach(d -> ((ReservationDetail) d).setReservation(this));
+        theDetails.forEach(d -> d.setReservation(this));
         this.reservationDetails.addAll(theDetails);
     }
 
