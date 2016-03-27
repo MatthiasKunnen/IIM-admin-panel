@@ -5,9 +5,9 @@
          prefWidth="900.0" tabClosingPolicy="UNAVAILABLE" type="TabPane" xmlns="http://javafx.com/javafx/8"
          xmlns:fx="http://javafx.com/fxml/1">
     <tabs>
-        <Tab fx:id="tMaterial" closable="false" text="Materialen"/>
-        <Tab fx:id="tReservations" closable="false" text="Reservaties"/>
-        <Tab fx:id="tAdd" text="Categorieën"/>
+        <Tab fx:id="tMaterial" text="Materialen"/>
+        <Tab fx:id="tReservations" text="Reservaties"/>
+        <Tab fx:id="tCategories" text="Categorieën"/>
         <Tab fx:id="tabAdministratorManagement" text="Administrators beheren"/>
         <Tab fx:id="tOptions" text="Opties"/>
     </tabs>

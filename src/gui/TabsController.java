@@ -28,7 +28,7 @@ import java.io.IOException;
 public class TabsController extends TabPane {
 
     @FXML
-    private Tab tAdd;
+    private Tab tCategories;
 
     @FXML
     private Tab tMaterial;
@@ -46,8 +46,8 @@ public class TabsController extends TabPane {
     private Stage stage;
 
     public TabsController(DomainController dc, Stage theStage) {
-        this.stage = theStage;
         this.dc = dc;
+        this.stage = theStage;
 
         try {
             GuiHelper.loadFXML("Tabs.fxml", this);
@@ -57,12 +57,14 @@ public class TabsController extends TabPane {
 
         this.tabAdministratorManagement.setContent(new AdministratorManagementScene(dc, theStage));
 
-        OverviewController mc = new OverviewController(dc);
-        tMaterial.setContent(mc);
-        ReservationOverviewController rc = new ReservationOverviewController(dc);
-        tReservations.setContent(rc);
+        OverviewController oc = new OverviewController(dc);
+        tMaterial.setContent(oc);
 
-        SplitPane overview = new SplitPane();
+        ReservationOverviewController roc = new ReservationOverviewController(dc);
+        tReservations.setContent(roc);
+
+        SplitPane spOverview = new SplitPane();
+
         TempController<Firm> tcFirm = createFirmOverview();
         TempController<Curricular> tcCurricular = createCurricularOverview();
         TempController<TargetGroup> tcTargetGroup = createTargetGroupOverview();
@@ -70,16 +72,15 @@ public class TabsController extends TabPane {
         tcCurricular.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
         tcTargetGroup.getListViewMaxHeightProperty().bind(tcFirm.getListViewHeightProperty());
 
-        overview.getItems().addAll(tcFirm, tcCurricular, tcTargetGroup);
-        overview.setDividerPosition(0, 0.33);
-        overview.setDividerPosition(1, 0.66);
+        spOverview.getItems().addAll(tcFirm, tcCurricular, tcTargetGroup);
+        spOverview.setDividerPosition(0, 0.33);
+        spOverview.setDividerPosition(1, 0.66);
 
         ReservationAddOn rao = new ReservationAddOn(dc, dc.getReservations());
         CalendarController cc = new CalendarController(rao);
-               
-        
+
         tOptions.setContent(cc);
-        tAdd.setContent(overview);
+        tCategories.setContent(spOverview);
     }
 
     private TempController<TargetGroup> createTargetGroupOverview() {
