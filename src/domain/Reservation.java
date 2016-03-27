@@ -15,9 +15,6 @@ import java.util.ArrayList;
 
 @Entity
 @Access(AccessType.PROPERTY)
-//@NamedQueries({
-//    @NamedQuery(name = "Reservation.getByDate", query = "SELECT r FROM Reservation r WHERE lower(r.) = lower(:name)")
-//})
 public class Reservation implements Serializable, IEntity {
 
     //<editor-fold desc="Declarations" defaultstate="collapsed">
@@ -159,12 +156,9 @@ public class Reservation implements Serializable, IEntity {
         detail.setReservation(this);
     }
 
-    public void removeAllReservationsDetails(List<ReservationDetail> details) {
-        this.reservationDetails.removeAll(details);
-    }
-
-    public void removerReservationDetail(ReservationDetail detail) {
+    public void removeReservationDetail(ReservationDetail detail) {
         this.reservationDetails.remove(detail);
+        detail.setReservation(null);
     }
 
     @Transient
