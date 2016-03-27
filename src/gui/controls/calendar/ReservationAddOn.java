@@ -2,11 +2,13 @@ package gui.controls.calendar;
 
 import domain.DomainController;
 import domain.Reservation;
+import domain.ReservationDetail;
+
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import domain.ReservationDetail;
+
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -59,10 +61,7 @@ public class ReservationAddOn implements CalendarAddOn {
             this.lookupAll(".split-pane-divider").stream().forEach(div -> div.setMouseTransparent(true));
             updateLabels();
 
-            this.widthProperty().addListener(event -> {
-                updateLabels();
-            });
-
+            this.widthProperty().addListener(event -> updateLabels());
         }
 
         private void updateLabels() {
@@ -73,7 +72,6 @@ public class ReservationAddOn implements CalendarAddOn {
             lblGreen.setText(String.format("%.0f", finished));
             lblRed.setText(String.format("%.0f", notFinished));
             green.maxWidthProperty().set(this.getWidth() * (finished / totalReservations));
-
         }
     }
 
