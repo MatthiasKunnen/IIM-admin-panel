@@ -21,11 +21,9 @@ import javafx.scene.layout.HBox;
  */
 public class ReservationAddOn implements CalendarAddOn {
 
-    private DomainController dc;
     private Map<LocalDateTime, Node> theNodes;
 
-    public ReservationAddOn(DomainController dc, ObservableList<Reservation> reservations) {
-        this.dc = dc;
+    public ReservationAddOn(ObservableList<Reservation> reservations) {
         Map<LocalDateTime, List<Reservation>> temp = reservations.stream().collect(Collectors.groupingBy(Reservation::getStartDate));
         this.theNodes = temp.keySet().stream().collect(Collectors.toMap(k -> k, ke -> new ProgressBar(temp.get(ke))));
         reservations.addListener((ListChangeListener<Reservation>) c -> theNodes.entrySet().forEach(n -> ((ProgressBar) n).updateLabels()));

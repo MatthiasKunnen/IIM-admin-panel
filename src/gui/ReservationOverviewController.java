@@ -57,7 +57,7 @@ public class ReservationOverviewController extends VBox {
         this.dc = dc;
         try {
             GuiHelper.loadFXML("ReservationOverview.fxml", this);
-            ReservationAddOn rao = new ReservationAddOn(dc, dc.getReservations());
+            ReservationAddOn rao = new ReservationAddOn(dc.getReservations());
             CalendarController cc = new CalendarController(rao);
             getChildren().add(0, cc);
             VBox.setVgrow(cc, Priority.ALWAYS);
