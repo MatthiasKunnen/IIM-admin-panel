@@ -5,3 +5,11 @@
 .warning {
     -fx-control-inner-background: #FFC6A6;
 }
+
+.table-view{
+    -fx-focus-color: transparent;
+}
+
+.table-column{
+    -fx-alignment: center;
+}
