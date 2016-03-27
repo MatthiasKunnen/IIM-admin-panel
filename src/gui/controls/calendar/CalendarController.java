@@ -101,7 +101,7 @@ public class CalendarController extends VBox {
     public CalendarController(CalendarAddOn addOn) {
         this();
         addOn.getNodes().keySet().forEach(k -> {
-            DatePane dp = (DatePane) findDatePane(k.toLocalDate());
+            DatePane dp = findDatePane(k.toLocalDate());
             if (dp != null) {
                 dp.getChildren().add(addOn.getNodes().get(k));
             }
@@ -193,21 +193,23 @@ public class CalendarController extends VBox {
             newPane.select();
             this.selectedDate = newPane.getDate();
         }
-
     }
 
     private DatePane findDatePane(LocalDate ld) {
-        Optional o = gpDates.getChildren().stream().filter(p -> p.getClass() == DatePane.class).filter(p -> ((DatePane) p).getDate().equals(ld)).findFirst();
-        return (o.isPresent() ? (DatePane) o.get() : null);
+        return gpDates.getChildren().stream()
+                .filter(p -> p instanceof DatePane)
+                .map(n -> (DatePane) n)
+                .filter(dp -> dp.getDate().equals(ld))
+                .findFirst()
+                .orElse(null);
     }
 
     private DatePane getNodeFromGridPane(int col, int row) {
-        for (Node node : gpDates.getChildren()) {
-            if (GridPane.getColumnIndex(node) == col && GridPane.getRowIndex(node) == row) {
-                return (DatePane) node;
-            }
-        }
-        return null;
+        return gpDates.getChildren().stream()
+                .filter(n -> n instanceof DatePane && GridPane.getColumnIndex(n) == col && GridPane.getRowIndex(n) == row)
+                .map(n -> (DatePane) n)
+                .findAny()
+                .orElse(null);
     }
 
     class DatePane extends VBox {
@@ -281,7 +283,7 @@ public class CalendarController extends VBox {
         public void giveStandardLayout(DatePane dp) {
             dp.getLabel().setTextFill(textColor);
             if (backgroundColor != null) {
-                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColor));
+                dp.setStyle("-fx-background-color: " + colorToHex(backgroundColor));
             } else {
                 dp.setStyle("-fx-background-color: none");
             }
@@ -291,7 +293,7 @@ public class CalendarController extends VBox {
         public void giveSelectedLayout(DatePane dp) {
             dp.getLabel().setTextFill(textColorSelected);
             if (backgroundColorSelected != null) {
-                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColorSelected));
+                dp.setStyle("-fx-background-color: " + colorToHex(backgroundColorSelected));
             } else {
                 dp.setStyle("-fx-background-color: none");
             }
@@ -300,7 +302,7 @@ public class CalendarController extends VBox {
         public void giveHoverLayout(DatePane dp) {
             dp.getLabel().setTextFill(textColorHover);
             if (backgroundColorSelected != null) {
-                dp.setStyle("-fx-background-color: " + colortoHex(backgroundColorHover));
+                dp.setStyle("-fx-background-color: " + colorToHex(backgroundColorHover));
             } else {
                 dp.setStyle("-fx-background-color: none");
             }
@@ -321,7 +323,7 @@ public class CalendarController extends VBox {
             this.backgroundColorHover = backgroundColor;
         }
 
-        private String colortoHex(Color p) {
+        private String colorToHex(Color p) {
             return String.format("#%02X%02X%02X",
                     (int) (p.getRed() * 255),
                     (int) (p.getGreen() * 255),
