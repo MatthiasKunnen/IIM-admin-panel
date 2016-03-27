@@ -1,12 +1,12 @@
 package gui.controls.calendar;
 
 import gui.controls.GuiHelper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
-import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -17,7 +17,6 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.Optional;
 
 import static javafx.scene.layout.Priority.ALWAYS;
 
@@ -38,13 +37,14 @@ public class CalendarController extends VBox {
 
     private LocalDate currentDate;
     private LocalDate selectedMonth;
-    private LocalDate selectedDate;
+    private SimpleObjectProperty<LocalDate> selectedDate;
 
     private DateLayout standardLayout;
     private DateLayout currentDateLayout;
     private DateLayout otherMonthLayout;
 
     public CalendarController() {
+        selectedDate = new SimpleObjectProperty<>();
 
         try {
             GuiHelper.loadFXML("Calendar.fxml", this);
@@ -108,7 +108,7 @@ public class CalendarController extends VBox {
         });
     }
 
-    public LocalDate getSelectedDate() {
+    public SimpleObjectProperty<LocalDate> selectedDateProperty() {
         return selectedDate;
     }
 
@@ -129,21 +129,16 @@ public class CalendarController extends VBox {
 
         for (int y = 1; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
-
                 DatePane sp = new DatePane();
 
-                sp.setOnMouseClicked(event -> {
-                    setSelection(sp.getDate());
-                });
-
+                sp.setOnMouseClicked(event -> setSelection(sp.getDate()));
                 sp.setOnMouseEntered(event -> {
-                    if (!sp.getDate().equals(this.selectedDate)) {
+                    if (!sp.getDate().equals(this.selectedDate.getValue())) {
                         sp.hover();
                     }
                 });
-
                 sp.setOnMouseExited(event -> {
-                    if (!sp.getDate().equals(this.selectedDate)) {
+                    if (!sp.getDate().equals(this.selectedDate.getValue())) {
                         sp.clear();
                     }
                 });
@@ -179,28 +174,28 @@ public class CalendarController extends VBox {
             }
         }
 
-        setSelection(this.selectedDate);
+        setSelection(this.selectedDate.getValue());
     }
 
     private void setSelection(LocalDate ld) {
         DatePane newPane = findDatePane(ld);
-        DatePane oldPane = findDatePane(this.selectedDate);
+        DatePane oldPane = findDatePane(this.selectedDate.getValue());
 
         if (oldPane != null) {
             oldPane.clear();
         }
         if (newPane != null) {
             newPane.select();
-            this.selectedDate = newPane.getDate();
+            this.selectedDate.setValue(newPane.getDate());
         }
     }
 
     private DatePane findDatePane(LocalDate ld) {
-        return gpDates.getChildren().stream()
+        return ld == null ? null : gpDates.getChildren().stream()
                 .filter(p -> p instanceof DatePane)
                 .map(n -> (DatePane) n)
-                .filter(dp -> dp.getDate().equals(ld))
-                .findFirst()
+                .filter(dp -> dp.getDate().isEqual(ld))
+                .findAny()
                 .orElse(null);
     }
 
