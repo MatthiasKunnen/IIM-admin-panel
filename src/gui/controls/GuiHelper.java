@@ -11,6 +11,7 @@ import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
@@ -113,7 +114,7 @@ public class GuiHelper {
     }
 
     public static void hideError(TextField... ctf) {
-        for(TextField tf:ctf){
+        for (TextField tf : ctf) {
             Node set = new Pane();
             if (tf instanceof CustomTextField) {
                 ((CustomTextField) tf).setRight(set);
@@ -145,6 +146,10 @@ public class GuiHelper {
 
     public static DateTimeFormatter getTimeFormatter() {
         return TIME_FORMATTER;
+    }
+
+    public static LocalDateTime parseStringToLocalDateTime(String date) {
+        return LocalDateTime.parse(date, getDateTimeFormatter());
     }
     //</editor-fold>
 

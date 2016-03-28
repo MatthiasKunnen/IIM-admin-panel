@@ -8,11 +8,11 @@ import gui.controls.calendar.CalendarController;
 import gui.controls.calendar.ReservationAddOn;
 import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
@@ -22,7 +22,6 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.stream.Collectors;
 
 
@@ -39,7 +38,7 @@ public class ReservationOverviewController extends VBox {
     private TableColumn<Reservation, Hyperlink> tcBy;
 
     @FXML
-    private TableColumn<Reservation, LocalDateTime> tcUntil;
+    private TableColumn<Reservation, String> tcUntil;
 
     @FXML
     private TableColumn<Reservation, CheckBox> tcCompleted;
@@ -111,7 +110,8 @@ public class ReservationOverviewController extends VBox {
             cb.setSelected(param.getValue().isCompleted());
             return new SimpleObjectProperty<>(cb);
         });
-        tcUntil.setCellValueFactory(new PropertyValueFactory<>("endDate"));
+        tcUntil.setCellValueFactory(param -> new SimpleStringProperty(GuiHelper.getDateTimeFormatter().format(param.getValue().getEndDate())));
+        tcUntil.setComparator((o1, o2) -> GuiHelper.parseStringToLocalDateTime(o1).compareTo(GuiHelper.parseStringToLocalDateTime(o2)));
     }
     //</editor-fold>
 
