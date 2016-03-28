@@ -76,7 +76,7 @@ public class TabsController extends TabPane {
         spOverview.setDividerPosition(0, 0.33);
         spOverview.setDividerPosition(1, 0.66);
 
-        ReservationAddOn rao = new ReservationAddOn(dc, dc.getReservations());
+        ReservationAddOn rao = new ReservationAddOn(dc.getReservations());
         CalendarController cc = new CalendarController(rao);
 
         tOptions.setContent(cc);
