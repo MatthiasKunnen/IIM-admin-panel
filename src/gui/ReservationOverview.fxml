@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.CheckBox?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
+<?import java.lang.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0"
-         prefWidth="559.0" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65"
-         xmlns:fx="http://javafx.com/fxml/1" stylesheets="@style/form.css">
-    <padding>
-        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
-    </padding>
-    <children>
-        <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
-            <children>
-                <CheckBox fx:id="cbShowCompletedReservations" mnemonicParsing="false"
-                          text="Toon afgehandelde reservaties"/>
-            </children>
-        </HBox>
-        <TableView fx:id="tvReservations" minHeight="200.0" prefWidth="200.0">
-            <columns>
-                <TableColumn fx:id="tcBy" minWidth="80.0" prefWidth="-1.0" text="Door"/>
-                <TableColumn fx:id="tcUntil" minWidth="80.0" prefWidth="-1.0" text="Tot"/>
-                <TableColumn fx:id="tcCompleted" minWidth="80.0" prefWidth="-1.0" text="Afgehandeld"/>
-                <TableColumn fx:id="tcActions" minWidth="80.0" prefWidth="-1.0" text="Acties"/>
-            </columns>
-            <columnResizePolicy>
-                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-            </columnResizePolicy>
-        </TableView>
-    </children>
+
+<fx:root type="AnchorPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0" prefWidth="559.0" spacing="10.0" stylesheets="@style/form.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+          <padding>
+              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </padding>
+          <children>
+              <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
+                  <children>
+                      <CheckBox fx:id="cbShowCompletedReservations" mnemonicParsing="false" text="Toon afgehandelde reservaties" />
+                  </children>
+              </HBox>
+              <TableView fx:id="tvReservations" minHeight="200.0" prefWidth="200.0">
+                  <columns>
+                      <TableColumn fx:id="tcBy" minWidth="80.0" prefWidth="-1.0" text="Door" />
+                      <TableColumn fx:id="tcUntil" minWidth="80.0" prefWidth="-1.0" text="Tot" />
+                      <TableColumn fx:id="tcCompleted" minWidth="80.0" prefWidth="-1.0" text="Afgehandeld" />
+                      <TableColumn fx:id="tcActions" minWidth="80.0" prefWidth="-1.0" text="Acties" />
+                  </columns>
+                  <columnResizePolicy>
+                      <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+              </TableView>
+          </children>
+      </VBox>
+   </children>
 </fx:root>

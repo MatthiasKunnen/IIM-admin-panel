@@ -23,9 +23,10 @@ import javafx.util.Callback;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
+import javafx.scene.layout.AnchorPane;
 
 
-public class ReservationOverviewController extends VBox {
+public class ReservationOverviewController extends AnchorPane {
 
     //<editor-fold desc="FXML variables" defaultstate="collapsed">
     @FXML
