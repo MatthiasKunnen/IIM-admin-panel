@@ -1,10 +1,9 @@
 package gui.controls.calendar;
 
-import domain.DomainController;
 import domain.Reservation;
 import domain.ReservationDetail;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -21,16 +20,27 @@ import javafx.scene.layout.HBox;
  */
 public class ReservationAddOn implements CalendarAddOn {
 
-    private Map<LocalDateTime, Node> theNodes;
+    private Map<LocalDate, Node> theNodes;
+    private ObservableList<Reservation> observableReservations;
 
-    public ReservationAddOn(ObservableList<Reservation> reservations) {
-        Map<LocalDateTime, List<Reservation>> temp = reservations.stream().collect(Collectors.groupingBy(Reservation::getStartDate));
-        this.theNodes = temp.keySet().stream().collect(Collectors.toMap(k -> k, ke -> new ProgressBar(temp.get(ke))));
-        reservations.addListener((ListChangeListener<Reservation>) c -> theNodes.entrySet().forEach(n -> ((ProgressBar) n).updateLabels()));
+    public ReservationAddOn(ObservableList<Reservation> observableReservations) {
+        this.observableReservations = observableReservations;
+        createProgressBars();
+        observableReservations.addListener((ListChangeListener<Reservation>) c ->{
+            createProgressBars();
+            theNodes.entrySet().forEach(n -> ((ProgressBar) n).updateLabels());
+        });
+    }
+
+    private void createProgressBars(){
+        Map<LocalDate, List<Reservation>> reservationDateMap = observableReservations.stream()
+                .collect(Collectors.groupingBy(r -> r.getStartDate().toLocalDate()));
+        theNodes = reservationDateMap.keySet().stream()
+                .collect(Collectors.toMap(localDate -> localDate, reservationList -> new ProgressBar(reservationDateMap.get(reservationList))));
     }
 
     @Override
-    public Map<LocalDateTime, Node> getNodes() {
+    public Map<LocalDate, Node> getNodes() {
         return theNodes;
     }
 

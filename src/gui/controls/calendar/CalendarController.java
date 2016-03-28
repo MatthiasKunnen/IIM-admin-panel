@@ -101,7 +101,7 @@ public class CalendarController extends VBox {
     public CalendarController(CalendarAddOn addOn) {
         this();
         addOn.getNodes().keySet().forEach(k -> {
-            DatePane dp = findDatePane(k.toLocalDate());
+            DatePane dp = findDatePane(k);
             if (dp != null) {
                 dp.getChildren().add(addOn.getNodes().get(k));
             }
