@@ -49,8 +49,8 @@ public class ReservationAddOn implements CalendarAddOn {
     static class ReservationProgressBar extends ProgressBar {
         private List<Reservation> theList;
         private final static Color
-                GREEN = new Color(0, 0.72, 0, 1),
-                RED = new Color(0.220, 0, 0.4, 1);
+                GREEN = Color.rgb(0, 172, 0),
+                RED = Color.rgb(220, 0, 4);
 
         public ReservationProgressBar(List<Reservation> res) {
             theList = res;
