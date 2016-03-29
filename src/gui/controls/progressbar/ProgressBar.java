@@ -85,13 +85,12 @@ public class ProgressBar extends HBox {
 
             this.widthProperty().addListener((observable, oldValue, newValue) -> label.setVisible(newValue.doubleValue() > label.getWidth()));
             this.label.widthProperty().addListener((observable, oldValue, newValue) -> label.setVisible(newValue.doubleValue() < getWidth()));
-            
         }
 
         public void enforceWidth(double width, double percentage) {
-            //this.minWidthProperty().set(width);
+            this.minWidthProperty().set(width);
             this.prefWidthProperty().set(width);
-            //this.maxWidthProperty().set(width);
+            this.maxWidthProperty().set(width);
             this.percentage = percentage;
         }
 
