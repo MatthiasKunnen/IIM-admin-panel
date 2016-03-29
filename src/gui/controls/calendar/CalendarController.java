@@ -105,12 +105,6 @@ public class CalendarController extends VBox {
             DatePane dp = findDatePane(e.getKey());
             if (dp != null) {
                 dp.getChildren().add(e.getValue());
-                if (e.getValue()instanceof Region){
-                    dp.widthProperty().addListener((observable, oldValue, newValue) -> {
-                        System.out.println(newValue);
-                        //((Region) e.getValue()).setPrefWidth(newValue.doubleValue()); //IF you uncomment this line, the widthProperty is no longer updated when shrinking the GUI
-                    });
-                }
             }
         });
     }
