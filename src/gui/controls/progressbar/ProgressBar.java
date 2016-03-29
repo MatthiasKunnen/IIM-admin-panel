@@ -4,20 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import com.sun.javafx.tk.Toolkit;
+import javafx.application.Platform;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
+import javafx.scene.layout.*;
 
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 
 public class ProgressBar extends HBox {
@@ -33,6 +34,7 @@ public class ProgressBar extends HBox {
         this.setAlignment(Pos.TOP_LEFT);
         this.widthProperty().addListener((observable, oldValue, newValue)
                 -> bars.forEach(b -> setBar(b, newValue.doubleValue())));
+        this.setBackground(new Background(new BackgroundFill(Color.BLUE, CornerRadii.EMPTY, Insets.EMPTY)));
     }
     //</editor-fold>
 
@@ -43,7 +45,7 @@ public class ProgressBar extends HBox {
     }
 
     public void createBar(Color color, String text) {
-        Bar newBar = new Bar(color, text);
+        Bar newBar = new Bar(this, color, text);
         bars.add(newBar);
         this.getChildren().add(newBar);
     }
@@ -73,8 +75,10 @@ public class ProgressBar extends HBox {
 
         private final Label label;
         private double percentage;
+        private Pane parent;
 
-        public Bar(Color color, String text) {
+        public Bar(Pane parent, Color color, String text) {
+            this.parent = parent;
             this.label = new Label(text);
             this.label.setTextOverrun(OverrunStyle.CLIP);
             this.getChildren().add(label);
@@ -83,14 +87,26 @@ public class ProgressBar extends HBox {
             this.setAlignment(Pos.CENTER);
             this.enforceWidth(0, 0);
 
-            this.widthProperty().addListener((observable, oldValue, newValue) -> label.setVisible(newValue.doubleValue() > label.getWidth()));
-            this.label.widthProperty().addListener((observable, oldValue, newValue) -> label.setVisible(newValue.doubleValue() < getWidth()));
+            Platform.runLater(this::hideIfNecessary);
+            this.widthProperty().addListener((observable, oldValue, newValue) -> hideIfNecessary());
+            this.label.widthProperty().addListener((observable, oldValue, newValue) -> hideIfNecessary());
+        }
+
+        public void hideIfNecessary() {
+            if (parent != null) {
+                ObservableList<Node> nodes = parent.getChildren();
+                if (Toolkit.getToolkit().getFontLoader().computeStringWidth(this.label.getText(), this.label.getFont()) < parent.getWidth() * percentage) {
+                    if (!nodes.contains(this))
+                        nodes.add(this);
+                } else {
+                    if (nodes.contains(this))
+                        nodes.remove(this);
+                }
+            }
         }
 
         public void enforceWidth(double width, double percentage) {
-            this.minWidthProperty().set(width);
             this.prefWidthProperty().set(width);
-            this.maxWidthProperty().set(width);
             this.percentage = percentage;
         }
 
