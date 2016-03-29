@@ -45,7 +45,7 @@ public class CalendarController extends VBox {
     private DateLayout otherMonthLayout;
 
     public CalendarController() {
-        selectedDate = new SimpleObjectProperty<>();
+        selectedDate = new SimpleObjectProperty<>(LocalDate.now());
 
         try {
             GuiHelper.loadFXML("Calendar.fxml", this);
