@@ -10,6 +10,7 @@ import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -49,6 +50,7 @@ public class ReservationOverviewController extends VBox {
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
     private DomainController dc;
+    private CalendarController cc;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
@@ -57,7 +59,7 @@ public class ReservationOverviewController extends VBox {
         try {
             GuiHelper.loadFXML("ReservationOverview.fxml", this);
             ReservationAddOn rao = new ReservationAddOn(dc.getReservations());
-            CalendarController cc = new CalendarController(rao);
+            cc = new CalendarController(rao);
             getChildren().add(0, cc);
             VBox.setVgrow(cc, Priority.ALWAYS);
             cc.selectedDateProperty().addListener((observable, oldValue, newValue) -> updateReservationsList(newValue));
@@ -107,6 +109,7 @@ public class ReservationOverviewController extends VBox {
         });
         tcCompleted.setCellValueFactory(param -> {
             CheckBox cb = new CheckBox();
+            cb.setDisable(true);
             cb.setSelected(param.getValue().isCompleted());
             return new SimpleObjectProperty<>(cb);
         });
@@ -137,5 +140,11 @@ public class ReservationOverviewController extends VBox {
         newStage.show();
     }
 
+    //</editor-fold>
+
+    //<editor-fold description="" defaultstate="collapsed">
+    public void showCompletedReservationsToggle(ActionEvent event){
+        updateReservationsList(cc.selectedDateProperty().getValue());
+    }
     //</editor-fold>
 }

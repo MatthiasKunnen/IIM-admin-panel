@@ -17,7 +17,7 @@
         <HBox alignment="CENTER_RIGHT" prefWidth="200.0">
             <children>
                 <CheckBox fx:id="cbShowCompletedReservations" mnemonicParsing="false"
-                          text="Toon afgehandelde reservaties"/>
+                          text="Toon afgehandelde reservaties" onAction="#showCompletedReservationsToggle"/>
             </children>
         </HBox>
         <TableView fx:id="tvReservations" maxHeight="200.0" prefWidth="200.0">
