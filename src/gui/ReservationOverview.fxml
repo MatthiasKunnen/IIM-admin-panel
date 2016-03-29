@@ -7,9 +7,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<fx:root maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="252.0"
-         prefWidth="559.0" spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65"
-         xmlns:fx="http://javafx.com/fxml/1" stylesheets="@style/form.css">
+<fx:root maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="252.0" prefWidth="559.0" spacing="10.0" stylesheets="@style/form.css" type="VBox"
+         xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1">
     <padding>
         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
     </padding>
@@ -20,7 +20,7 @@
                           text="Toon afgehandelde reservaties"/>
             </children>
         </HBox>
-        <TableView fx:id="tvReservations" minHeight="200.0" prefWidth="200.0">
+        <TableView fx:id="tvReservations" maxHeight="200.0" prefWidth="200.0">
             <columns>
                 <TableColumn fx:id="tcBy" minWidth="80.0" prefWidth="-1.0" text="Door"/>
                 <TableColumn fx:id="tcUntil" minWidth="80.0" prefWidth="-1.0" text="Tot"/>
