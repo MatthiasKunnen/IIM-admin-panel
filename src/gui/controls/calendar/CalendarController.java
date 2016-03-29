@@ -1,6 +1,7 @@
 package gui.controls.calendar;
 
 import gui.controls.GuiHelper;
+import gui.controls.progressbar.ProgressBar;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.geometry.HPos;
@@ -17,6 +18,7 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import javafx.scene.Node;
 
 import static javafx.scene.layout.Priority.ALWAYS;
 
@@ -100,10 +102,14 @@ public class CalendarController extends VBox {
 
     public CalendarController(CalendarAddOn addOn) {
         this();
-        addOn.getNodes().keySet().forEach(k -> {
+        VBox widthRef = (VBox) gpDates.getChildren().stream().filter(n-> GridPane.getColumnIndex(n) == 0  && GridPane.getRowIndex(n) == 0).findFirst().get();
+        addOn.getNodes().keySet().forEach((LocalDate k) -> {
             DatePane dp = findDatePane(k);
             if (dp != null) {
-                dp.getChildren().add(addOn.getNodes().get(k));
+                ProgressBar toAdd = (ProgressBar) addOn.getNodes().get(k);
+                dp.getChildren().add(toAdd);
+                dp.maxWidthProperty().bind(widthRef.widthProperty());
+                toAdd.maxWidthProperty().bind(widthRef.widthProperty());
             }
         });
     }
