@@ -10,6 +10,7 @@ import javafx.scene.Cursor;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -100,10 +101,10 @@ public class CalendarController extends VBox {
 
     public CalendarController(CalendarAddOn addOn) {
         this();
-        addOn.getNodes().keySet().forEach(k -> {
-            DatePane dp = findDatePane(k);
+        addOn.getNodes().entrySet().forEach(e -> {
+            DatePane dp = findDatePane(e.getKey());
             if (dp != null) {
-                dp.getChildren().add(addOn.getNodes().get(k));
+                dp.getChildren().add(e.getValue());
             }
         });
     }
