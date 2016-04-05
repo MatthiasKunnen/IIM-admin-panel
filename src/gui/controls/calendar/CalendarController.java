@@ -7,6 +7,7 @@ import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.geometry.VPos;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -17,11 +18,15 @@ import javafx.scene.shape.SVGPath;
 
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static javafx.scene.layout.Priority.ALWAYS;
 
 public class CalendarController extends VBox {
 
+    //<editor-fold description="FXML controls" defaultstate="collapsed">
     @FXML
     private Label lblMaand;
     @FXML
@@ -34,6 +39,7 @@ public class CalendarController extends VBox {
     private SVGPath svgRight;
     @FXML
     private GridPane gpDates;
+    //</editor-fold>
 
     private LocalDate currentDate;
     private LocalDate selectedMonth;
@@ -42,6 +48,11 @@ public class CalendarController extends VBox {
     private DateLayout standardLayout;
     private DateLayout currentDateLayout;
     private DateLayout otherMonthLayout;
+
+    private static String[] DAYS = new String[]{"ma", "di", "wo", "do", "vr", "za", "zo"};
+    private DatePane[][] calendar = new DatePane[7][7];
+
+    private List<CalendarAddOn> addOns = new ArrayList<>();
 
     public CalendarController() {
         selectedDate = new SimpleObjectProperty<>(LocalDate.now());
@@ -85,7 +96,6 @@ public class CalendarController extends VBox {
             selectedMonth = selectedMonth.minusMonths(1);
             updateDateLabel();
             setDates();
-
         });
 
         rectRight.setCursor(Cursor.HAND);
@@ -98,14 +108,24 @@ public class CalendarController extends VBox {
         initializeCalendar();
     }
 
-    public CalendarController(CalendarAddOn addOn) {
-        this();
-        addOn.getNodes().entrySet().forEach(e -> {
-            DatePane dp = findDatePane(e.getKey());
-            if (dp != null) {
-                dp.getChildren().add(e.getValue());
-            }
-        });
+    public void addAddOn(CalendarAddOn addOn) {
+        this.addOns.add(addOn);
+        updateAddOn(addOn);
+    }
+
+    private void updateAddOns() {
+        addOns.forEach(this::updateAddOn);
+    }
+
+    public void updateAddOn(CalendarAddOn addOn) {
+        if (addOns.contains(addOn)) {
+            addOn.getNodes().entrySet().forEach(e -> {
+                DatePane dp = findDatePane(e.getKey());
+                if (dp != null) {
+                    dp.addAddOnNode(e.getValue());
+                }
+            });
+        }
     }
 
     public SimpleObjectProperty<LocalDate> selectedDateProperty() {
@@ -113,11 +133,9 @@ public class CalendarController extends VBox {
     }
 
     private void initializeCalendar() {
-        String[] days = new String[]{"ma", "di", "wo", "do", "vr", "za", "zo"};
 
         for (int x = 0; x < 7; x++) {
-
-            Label lbl = new Label(days[x]);
+            Label lbl = new Label(DAYS[x]);
             HBox hb = new HBox(lbl);
             hb.setAlignment(Pos.CENTER);
             VBox vb = new VBox(hb);
@@ -130,15 +148,16 @@ public class CalendarController extends VBox {
         for (int y = 1; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
                 DatePane sp = new DatePane();
+                calendar[y][x] = sp;
 
                 sp.setOnMouseClicked(event -> setSelection(sp.getDate()));
                 sp.setOnMouseEntered(event -> {
-                    if (!sp.getDate().equals(this.selectedDate.getValue())) {
+                    if (!sp.getDate().isEqual(this.selectedDate.getValue())) {
                         sp.hover();
                     }
                 });
                 sp.setOnMouseExited(event -> {
-                    if (!sp.getDate().equals(this.selectedDate.getValue())) {
+                    if (!sp.getDate().isEqual(this.selectedDate.getValue())) {
                         sp.clear();
                     }
                 });
@@ -162,7 +181,8 @@ public class CalendarController extends VBox {
 
         for (int y = 1; y < 7; y++) {
             for (int x = 0; x < 7; x++) {
-                DatePane p = getNodeFromGridPane(x, y);
+                DatePane p = calendar[y][x];
+                p.clearAddOnNodes();
                 p.getLabel().setText(String.format("%2d", tempDate.getDayOfMonth()));
                 p.setLayout(tempDate.getMonth() != selectedMonth.getMonth() ? otherMonthLayout : standardLayout);
                 if (tempDate.atStartOfDay().equals(currentDate.atStartOfDay())) {
@@ -175,6 +195,7 @@ public class CalendarController extends VBox {
         }
 
         setSelection(this.selectedDate.getValue());
+        updateAddOns();
     }
 
     private void setSelection(LocalDate ld) {
@@ -191,18 +212,9 @@ public class CalendarController extends VBox {
     }
 
     private DatePane findDatePane(LocalDate ld) {
-        return ld == null ? null : gpDates.getChildren().stream()
-                .filter(p -> p instanceof DatePane)
-                .map(n -> (DatePane) n)
-                .filter(dp -> dp.getDate().isEqual(ld))
-                .findAny()
-                .orElse(null);
-    }
-
-    private DatePane getNodeFromGridPane(int col, int row) {
-        return gpDates.getChildren().stream()
-                .filter(n -> n instanceof DatePane && GridPane.getColumnIndex(n) == col && GridPane.getRowIndex(n) == row)
-                .map(n -> (DatePane) n)
+        return ld == null ? null : Arrays.stream(calendar)
+                .flatMap(Arrays::stream)
+                .filter(dp -> dp != null && dp.getDate().isEqual(ld))
                 .findAny()
                 .orElse(null);
     }
@@ -212,10 +224,12 @@ public class CalendarController extends VBox {
         private Label lbl;
         private HBox hb;
         private LocalDate date;
+        private List<Node> addOnNodes;
 
         private DateLayout dl;
 
         public DatePane() {
+            addOnNodes = new ArrayList<>();
             lbl = new Label("00");
             hb = new HBox(lbl);
             hb.setAlignment(Pos.CENTER);
@@ -245,6 +259,11 @@ public class CalendarController extends VBox {
             this.dl = dl;
         }
 
+        public void addAddOnNode(Node addOnNode) {
+            this.addOnNodes.add(addOnNode);
+            this.getChildren().add(addOnNode);
+        }
+
         public Label getLabel() {
             return this.lbl;
         }
@@ -255,6 +274,11 @@ public class CalendarController extends VBox {
 
         public LocalDate getDate() {
             return this.date;
+        }
+
+        public void clearAddOnNodes() {
+            addOnNodes.forEach(n -> getChildren().remove(n));
+            addOnNodes.clear();
         }
     }
 

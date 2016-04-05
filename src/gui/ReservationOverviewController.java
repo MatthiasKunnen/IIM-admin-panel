@@ -56,16 +56,18 @@ public class ReservationOverviewController extends VBox {
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public ReservationOverviewController(DomainController dc) {
         this.dc = dc;
+
         try {
             GuiHelper.loadFXML("ReservationOverview.fxml", this);
-            ReservationAddOn rao = new ReservationAddOn(dc.getReservations());
-            cc = new CalendarController(rao);
+            cc = new CalendarController();
             getChildren().add(0, cc);
             VBox.setVgrow(cc, Priority.ALWAYS);
             cc.selectedDateProperty().addListener((observable, oldValue, newValue) -> updateReservationsList(newValue));
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        updateReservationsList(LocalDate.now());
 
         tcActions.setCellFactory(new Callback<TableColumn<Reservation, Object>, TableCell<Reservation, Object>>() {
             @Override
@@ -140,11 +142,16 @@ public class ReservationOverviewController extends VBox {
         newStage.show();
     }
 
-    //</editor-fold>
-
-    //<editor-fold description="" defaultstate="collapsed">
     public void showCompletedReservationsToggle(ActionEvent event){
         updateReservationsList(cc.selectedDateProperty().getValue());
     }
+    //</editor-fold>
+
+    //<editor-fold description="FXML actions" defaultstate="collapsed">
+    @FXML
+    public void btnAddReservationClicked(ActionEvent event){
+
+    }
+
     //</editor-fold>
 }
