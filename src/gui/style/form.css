@@ -13,3 +13,7 @@
 .table-column{
     -fx-alignment: center;
 }
+
+.table-row-cell:selected .hyperlink{
+    -fx-text-fill: #ffffff;
+}
