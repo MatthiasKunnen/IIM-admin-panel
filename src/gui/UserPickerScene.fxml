@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<?import gui.controls.searchfield.SearchField?>
+<?import javafx.scene.control.Button?>
+<fx:root type="VBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+         prefHeight="400.0" prefWidth="600.0" spacing="10.0" xmlns="http://javafx.com/javafx/8.0.65"
+         xmlns:fx="http://javafx.com/fxml/1" stylesheets="@style/form.css">
+    <children>
+        <HBox prefHeight="42.0" prefWidth="600.0" spacing="10.0" VBox.vgrow="NEVER">
+            <children>
+                <SearchField fx:id="tfEmail" promptText="E-mail" HBox.hgrow="ALWAYS"/>
+                <SearchField fx:id="tfName" promptText="Naam" HBox.hgrow="ALWAYS"/>
+                <SearchField fx:id="tfTelNumber" promptText="Telefoonnummer" HBox.hgrow="ALWAYS"/>
+            </children>
+            <padding>
+                <Insets bottom="10.0" top="10.0"/>
+            </padding>
+            <VBox.margin>
+                <Insets/>
+            </VBox.margin>
+        </HBox>
+        <TableView fx:id="tvUsers" prefHeight="335.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="tcFirstName" prefWidth="75.0" text="Voornaam"/>
+                <TableColumn fx:id="tcLastName" prefWidth="75.0" text="Achternaam"/>
+                <TableColumn fx:id="tcEamil" prefWidth="75.0" text="E-mail"/>
+                <TableColumn fx:id="tcTelNumber" prefWidth="75.0" text="Telefoonnummer"/>
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+            </columnResizePolicy>
+        </TableView>
+        <HBox prefHeight="42.0" prefWidth="600.0" spacing="10.0" VBox.vgrow="NEVER" alignment="CENTER">
+            <children>
+                <Button fx:id="btnSelectAndExit" text="Selecteer en verlaat" mnemonicParsing="false"
+                        onAction="#btnSelectAndExitClicked"/>
+                <Button fx:id="btnCancel" text="Annuleer" mnemonicParsing="false"
+                        onAction="#btnCancelClicked"/>
+            </children>
+            <padding>
+                <Insets bottom="10.0" top="10.0"/>
+            </padding>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0"/>
+    </padding>
+</fx:root>
