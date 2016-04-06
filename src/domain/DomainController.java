@@ -63,6 +63,10 @@ public class DomainController {
         return curricularRepository.getObservableItems();
     }
 
+    public ObservableList<User> getUsers(){
+        return userRepository.getObservableItems();
+    }
+
     public User getUserByEmail(String email) {
         return this.userRepository.getUserByEmail(email);
     }
