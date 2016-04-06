@@ -1,9 +1,6 @@
 package gui;
 
-import domain.DomainController;
-import domain.MaterialIdentifier;
-import domain.Reservation;
-import domain.ReservationDetail;
+import domain.*;
 import gui.controls.GuiHelper;
 import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,6 +16,7 @@ import javafx.stage.Stage;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 
 public class ReservationController extends AnchorPane {
 
@@ -96,7 +94,8 @@ public class ReservationController extends AnchorPane {
                         coc.addExistingSVG("delete");
                         coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
                             if (getTableRow().getItem() != null) {
-                                getTableView().getItems().remove((ReservationDetail) getTableRow().getItem());
+                                //noinspection SuspiciousMethodCalls
+                                getTableView().getItems().remove(getTableRow().getItem());
                             }
                         });
                     }
@@ -114,6 +113,10 @@ public class ReservationController extends AnchorPane {
                 };
             }
         });
+    }
+
+    public ReservationController(DomainController dc, Stage newStage, User user) {
+        this(dc, newStage, new Reservation(user, LocalDateTime.now(), LocalDateTime.now().plusDays(7)));
     }
     //</editor-fold>
 
