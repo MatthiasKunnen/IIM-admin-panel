@@ -1,6 +1,5 @@
 package gui;
 
-import domain.DomainController;
 import domain.User;
 import gui.controls.GuiHelper;
 import javafx.fxml.FXML;
@@ -18,25 +17,18 @@ public class UserDetailsController extends HBox {
     private ImageView ivUserPhoto;
 
     @FXML
-    private Label lblName;
-
-    @FXML
-    private Label lblEmail;
-
-    @FXML
-    private Label lblPhoneNumber;
+    private Label lblName, lblEmail, lblPhoneNumber;
 
     //</editor-fold>
 
     //<editor-fold desc="Declarations" defaultstate="collapsed">
-    private final DomainController dc;
     private final Stage stage;
     private final User user;
     //</editor-fold>
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
-    public UserDetailsController(DomainController dc, Stage stage, User user) {
-        this.dc = dc;
+    public UserDetailsController(Stage stage, User user) {
+        stage.setTitle(String.format("Gebruiker: %s %s - IIM", user.getFirstName(), user.getLastName()));
         this.stage = stage;
         this.user = user;
         try {
@@ -45,7 +37,7 @@ public class UserDetailsController extends HBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        lblName.setText(String.format("%s %s",user.getFirstName(), user.getLastName()));
+        lblName.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
         lblEmail.setText(user.getEmail());
         lblPhoneNumber.setText(user.getTelNumber());
     }

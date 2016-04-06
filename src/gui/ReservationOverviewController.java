@@ -5,7 +5,6 @@ import domain.Reservation;
 import domain.User;
 import gui.controls.GuiHelper;
 import gui.controls.calendar.CalendarController;
-import gui.controls.calendar.ReservationAddOn;
 import gui.controls.options.CustomOptionsController;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -117,41 +116,59 @@ public class ReservationOverviewController extends VBox {
         });
         tcUntil.setCellValueFactory(param -> new SimpleStringProperty(GuiHelper.getDateTimeFormatter().format(param.getValue().getEndDate())));
         tcUntil.setComparator((o1, o2) -> GuiHelper.parseStringToLocalDateTime(o1).compareTo(GuiHelper.parseStringToLocalDateTime(o2)));
+
+        this.tvReservations.setOnMouseClicked(event -> {
+            if (event.getClickCount() >= 2) {
+                openReservation(tvReservations.getSelectionModel().getSelectedItem());
+            }
+        });
     }
     //</editor-fold>
 
     //<editor-fold desc="Actions" defaultstate="collapsed">
-    private void updateReservationsList(LocalDate date){
+    private void updateReservationsList(LocalDate date) {
         tvReservations.setItems(FXCollections.observableList(dc.getReservations().stream()
                 .filter(r -> (r.getEndDate().toLocalDate().isEqual(date) || r.getStartDate().toLocalDate().isEqual(date)) && (cbShowCompletedReservations.isSelected() || !r.isCompleted()))
                 .collect(Collectors.toList())));
     }
-    private void openReservation(Reservation selectedItem) {
+
+    private void openReservation(Reservation reservation) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle(String.format("%s %s - IIM", selectedItem.getUser().getEmail(), selectedItem.getStartDate().format(GuiHelper.getDateTimeFormatter())));
-        Scene scene = new Scene(new ReservationController(dc, newStage, selectedItem));
+        newStage.setTitle(String.format("%s %s - IIM", reservation.getUser().getEmail(), reservation.getStartDate().format(GuiHelper.getDateTimeFormatter())));
+        Scene scene = new Scene(new ReservationController(dc, newStage, reservation));
         newStage.setScene(scene);
         newStage.show();
     }
 
-    private void openUserDetails(User user){
+    private void openUserDetails(User user) {
         Stage newStage = new Stage(StageStyle.DECORATED);
-        newStage.setTitle(String.format("Gebruiker: %s %s - IIM", user.getFirstName(), user.getLastName()));
-        Scene scene = new Scene(new UserDetailsController(dc, newStage, user));
+        Scene scene = new Scene(new UserDetailsController(newStage, user));
         newStage.setScene(scene);
         newStage.show();
     }
 
-    public void showCompletedReservationsToggle(ActionEvent event){
-        updateReservationsList(cc.selectedDateProperty().getValue());
-    }
     //</editor-fold>
 
-    //<editor-fold description="FXML actions" defaultstate="collapsed">
+    //<editor-fold desc="FXML actions" defaultstate="collapsed">
     @FXML
-    public void btnAddReservationClicked(ActionEvent event){
+    public void btnAddReservationClicked(ActionEvent event) {
+        Stage userPickerStage = new Stage(StageStyle.DECORATED);
+        UserPickerController upc = new UserPickerController(userPickerStage, dc.getUsers());
+        userPickerStage.setScene(new Scene(upc));
+        userPickerStage.showAndWait();
 
+        if (upc.statusProperty().get() == UserPickerController.Status.CANCELLED || upc.selectedUserProperty().get() == null)
+            return;
+
+        Stage reservationStage = new Stage(StageStyle.DECORATED);
+        reservationStage.setTitle("Nieuwe reservatie - IIM");
+        reservationStage.setScene(new Scene(new ReservationController(dc, reservationStage, upc.selectedUserProperty().get())));
+        reservationStage.show();
     }
 
+    @FXML
+    public void showCompletedReservationsToggle(ActionEvent event) {
+        updateReservationsList(cc.selectedDateProperty().getValue());
+    }
     //</editor-fold>
 }
