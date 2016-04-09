@@ -4,8 +4,6 @@ import exceptions.AzureException;
 import exceptions.LoginException;
 import exceptions.UnauthorizedException;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -240,15 +238,12 @@ public class DomainController {
     //</editor-fold>
 
     //<editor-fold desc="Reservation" defaultstate="collapsed">
-    public Reservation createReservation(User user, LocalDateTime startDate, LocalDateTime endDate, List<Material> theMaterials) {
-        Reservation res = new Reservation(user, startDate, endDate);
-        List<ReservationDetail> details = new ArrayList<>();
-        theMaterials.forEach(m -> {
-
-        });
-        res.addAllReservationsDetails(details);
-        addReservation(res);
-        return res;
+    public List<ReservationDetail> createNewReservationDetailsReservation(Reservation reservation, Material material, int count) {
+        return findFreeIdentifiers(material, reservation)
+                .stream()
+                .limit(count)
+                .map(mi-> new ReservationDetail(mi, reservation))
+                .collect(Collectors.toList());
     }
 
     private List<MaterialIdentifier> findFreeIdentifiers(Material m, Reservation res) {
