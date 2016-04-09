@@ -65,9 +65,8 @@
                    maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="14.0" AnchorPane.leftAnchor="14.0"
                    AnchorPane.rightAnchor="14.0" VBox.vgrow="ALWAYS">
             <columns>
-                <TableColumn fx:id="tcId" prefWidth="75.0" text="Id"/>
                 <TableColumn fx:id="tcName" prefWidth="75.0" text="Naam"/>
-                <TableColumn fx:id="tcLocation" prefWidth="75.0" text="Locatie"/>
+                <TableColumn fx:id="tcCount" prefWidth="75.0" text="Aantal"/>
                 <TableColumn fx:id="tcActions" prefWidth="75.0" text="Acties"/>
             </columns>
             <columnResizePolicy>

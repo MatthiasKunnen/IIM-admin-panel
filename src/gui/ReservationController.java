@@ -3,9 +3,11 @@ package gui;
 import domain.*;
 import gui.controls.GuiHelper;
 import gui.controls.options.CustomOptionsController;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -21,6 +23,8 @@ import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class ReservationController extends VBox {
 
@@ -29,13 +33,13 @@ public class ReservationController extends VBox {
     private TextField tfEndTime;
 
     @FXML
-    private TableColumn<ReservationDetail, String> tcName;
+    private TableColumn<Material, String> tcName;
 
     @FXML
-    private TableColumn<ReservationDetail, Boolean> tcActions;
+    private TableColumn<Material, Boolean> tcActions;
 
     @FXML
-    private TableView<ReservationDetail> tv;
+    private TableView<Material> tv;
 
     @FXML
     private DatePicker dpStartDate;
@@ -44,10 +48,7 @@ public class ReservationController extends VBox {
     private TextField tfStartTime;
 
     @FXML
-    private TableColumn<ReservationDetail, Integer> tcId;
-
-    @FXML
-    private TableColumn<ReservationDetail, String> tcLocation;
+    private TableColumn<Material, Integer> tcCount;
 
     @FXML
     private DatePicker dpEndDate;
@@ -59,6 +60,7 @@ public class ReservationController extends VBox {
     private ObservableList<MaterialIdentifier> identifiers;
     private Stage theStage;
     private Reservation reservation;
+    private ObservableMap<Material, List<ReservationDetail>> simplifiedItems;
 
     //</editor-fold>
 
@@ -80,26 +82,29 @@ public class ReservationController extends VBox {
         tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
         tfEndTime.setText(reservation.getEndDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
 
-        this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
-        tcId.setCellValueFactory(new PropertyValueFactory<>("id"));
-        tcName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getMaterialIdentifier().getInfo().getName()));
-        tcName.setCellFactory(TextFieldTableCell.<ReservationDetail>forTableColumn());
-        tcLocation.setCellValueFactory(cellData -> cellData.getValue().getMaterialIdentifier().getPlaceProperty());
-        tcLocation.setCellFactory(TextFieldTableCell.<ReservationDetail>forTableColumn());
-        tcActions.setCellFactory(new Callback<TableColumn<ReservationDetail, Boolean>, TableCell<ReservationDetail, Boolean>>() {
+        updateSimplifiedItems();
+
+        //if (Boolean.valueOf(dc.getSettingData(Setting.Key.KEEP_HISTORY, "false"))) {
+        //this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
+        //}else{
+        tcCount.setCellValueFactory(cellData -> new SimpleIntegerProperty(simplifiedItems.get(cellData.getValue()).size()).asObject());
+        //}
+        tcName.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
+        tcActions.setCellFactory(new Callback<TableColumn<Material, Boolean>, TableCell<Material, Boolean>>() {
 
             @Override
-            public TableCell<ReservationDetail, Boolean> call(TableColumn<ReservationDetail, Boolean> param) {
-                return new TableCell<ReservationDetail, Boolean>() {
+            public TableCell<Material, Boolean> call(TableColumn<Material, Boolean> param) {
+                return new TableCell<Material, Boolean>() {
                     private final CustomOptionsController coc = new CustomOptionsController();
 
                     {
-                        //coc.addExistingSVG("tick");
                         coc.addExistingSVG("delete");
                         coc.bind("delete", MouseEvent.MOUSE_CLICKED, event -> {
                             if (getTableRow().getItem() != null) {
-                                //noinspection SuspiciousMethodCalls
-                                getTableView().getItems().remove(getTableRow().getItem());
+                                Material material = (Material) getTableRow().getItem();
+                                reservation.getReservationDetails().removeAll(simplifiedItems.get(material));
+                                simplifiedItems.get(material).clear();
+                                getTableView().getItems().remove(material);
                             }
                         });
                     }
@@ -131,11 +136,17 @@ public class ReservationController extends VBox {
             mpc.selectedMaterials().entrySet().stream()
                     .filter(p -> p.getValue().get() > 0)
                     .forEach(p -> reservation.addAllReservationsDetails(dc.createNewReservationDetailsReservation(reservation, p.getKey(), p.getValue().get())));
-            this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
+            updateSimplifiedItems();
         });
         HBox hBox = new HBox(btnAddMaterials);
         hBox.setAlignment(Pos.CENTER_RIGHT);
         getChildren().add(1, hBox);
     }
     //</editor-fold>
+
+    private void updateSimplifiedItems() {
+        simplifiedItems = FXCollections.observableMap(reservation.getReservationDetails().stream()
+                .collect(Collectors.groupingBy(r -> r.getMaterialIdentifier().getInfo())));
+        this.tv.setItems(FXCollections.observableList(simplifiedItems.keySet().stream().collect(Collectors.toList())));
+    }
 }
