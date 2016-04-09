@@ -7,18 +7,22 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
 
-public class ReservationController extends AnchorPane {
+public class ReservationController extends VBox {
 
     //<editor-fold desc="FXML Variables" defaultstate="collapsed">
     @FXML
@@ -58,7 +62,7 @@ public class ReservationController extends AnchorPane {
 
     //</editor-fold>
 
-    //<editor-fold desc="Constructor" defaultstate="collapsed">    
+    //<editor-fold desc="Constructor" defaultstate="collapsed">
     public ReservationController(DomainController dc, Stage stage, Reservation reservation) {
         this.identifiers = FXCollections.observableArrayList();
         this.theStage = stage;
@@ -117,9 +121,21 @@ public class ReservationController extends AnchorPane {
 
     public ReservationController(DomainController dc, Stage newStage, User user) {
         this(dc, newStage, new Reservation(user, LocalDateTime.now(), LocalDateTime.now().plusDays(7)));
+        Button btnAddMaterials = new Button("Voeg materialen toe");
+        btnAddMaterials.setOnAction(event -> {
+            Stage materialPickerStage = new Stage(StageStyle.DECORATED);
+            MaterialPickerScene mpc = new MaterialPickerScene(materialPickerStage, dc.getMaterials(), user.getType());
+            materialPickerStage.setScene(new Scene(mpc));
+            materialPickerStage.setTitle("Voeg nieuwe materialen toe.");
+            materialPickerStage.showAndWait();
+            mpc.selectedMaterials().entrySet().stream()
+                    .filter(p -> p.getValue().get() > 0)
+                    .forEach(p -> reservation.addAllReservationsDetails(dc.createNewReservationDetailsReservation(reservation, p.getKey(), p.getValue().get())));
+            this.tv.setItems(FXCollections.observableList(reservation.getReservationDetails()));
+        });
+        HBox hBox = new HBox(btnAddMaterials);
+        hBox.setAlignment(Pos.CENTER_RIGHT);
+        getChildren().add(1, hBox);
     }
-    //</editor-fold>
-
-    //<editor-fold desc="FXML actions" defaultstate="collapsed">
     //</editor-fold>
 }
