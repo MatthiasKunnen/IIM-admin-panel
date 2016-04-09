@@ -40,6 +40,7 @@ public class User implements Serializable, IEntity {
         this.lastName = user.lastName;
         this.email = user.email;
         this.telNumber = user.telNumber;
+        this.type = user.type;
     }
     //</editor-fold>
 
