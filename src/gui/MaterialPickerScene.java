@@ -75,7 +75,16 @@ public class MaterialPickerScene extends VBox {
         }
 
         selectedMaterials = FXCollections.observableHashMap();
-        materials.addListener((ListChangeListener<Material>) c -> c.getRemoved().forEach(m -> selectedMaterials.remove(m)));
+        materials.addListener((ListChangeListener<Material>) c -> {
+            while (c.next()){
+                if(c.wasAdded()){
+                    c.getAddedSubList().forEach(m -> selectedMaterials.put(m, new ReadOnlyIntegerWrapper(0)));
+                }
+                if (c.wasRemoved()){
+                    c.getRemoved().forEach(m -> selectedMaterials.remove(m));
+                }
+            }
+        });
         materials.forEach(m -> selectedMaterials.put(m, new ReadOnlyIntegerWrapper(0)));
 
         this.tcName.setCellValueFactory(new PropertyValueFactory<>("name"));
