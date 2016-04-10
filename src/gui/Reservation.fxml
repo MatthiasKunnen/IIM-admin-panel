@@ -45,7 +45,7 @@
                 <Insets/>
             </VBox.margin>
         </HBox>
-        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" VBox.vgrow="NEVER">
+        <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" VBox.vgrow="NEVER" spacing="5.0">
             <children>
                 <Label layoutX="67.0" layoutY="57.0" text="Gereserveerde materialen" AnchorPane.bottomAnchor="218.0"
                        AnchorPane.leftAnchor="14.0"/>
