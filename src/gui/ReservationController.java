@@ -12,8 +12,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -129,7 +127,7 @@ public class ReservationController extends VBox {
         Button btnAddMaterials = new Button("Voeg materialen toe");
         btnAddMaterials.setOnAction(event -> {
             Stage materialPickerStage = new Stage(StageStyle.DECORATED);
-            MaterialPickerScene mpc = new MaterialPickerScene(materialPickerStage, dc.getMaterials(), user.getType());
+            MaterialPickerController mpc = new MaterialPickerController(materialPickerStage, dc.getMaterials(), user.getType());
             materialPickerStage.setScene(new Scene(mpc));
             materialPickerStage.setTitle("Voeg nieuwe materialen toe.");
             materialPickerStage.showAndWait();

@@ -35,7 +35,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class MaterialPickerScene extends VBox {
+public class MaterialPickerController extends VBox {
 
     //<editor-fold desc="FXML controls" defaultstate="collapsed">
     @FXML
@@ -64,7 +64,7 @@ public class MaterialPickerScene extends VBox {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
 
-    public MaterialPickerScene(Stage stage, ObservableList<Material> materials, User.Type userType) {
+    public MaterialPickerController(Stage stage, ObservableList<Material> materials, User.Type userType) {
         if (userType == null)
             throw new RuntimeException("UserType cannot be null");
 
