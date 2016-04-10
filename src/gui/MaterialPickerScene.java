@@ -160,7 +160,7 @@ public class MaterialPickerScene extends VBox {
         sfSearch.textProperty().addListener(event ->
                 filteredList.setPredicate(m ->
                         Arrays.asList(sfSearch.getText().split(" ")).stream()
-                                .allMatch(s -> m.getName().contains(s) || m.getDescription().contains(s))));
+                                .allMatch(s -> m.getName().toLowerCase().contains(s.toLowerCase()) || m.getDescription().toLowerCase().contains(s.toLowerCase()))));
 
         this.tvMaterialen.setItems(sortedList);
     }
