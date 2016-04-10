@@ -9,7 +9,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
@@ -51,6 +50,12 @@ public class ReservationController extends VBox {
     @FXML
     private DatePicker dpEndDate;
 
+    @FXML
+    private Label lblUser;
+
+    @FXML
+    private HBox hbOptions;
+
     //</editor-fold>
 
     //<editor-fold desc="Variables" defaultstate="collapsed">
@@ -79,6 +84,9 @@ public class ReservationController extends VBox {
         dpEndDate.setValue(reservation.getEndDate().toLocalDate());
         tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
         tfEndTime.setText(reservation.getEndDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
+
+        lblUser.setText(String.format("%s %s", reservation.getUser().getFirstName(), reservation.getUser().getLastName()));
+        lblUser.setOnMouseClicked((event) -> openUserDetails(reservation.getUser()));
 
         updateSimplifiedItems();
 
@@ -136,9 +144,7 @@ public class ReservationController extends VBox {
                     .forEach(p -> reservation.addAllReservationsDetails(dc.createNewReservationDetailsReservation(reservation, p.getKey(), p.getValue().get())));
             updateSimplifiedItems();
         });
-        HBox hBox = new HBox(btnAddMaterials);
-        hBox.setAlignment(Pos.CENTER_RIGHT);
-        getChildren().add(1, hBox);
+        hbOptions.getChildren().add(btnAddMaterials);
     }
     //</editor-fold>
 
@@ -146,5 +152,12 @@ public class ReservationController extends VBox {
         simplifiedItems = FXCollections.observableMap(reservation.getReservationDetails().stream()
                 .collect(Collectors.groupingBy(r -> r.getMaterialIdentifier().getInfo())));
         this.tv.setItems(FXCollections.observableList(simplifiedItems.keySet().stream().collect(Collectors.toList())));
+    }
+
+    private void openUserDetails(User user) {
+        Stage newStage = new Stage(StageStyle.DECORATED);
+        Scene scene = new Scene(new UserDetailsController(newStage, user));
+        newStage.setScene(scene);
+        newStage.show();
     }
 }
