@@ -28,7 +28,7 @@ public class UserDetailsController extends HBox {
 
     //<editor-fold desc="Constructors" defaultstate="collapsed">
     public UserDetailsController(Stage stage, User user) {
-        stage.setTitle(String.format("Gebruiker: %s %s - IIM", user.getFirstName(), user.getLastName()));
+        stage.setTitle(String.format("Gebruiker: %s - IIM", user.getFullName()));
         this.stage = stage;
         this.user = user;
         try {
@@ -37,7 +37,7 @@ public class UserDetailsController extends HBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-        lblName.setText(String.format("%s %s", user.getFirstName(), user.getLastName()));
+        lblName.setText(user.getFullName());
         lblEmail.setText(user.getEmail());
         lblPhoneNumber.setText(user.getTelNumber());
     }

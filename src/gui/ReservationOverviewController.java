@@ -104,7 +104,7 @@ public class ReservationOverviewController extends VBox {
         });
         tcBy.setCellValueFactory(param -> {
             User user = param.getValue().getUser();
-            Hyperlink h = new Hyperlink(String.format("%s %s", user.getFirstName(), user.getLastName()));
+            Hyperlink h = new Hyperlink(user.getFullName());
             h.setOnAction(event -> openUserDetails(user));
             return new SimpleObjectProperty<>(h);
         });

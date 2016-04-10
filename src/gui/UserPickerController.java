@@ -92,7 +92,7 @@ public class UserPickerController extends VBox {
 
         ChangeListener<String> searchEvent = (observable, oldValue, newValue) -> filteredList.setPredicate(user ->
                 (tfEmail.getText().isEmpty() || user.getEmail().toLowerCase().contains(tfEmail.getText().toLowerCase())) &&
-                        (tfName.getText().isEmpty() || String.format("%s %s", user.getFirstName(), user.getLastName()).toLowerCase().contains(tfName.getText().toLowerCase())) &&
+                        (tfName.getText().isEmpty() || user.getFullName().toLowerCase().contains(tfName.getText().toLowerCase())) &&
                         (tfTelNumber.getText().isEmpty() ||
                                 (tfTelNumber.getText().startsWith("+") && user.getTelNumber().startsWith(tfTelNumber.getText())) ||
                                 (!tfTelNumber.getText().startsWith("+") && user.getTelNumber().contains(tfTelNumber.getText()))));

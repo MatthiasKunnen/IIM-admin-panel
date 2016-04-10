@@ -12,6 +12,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "\"user\"")
 public class User implements Serializable, IEntity {
+
     //<editor-fold desc="Declarations" defaultstate="collapsed">
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -91,8 +92,8 @@ public class User implements Serializable, IEntity {
                 .toString();
     }
     
-    public void sendEmail(String title, String text){
-        
+    public String getFullName(){
+        return String.format("%s %s", getFirstName(), getLastName());
     }
     //</editor-fold>
 }

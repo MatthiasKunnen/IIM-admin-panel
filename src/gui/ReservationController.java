@@ -85,7 +85,7 @@ public class ReservationController extends VBox {
         tfStartTime.setText(reservation.getStartDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
         tfEndTime.setText(reservation.getEndDate().toLocalTime().format(GuiHelper.getTimeFormatter()));
 
-        lblUser.setText(String.format("%s %s", reservation.getUser().getFirstName(), reservation.getUser().getLastName()));
+        lblUser.setText(reservation.getUser().getFullName());
         lblUser.setOnMouseClicked((event) -> openUserDetails(reservation.getUser()));
 
         updateSimplifiedItems();
