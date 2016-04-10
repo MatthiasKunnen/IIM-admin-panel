@@ -144,8 +144,9 @@ public class MaterialPickerScene extends VBox {
                             setText(null);
                         } else {
                             setGraphic(content);
-                            if (getTableRow() != null && getTableRow().getItem() != null) {
-                                counter.bindBidirectional(selectedMaterials.get((Material) getTableRow().getItem()));
+                            if (!counter.isBound() && getTableRow() != null && getTableRow().getItem() != null) {
+                                //noinspection SuspiciousMethodCalls
+                                counter.bindBidirectional(selectedMaterials.get(getTableRow().getItem()));
                             }
                         }
                     }
