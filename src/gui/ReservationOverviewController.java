@@ -134,6 +134,7 @@ public class ReservationOverviewController extends VBox {
 
     private void openReservation(Reservation reservation) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
         newStage.setTitle(String.format("%s %s - IIM", reservation.getUser().getEmail(), reservation.getStartDate().format(GuiHelper.getDateTimeFormatter())));
         Scene scene = new Scene(new ReservationController(dc, newStage, reservation));
         newStage.setScene(scene);
@@ -142,6 +143,7 @@ public class ReservationOverviewController extends VBox {
 
     private void openUserDetails(User user) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
         Scene scene = new Scene(new UserDetailsController(newStage, user));
         newStage.setScene(scene);
         newStage.show();
@@ -153,6 +155,7 @@ public class ReservationOverviewController extends VBox {
     @FXML
     public void btnAddReservationClicked(ActionEvent event) {
         Stage userPickerStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(userPickerStage);
         UserPickerController upc = new UserPickerController(userPickerStage, dc.getUsers());
         userPickerStage.setScene(new Scene(upc));
         userPickerStage.showAndWait();
@@ -161,6 +164,7 @@ public class ReservationOverviewController extends VBox {
             return;
 
         Stage reservationStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(reservationStage);
         reservationStage.setTitle("Nieuwe reservatie - IIM");
         reservationStage.setScene(new Scene(new ReservationController(dc, reservationStage, upc.selectedUserProperty().get())));
         reservationStage.show();

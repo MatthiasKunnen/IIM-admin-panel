@@ -7,6 +7,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -159,6 +160,10 @@ public class GuiHelper {
         loader.setRoot(thisObject);
         loader.setController(thisObject);
         loader.load();
+    }
+
+    public static void setIcon(Stage stage){
+        stage.getIcons().add(new Image(GuiHelper.class.getResourceAsStream("/gui/images/logo.png")));
     }
 
     //</editor-fold>

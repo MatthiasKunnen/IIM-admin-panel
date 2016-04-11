@@ -139,6 +139,7 @@ public class OverviewController extends VBox {
 
     private void editMaterial(Material material) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
         MaterialController mc = new MaterialController(dc, newStage, material);
         newStage.setTitle(material.getName() + " - IIM");
         openNewWindow(mc, newStage);
@@ -156,6 +157,7 @@ public class OverviewController extends VBox {
     @FXML
     private void addMaterial(MouseEvent event) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
         newStage.setTitle("Nieuw Materiaal - IIM");
         MaterialController mc = new MaterialController(dc, newStage);
         openNewWindow(mc, newStage);

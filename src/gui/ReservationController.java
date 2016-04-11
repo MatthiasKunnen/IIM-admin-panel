@@ -135,6 +135,7 @@ public class ReservationController extends VBox {
         Button btnAddMaterials = new Button("Voeg materialen toe");
         btnAddMaterials.setOnAction(event -> {
             Stage materialPickerStage = new Stage(StageStyle.DECORATED);
+            GuiHelper.setIcon(newStage);
             MaterialPickerController mpc = new MaterialPickerController(materialPickerStage, dc.getMaterials(), user.getType());
             materialPickerStage.setScene(new Scene(mpc));
             materialPickerStage.setTitle("Voeg nieuwe materialen toe.");
@@ -156,6 +157,7 @@ public class ReservationController extends VBox {
 
     private void openUserDetails(User user) {
         Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
         Scene scene = new Scene(new UserDetailsController(newStage, user));
         newStage.setScene(scene);
         newStage.show();
