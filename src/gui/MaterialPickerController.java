@@ -9,8 +9,6 @@ import gui.controls.searchfield.SearchField;
 import javafx.beans.property.ReadOnlyIntegerProperty;
 import javafx.beans.property.ReadOnlyIntegerWrapper;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableIntegerValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -144,7 +142,7 @@ public class MaterialPickerController extends VBox {
                             setText(null);
                         } else {
                             setGraphic(content);
-                            if (!counter.isBound() && getTableRow() != null && getTableRow().getItem() != null) {
+                            if (getTableRow() != null && getTableRow().getItem() != null) {
                                 //noinspection SuspiciousMethodCalls
                                 counter.bindBidirectional(selectedMaterials.get(getTableRow().getItem()));
                             }
