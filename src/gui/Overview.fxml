@@ -5,11 +5,12 @@
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import gui.controls.searchfield.SearchField?>
 <fx:root spacing="10.0" type="VBox" xmlns="http://javafx.com/javafx/8.0.65" xmlns:fx="http://javafx.com/fxml/1" stylesheets="@style/form.css">
    <children>
       <HBox fx:id="hbOptions" alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="200.0">
          <children>
-            <TextField fx:id="txfFilterMaterials" onKeyPressed="#filterMaterials" HBox.hgrow="ALWAYS" />
+            <SearchField fx:id="sfFilterMaterials" HBox.hgrow="ALWAYS" />
          </children>
       </HBox>
       <TableView fx:id="tvMaterials" prefHeight="200.0" prefWidth="500.0" VBox.vgrow="ALWAYS">

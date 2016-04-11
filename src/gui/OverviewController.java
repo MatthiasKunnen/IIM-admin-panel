@@ -6,7 +6,12 @@ import domain.Setting;
 import domain.Visibility;
 import gui.controls.GuiHelper;
 import gui.controls.options.CustomOptionsController;
+import gui.controls.searchfield.SearchField;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.transformation.FilteredList;
+import javafx.collections.transformation.SortedList;
 import javafx.fxml.FXML;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -26,6 +31,7 @@ import javafx.stage.StageStyle;
 import javafx.util.Callback;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * FXML Controller class
@@ -47,7 +53,7 @@ public class OverviewController extends VBox {
     @FXML
     private TableView<Material> tvMaterials;
     @FXML
-    private TextField txfFilterMaterials;
+    private SearchField sfFilterMaterials;
     @FXML
     private HBox hbOptions;
     //</editor-fold>
@@ -66,6 +72,16 @@ public class OverviewController extends VBox {
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
+
+        FilteredList<Material> filteredList = new FilteredList<>(dc.getMaterials());
+        SortedList<Material> sortedList = new SortedList<>(filteredList);
+        sortedList.comparatorProperty().bind(tvMaterials.comparatorProperty());
+
+
+        this.sfFilterMaterials.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredList.setPredicate(m -> Arrays.asList(sfFilterMaterials.getText().toLowerCase().split(" ")).stream()
+                    .allMatch(s->m.getName().toLowerCase().contains(s) || m.getDescription().toLowerCase().contains(s) || m.getArticleNr().toLowerCase().contains(s)));
+        });
         /*
         CustomOptionsController coc = new CustomOptionsController();
         coc.setAlignment(Pos.CENTER_RIGHT);
@@ -125,7 +141,7 @@ public class OverviewController extends VBox {
             }
         });
 
-        tvMaterials.setItems(dc.getMaterials());
+        tvMaterials.setItems(sortedList);
 
         tvMaterials.setOnMouseClicked(event -> {
             if (event.getClickCount() >= 2) {
@@ -161,11 +177,6 @@ public class OverviewController extends VBox {
         newStage.setTitle("Nieuw Materiaal - IIM");
         MaterialController mc = new MaterialController(dc, newStage);
         openNewWindow(mc, newStage);
-    }
-
-    @FXML
-    private void filterMaterials(KeyEvent event) {
-
     }
     //</editor-fold>
 }
