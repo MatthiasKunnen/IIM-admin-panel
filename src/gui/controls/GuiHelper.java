@@ -1,13 +1,17 @@
 package gui.controls;
 
+import domain.User;
+import gui.UserDetailsController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import org.controlsfx.control.textfield.CustomPasswordField;
 import org.controlsfx.control.textfield.CustomTextField;
 
@@ -164,6 +168,14 @@ public class GuiHelper {
 
     public static void setIcon(Stage stage){
         stage.getIcons().add(new Image(GuiHelper.class.getResourceAsStream("/gui/images/logo.png")));
+    }
+
+    public static void openUserDetails(User user) {
+        Stage newStage = new Stage(StageStyle.DECORATED);
+        GuiHelper.setIcon(newStage);
+        Scene scene = new Scene(new UserDetailsController(newStage, user));
+        newStage.setScene(scene);
+        newStage.show();
     }
 
     //</editor-fold>

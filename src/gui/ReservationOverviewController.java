@@ -24,6 +24,8 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.util.stream.Collectors;
 
+import static gui.controls.GuiHelper.openUserDetails;
+
 
 public class ReservationOverviewController extends VBox {
 
@@ -137,14 +139,6 @@ public class ReservationOverviewController extends VBox {
         GuiHelper.setIcon(newStage);
         newStage.setTitle(String.format("%s %s - IIM", reservation.getUser().getEmail(), reservation.getStartDate().format(GuiHelper.getDateTimeFormatter())));
         Scene scene = new Scene(new ReservationController(dc, newStage, reservation));
-        newStage.setScene(scene);
-        newStage.show();
-    }
-
-    private void openUserDetails(User user) {
-        Stage newStage = new Stage(StageStyle.DECORATED);
-        GuiHelper.setIcon(newStage);
-        Scene scene = new Scene(new UserDetailsController(newStage, user));
         newStage.setScene(scene);
         newStage.show();
     }

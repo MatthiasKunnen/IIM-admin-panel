@@ -23,6 +23,8 @@ import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static gui.controls.GuiHelper.openUserDetails;
+
 public class ReservationController extends VBox {
 
     //<editor-fold desc="FXML Variables" defaultstate="collapsed">
@@ -153,13 +155,5 @@ public class ReservationController extends VBox {
         simplifiedItems = FXCollections.observableMap(reservation.getReservationDetails().stream()
                 .collect(Collectors.groupingBy(r -> r.getMaterialIdentifier().getInfo())));
         this.tv.setItems(FXCollections.observableList(simplifiedItems.keySet().stream().collect(Collectors.toList())));
-    }
-
-    private void openUserDetails(User user) {
-        Stage newStage = new Stage(StageStyle.DECORATED);
-        GuiHelper.setIcon(newStage);
-        Scene scene = new Scene(new UserDetailsController(newStage, user));
-        newStage.setScene(scene);
-        newStage.show();
     }
 }

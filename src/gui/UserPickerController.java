@@ -24,6 +24,8 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
+import static gui.controls.GuiHelper.openUserDetails;
+
 public class UserPickerController extends VBox {
 
     //<editor-fold desc="FXML Variables" defaultstate="collapsed">
@@ -120,13 +122,6 @@ public class UserPickerController extends VBox {
     //</editor-fold>
 
     //<editor-fold desc="Private actions" defaultstate="collapsed">
-    private void openUserDetails(User user) {
-        Stage newStage = new Stage(StageStyle.DECORATED);
-        GuiHelper.setIcon(newStage);
-        Scene scene = new Scene(new UserDetailsController(newStage, user));
-        newStage.setScene(scene);
-        newStage.show();
-    }
 
     private void selectAndExit() {
         selectedUser.set(tvUsers.getSelectionModel().getSelectedItem());
